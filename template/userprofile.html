@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Title Of Recipe</title>
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Dosis|Lato:400,400i,700,700i|Lobster|Open+Sans+Condensed:300|Open+Sans:400,400i|Raleway:400,400i,700i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="css/recipe_info.css">
+
+  <style>
+    .user-details {
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      
+      <div id="logo-container">
+        <a href="#" class="brand-logo">
+          <img style="height:56px;vertical-align:middle" src="images/logo.jpg" alt="">
+          <h5 style="display:inline-block;font-family:Lobster;font-size:2.4rem">MoreRecipes</h5> 
+        </a>
+      </div>
+      
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Browse Catalog</a></li>
+        <li><a href="#">Sign Up</a></li>
+        <li><a href="#">Sign In</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Browse Catalog</a></li>
+        <li><a href="#">Sign Up</a></li>
+        <li><a href="#">Sign In</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+      
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="container" id="container-section">
+    <div class="row" id="user-info">
+      <div class="col l4"> <!-- recipe info section -->
+        <div> <!-- User profile picture -->
+          <img class="circle responsive-img" src="images/avatar_img.png" alt="userprofilepic">
+        </div>
+        
+        <h5 class="title" style="text-align:center;">@Username</h5>
+        <div class="divider" style="margin:0 1rem"></div>
+        
+        <div> <!-- images -->
+          <div class="row user-details">
+            <p class="col s4">Full Name:</p>
+            <p class="col s8">John Doe</p>
+          </div>
+
+          <div class="row user-details">
+            <p class="col s4">Email:</p>
+            <p class="col s8">johndoe@domain.com</p>
+          </div>
+
+
+          <div style="margin-top: 1rem;"> <!-- main image -->
+            <img src="images/sample_recipes/Fried-slaw-crack-slaw-recipe-low-carb-keto-nigerian-.jpg" alt="" style="width: 100%;padding: 1rem;">
+          </div>
+          
+          <div class="thumbnails row"> <!-- thumbnails -->
+            <div class="col s6">
+              <img src="images/sample_recipes/Fried-slaw-crack-slaw-recipe-low-carb-keto-nigerian-.jpg" alt="">  
+            </div>
+
+            <div class="col s6">
+              <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg" alt="">                
+            </div>
+
+            <div class="col s6">
+              <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg" alt="">                
+            </div>
+          </div> <!-- thumbnails end -->
+    
+          <div class="thumbnail-actions"> <!-- action buttons -->
+            <a href="#" class="btn waves-ripple"><i class="material-icons">arrow_upward</i></a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">arrow_downward</i></a>
+            <a href="#" class="btn-large waves-ripple">Review</a>
+          </div> <!-- action buttons end-->
+        </div>
+      </div>
+    
+      <!-- description and reviews -->
+      <div class="col l7">
+          
+        <div class=""> <!-- description --> 
+          <h5 class="description-section">Description</h5>
+          <p>This is a great recipe with an exciting taste. It takes you through an adventure that makes you want to complete it on time and taste it.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="ingredients"> <!-- ingredients -->
+          <h5 class="description-section" style="text-align:center"><i class="material-icons" style="vertical-align:sub">list</i> Ingredients</h5>
+          <ul>
+            <li><i class="material-icons">chevron_right</i> Water</li>
+            <li><i class="material-icons">chevron_right</i>Salt</li>
+            <li><i class="material-icons">chevron_right</i>Maggi</li>
+            <li><i class="material-icons">chevron_right</i>Fried whatever</li>
+          </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div> <!-- directions -->
+          <h5 class="description-section">Directions</h5>
+          <ol>
+            <li><p>Pour 5 cups of water into a pressure cooker and allow it boil for 10minutes</p></li>
+            <li><p>Mix ingredient 1 and ingredient 5 together</p></li>
+            <li><p>Ingredients 10 to 15 should be boiled together in another container for 21 minutes</p></li>
+            <li><p>Mix step 5 and 6 and allow them to boil for a while</p></li>
+            <ll><p>Serve all in a green bold plate</p></li>
+          </ol>
+        </div>
+      </div> <!-- description and directions end --> 
+    </div> <!-- row section end -->
+
+    <div class="divider"></div>
+    <div id="review-section"> <!-- reviews section start -->
+      <div class="row">
+        <h5 class="description-section" style="font-size: 2.5rem;font-family: 'Raleway';font-style: normal;">Reviews</h5>
+        
+        <div class="col l4">
+          <img class="circle" src="images/avatar_img.png" width="50px" alt="">
+          <p class="reviewers-name">Adetunmbi Idris</p>
+          <div class="divider" ></div>
+          <div class="section">
+            <h5 class="title">A Great Recipe</h5>
+            <p class="review-text">
+              I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
+            </p>
+          </div>
+        </div>
+        
+        <div class="col l4">
+          <img class="circle" src="images/avatar_img.png" width="50px" alt="">
+          <p class="reviewers-name">Adetunmbi Idris</p>
+          <div class="divider" ></div>
+          <div class="section">
+            <h5 class="title">A Great Recipe</h5>
+            <p class="review-text">
+              I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
+            </p>
+          </div>
+        </div>
+
+        <div class="col l4">
+          <img class="circle" src="images/avatar_img.png" width="50px" alt="">
+          <p class="reviewers-name">Adetunmbi Idris</p>
+          <div class="divider" ></div>
+          <div class="section">
+            <h5 class="title">A Great Recipe</h5>
+            <p class="review-text">
+              I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
+            </p>
+          </div>    
+        </div>
+      </div>
+
+    </div> <!-- review section end -->
+    
+  </div>
+  
+  <footer class="page-footer" style="margin-top:8em;background-color:#444">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <ul>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script>
+
+</script>
+</body>
+</html>
