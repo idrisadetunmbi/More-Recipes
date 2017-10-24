@@ -133,6 +133,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .card-action span {
+      margin-right: 1.2rem;
+    }
   </style>
 </head>
 <body>
@@ -142,15 +146,13 @@
       <div id="logo-container">
         <a href="#" class="brand-logo">
           <img style="height:56px;vertical-align:middle" src="images/logo.jpg" alt="">
-          <h5 style="display:inline-block;font-family:Lobster;font-size:2.4rem">MoreRecipes</h5> 
+          <h5 style="display:inline-block;font-family:Lobster;font-size:1.5rem">MoreRecipes</h5> 
         </a>
       </div>
       
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Browse Catalog</a></li>
-        <li><a href="#">Sign Up</a></li>
-        <li><a href="#">Sign In</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+        <li><a href="signin.html">Sign In</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
@@ -440,6 +442,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
 <script>
   (function($){
     $(function(){
@@ -451,13 +454,6 @@
         itemSelector: '.recipe',
         percentPosition: true
       });
-
-      $('.btn-browse-catalog').on('click', function () {
-        $('html, body').animate({
-          scrollTop: $("#recipe-gallery").offset().top-90
-        }, 500);
-      });
-
     }); // end of document ready
   })(jQuery); // end of jQuery name space
 </script>

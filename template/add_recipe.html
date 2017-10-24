@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>More Recipe | Add Recipe</title>
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Lobster|Open+Sans:400,400i|Raleway:400,400i,700i" rel="stylesheet">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="stylesheet" href="css/landing_page.css">
+
+  <style>
+    #recipe-action-btn div {
+      padding-left: 0px;
+      margin-bottom: 2em;
+    }
+
+    @media only screen and (max-width : 463px) {
+      #logo-container a {
+        margin-left: -2em;
+      }
+    }
+
+    #logo-container h5 {
+      font-size: 1.5rem; 
+    }
+
+  </style>
+</head>
+<body>
+  
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      
+      <div id="logo-container">
+        <a href="catalog.html" class="brand-logo">
+          <img style="height:56px;vertical-align:middle" src="images/logo.jpg" alt="">
+          <h5 style="display:inline-block;font-family:Lobster;">MoreRecipes</h5>
+        </a>
+      </div>
+      
+      <ul class="right">
+        <li><a href="userprofile.html"><i style="font-size:3rem" class="large material-icons">account_circle</i></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row" style="margin-top:5em">
+      
+      
+      <form class="col s12 m7 offset-m3">
+        <div>
+          <h5 style="font-family:Raleway">Add a new recipe</h5>
+        </div>
+                
+        <div class="row">
+          <div class="input-field col s12">
+              <input id="recipe-title" type="text" class="validate">
+              <label for="recipe-title">Title</label>
+          </div>
+
+          <div class="input-field col s12">
+            <textarea id="recipe-description" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-description">Description</label>
+          </div>
+
+          <div class="input-field col s12">
+            <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-ingredients">Ingredients</label>
+          </div>
+
+          <div class="input-field col s12">
+            <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-directions">Directions</label>
+          </div>
+
+          <div>
+            <img style="margin-top:2rem;height: 6rem;margin-left: 1rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">
+            <p style="font-size: 1.3rem;opacity: 0.7;margin-left: 1.2rem;font-family: Raleway;">Add images</p>
+          </div>
+        </div>
+  
+        <div class="row" id="recipe-action-btn" style="margin-top:3rem;margin-bottom:3rem;">
+          <!-- <div class="divider"></div> -->
+          <div class="col s12 m4">
+            <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 8px;margin-right: 8px;background-color: #444;">SUBMIT</a>  
+          </div>
+
+          <div class="col s12 m4">
+            <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 8px;margin-right: 8px;background-color: #444;">CANCEL</a>  
+          </div>
+        </div>
+      </form>
+    </div>  
+  </div>
+  
+
+</body>
+
+<footer class="page-footer" style="margin-top:8em;background-color:#444">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        
+      </div>
+      <div class="col l4 offset-l2 s12">
+        <ul>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    
+    </div>
+  </div>
+</footer>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script>
+
+</script>
+</body>
+</html>
