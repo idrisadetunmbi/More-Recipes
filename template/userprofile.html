@@ -77,24 +77,18 @@
     <div class="nav-wrapper container">
       
       <div id="logo-container">
-        <a href="#" class="brand-logo">
+        <a href="catalog.html" class="brand-logo">
           <img style="height:56px;vertical-align:middle" src="images/logo.jpg" alt="">
-          <h5 style="display:inline-block;font-family:Lobster;font-size:2.4rem">MoreRecipes</h5> 
+          <h5 style="display:inline-block;font-family:Lobster;font-size:1.4rem">MoreRecipes</h5> 
         </a>
       </div>
       
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Browse Catalog</a></li>
-        <li><a href="#">Sign Up</a></li>
-        <li><a href="#">Sign In</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#">Sign Out</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Browse Catalog</a></li>
-        <li><a href="#">Sign Up</a></li>
-        <li><a href="#">Sign In</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#">Sign Out</a></li>
       </ul>
       
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -135,13 +129,13 @@
         <div class="row">
           <div class="col s12">
             <ul class="tabs">
-              <li class="tab green-text col s3"><a class="black-text active" href="#my-recipe">My Recipes</a></li>
+              <li class="tab col s3"><a class="black-text active" id="myrecipes-tab" href="#my-recipe">My Recipes</a></li>
               <div class="fixed-action-btn">
-                  <a class="btn-floating btn-large">
-                    <i class="large material-icons">add</i>
-                  </a>
-                </div>
-              <li class="tab s3"><a class="black-text" href="#favorites">Favorites</a></li>
+                <a class="btn-floating btn-large">
+                  <i class="large material-icons">add</i>
+                </a>
+              </div>
+              <li class="tab s3"><a id="favorites-tab" class="black-text" href="#favorites">Favorites</a></li>
             </ul>
           </div>
 
@@ -483,14 +477,16 @@
         percentPosition: true
       });
 
-      $('.btn-browse-catalog').on('click', function () {
-        $('html, body').animate({
-          scrollTop: $("#recipe-gallery").offset().top-90
-        }, 500);
+      $('.fixed-action-btn').on('click', function(e) {
+        window.location = 'add_recipe.html';
       });
 
-      $('.fixed-action-btn').on('click', function(e) {
-        window.location = 'catalog.html';
+      $('#favorites-tab').on('click', function() {
+        $('.fixed-action-btn').css('display', 'none');
+      });
+
+      $('#myrecipes-tab').on('click', function() {
+        $('.fixed-action-btn').css('display', '');
       });
 
     }); // end of document ready
