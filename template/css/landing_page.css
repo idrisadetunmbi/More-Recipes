@@ -125,4 +125,6 @@ h5 {
   color: #444;
 }
 
-
+.card-action span {
+  margin-right: 1.2rem;
+}

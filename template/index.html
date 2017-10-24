@@ -25,7 +25,7 @@
         <li><a href="catalog.html">Browse Catalog</a></li>
         <li><a href="signup.html">Sign Up</a></li>
         <li><a href="signin.html">Sign In</a></li>
-        <li><a href="#">About</a></li>
+        <li><a id="about-btn" href="#">About</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
@@ -64,7 +64,7 @@
   
   <div class="container">
     <div class="section">
-      <div class="row">
+      <div id="about-section" class="row">
 
         <div class="col s12 m4">
           <div class="icon-block">
@@ -118,7 +118,11 @@
             I am convenient because I require little markup to use effectively.</p>
           </div>
           <div class="card-action">
-            <a href="#">This is a link</a>
+            <div>
+              <span><i class="material-icons">thumb_up</i>5</span>
+              <span><i class="material-icons">thumb_down</i>10</span>
+              <span><i class="material-icons">star</i>50</span>  
+            </div>
           </div>
         </div>  
       </div>
@@ -283,26 +287,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script>
-  (function($){
-    $(function(){
-      $('.button-collapse').sideNav();
-      var $container = $('#recipe-gallery');
-    
-      $container.masonry({
-        columnWidth: '.recipe',
-        itemSelector: '.recipe',
-        percentPosition: true
-      });
-
-      $('.btn-browse-catalog').on('click', function () {
-        $('html, body').animate({
-          scrollTop: $("#recipe-gallery").offset().top-90
-        }, 500);
-      });
-
-    }); // end of document ready
-  })(jQuery); // end of jQuery name space
-</script>
+<script type="text/javascript" src="js/util.js"></script>
 </body>
 </html>
