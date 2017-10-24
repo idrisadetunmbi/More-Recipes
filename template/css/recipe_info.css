@@ -113,9 +113,11 @@ footer.page-footer {
 }
 
 .thumbnail-actions .btn-large {
-  width: 44%;
+  width: 40%;
   height: 37px;
   line-height: 36px;
+  margin-top: 1rem;
+  display: block;
 }
 
 .description-section {

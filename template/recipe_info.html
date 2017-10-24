@@ -16,23 +16,17 @@
     <div class="nav-wrapper container">
       
       <div id="logo-container">
-        <a href="#" class="brand-logo">
+        <a href="catalog.html" class="brand-logo">
           <img style="height:56px;vertical-align:middle" src="images/logo.jpg" alt="">
-          <h5 style="display:inline-block;font-family:Lobster;font-size:2.4rem">MoreRecipes</h5> 
+          <h5 style="display:inline-block;font-family:Lobster;font-size:1.4rem">MoreRecipes</h5> 
         </a>
       </div>
       
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Browse Catalog</a></li>
-        <li><a href="#">Sign Up</a></li>
-        <li><a href="#">Sign In</a></li>
-        <li><a href="#">About</a></li>
+      <ul class="right">
+        <li><a href="userprofile.html"><i style="font-size:3rem" class="large material-icons">account_circle</i></a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Browse Catalog</a></li>
-        <li><a href="#">Sign Up</a></li>
-        <li><a href="#">Sign In</a></li>
         <li><a href="#">About</a></li>
       </ul>
       
@@ -66,9 +60,10 @@
           </div> <!-- thumbnails end -->
     
           <div class="thumbnail-actions"> <!-- action buttons -->
-            <a href="#" class="btn waves-ripple"><i class="material-icons">arrow_upward</i></a>
-            <a href="#" class="btn waves-ripple"><i class="material-icons">arrow_downward</i></a>
-            <a href="#" class="btn-large waves-ripple">Review</a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_up</i></a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_down</i></a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">favorite</i></a>
+            <a href="#review-modal" class="btn-large waves-ripple modal-trigger">Review</a>
           </div> <!-- action buttons end-->
         </div>
       </div>
@@ -116,42 +111,54 @@
         <div class="col l4 offset-l4 ">
           <img class="circle" src="images/avatar_img.png" width="50px" alt="">
           <p class="reviewers-name">Adetunmbi Idris</p>
-          <div class="divider" ></div>
+          <div class="divider"></div>
           <div class="section">
             <h5 class="title">A Great Recipe</h5>
             <p class="review-text">
               I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
             </p>
           </div>
-        </div>
-        
-        <!-- <div class="col l4">
-          <img class="circle" src="images/avatar_img.png" width="50px" alt="">
-          <p class="reviewers-name">Adetunmbi Idris</p>
-          <div class="divider" ></div>
-          <div class="section">
-            <h5 class="title">A Great Recipe</h5>
-            <p class="review-text">
-              I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
-            </p>
+          <div id="favorites-icon">
+            <i class="material-icons">star</i>
+            <i class="material-icons">star</i>
+            <i class="material-icons">star</i>
+            <i class="material-icons">star</i>
+            <i class="material-icons">star</i>
           </div>
         </div>
-
-        <div class="col l4">
-          <img class="circle" src="images/avatar_img.png" width="50px" alt="">
-          <p class="reviewers-name">Adetunmbi Idris</p>
-          <div class="divider" ></div>
-          <div class="section">
-            <h5 class="title">A Great Recipe</h5>
-            <p class="review-text">
-              I made this recipe and it ended great. I actually added some few changes to my own taste, but overall this is a great recipe I advise everyone to try out.
-            </p>
-          </div>    
-        </div> -->
       </div>
 
     </div> <!-- review section end -->
     
+  </div>
+
+  <div class="">
+    <div class="row">
+      <div id="review-modal" class="col l3 offset-l4 modal">
+        <div class="modal-content">
+          <div id="review-form">
+            <p>Add a review</p>
+            <form>
+              <div class="input-field">
+                <input id="review-title" type="text" class="validate">
+                <label for="review-title">Title</label>
+              </div>
+              <div class="input-field">
+                <textarea id="review-text" type="text" class="materialize-textarea"></textarea>
+                <label for="review-text">Review</label>
+              </div>
+            </form>
+          </div>
+          <div id="favorites-icon" style="margin-left:4em;">
+            <a href=""><i class="material-icons">star</i></a>
+            <a href=""><i class="material-icons">star</i></a>
+            <a href=""><i class="material-icons">star</i></a>
+            <a href=""><i class="material-icons">star</i></a>
+            <a href=""><i class="material-icons">star</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   
   <footer class="page-footer" style="margin-top:8em;background-color:#444">
@@ -180,7 +187,10 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script>
-
+  $(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+    $('.modal').modal();
+  });
 </script>
 </body>
 </html>
