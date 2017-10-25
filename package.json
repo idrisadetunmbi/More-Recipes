@@ -4,7 +4,8 @@
   "description": "More Recipes; A Recipe management and social app",
   "scripts": {
     "start": "node ./server/bin/www",
-    "devstart": "nodemon ./server/bin/www --exec babel-node"
+    "devstart": "nodemon ./server/bin/www --exec babel-node",
+    "test": "NODE_ENV=test mocha ./server/tests --exit --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "~1.18.2",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "mocha": "^4.0.1",
     "morgan": "~1.9.0"
   },
   "devDependencies": {
