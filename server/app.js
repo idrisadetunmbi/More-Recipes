@@ -24,8 +24,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.send({
-    error: `${req.url} Not found`,
-    message: 'specified path Not Found',
+    error: `Cannot ${req.method} ${req.url}`,
+    message: 'specified path Not Found or method to path does not exist',
   });
 });
 
