@@ -7,6 +7,9 @@ export default class RecipeController {
     this.registerRoutes();
   }
 
+  /**
+   * Array storing validations for a POST recipe request
+   */
   postRecipeValidationArray = [
     check('title', 'title must be between 5 to 50 characters').isLength({ min: 5, max: 50 }).trim(),
     check('description', 'you must add a description').exists(),
@@ -14,6 +17,9 @@ export default class RecipeController {
     check('directions', 'directions are required for a recipe').exists(),
   ];
 
+  /**
+   * Stores validation for a GET request
+   */
   getRecipeValidationArray = [
     check('id', 'recipe id is not included or is invalid').isUUID(),
   ];
@@ -49,7 +55,7 @@ export default class RecipeController {
 
   /**
    * Adds a new recipe
-   * @param(req)
+   * @param()
    */
   postRecipe = (req, res) => {
     const recipe = RecipesService.addRecipe(req.body);
