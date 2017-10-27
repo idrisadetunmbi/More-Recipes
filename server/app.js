@@ -6,6 +6,11 @@ import bodyParser from 'body-parser';
 import index from './routes/index';
 import api from './routes/api';
 
+
+import RecipeServices from './services/RecipesService';
+import recipeSeeders from './seeders/recipes.json';
+
+
 const app = express();
 
 app.use(logger('dev'));
@@ -24,6 +29,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status || 500);
   res.send({
     error: `Cannot ${req.method} ${req.url}`,
@@ -32,3 +38,10 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
+
+// seed recipes into dummy-data holder
+if (process.env.NODE_ENV !== 'test') {
+  recipeSeeders.recipes.forEach((recipe) => {
+    RecipeServices.addRecipe(recipe);
+  });
+}
