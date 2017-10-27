@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import Recipe from '../models/recipe';
 
 class RecipeService {
@@ -10,30 +9,38 @@ class RecipeService {
     return this.recipes;
   }
 
-  addRecipe(recipeData) {
-    const recipewithTitleExists = this.recipes
-      .filter(recipe => recipe.title === recipeData.title).length > 0;
-    if (recipewithTitleExists) {
-      return false;
-    }
-    const recipe = new Recipe(recipeData);
-    recipe.id = uuid.v4();
-
+  addRecipe(reqBody) {
+    const recipe = new Recipe(reqBody);
     this.recipes.push(recipe);
     return recipe.id;
   }
 
   getRecipe(id) {
-    const result = this.recipes.filter(recipe => recipe.id === id)[0];
-    return result;
+    const result = this.recipes.filter(recipe => recipe.id === id);
+    return result.length > 0 ? result[0] : false;
   }
 
-  modifyRecipe(id) {
-    
+  modifyRecipe(id, recipeData) {
+    const recipe = this.recipes.filter(rec => rec.id === id)[0];
+    if (!recipe) {
+      return false;
+    }
+    recipe.title = recipeData.title || recipe.title;
+    recipe.description = recipeData.description || recipe.description;
+    recipe.ingredients = recipeData.ingredients || recipe.ingredients;
+    recipe.directions = recipeData.directions || recipe.directions;
+    recipe.category = recipeData.category || recipe.category;
+    return true;
   }
 
   deleteRecipe(id) {
-
+    const recipewithIDExists = this.recipes
+      .filter(recipe => recipe.id === id).length > 0;
+    if (!recipewithIDExists) {
+      return false;
+    }
+    this.recipes = this.recipes.filter(recipe => recipe.id !== id);
+    return true;
   }
 }
 
