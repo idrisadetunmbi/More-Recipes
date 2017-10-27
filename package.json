@@ -9,6 +9,9 @@
     "devstart": "nodemon ./server/bin/www --exec babel-node",
     "test": "NODE_ENV=test mocha ./server/tests --exit --compilers js:babel-register"
   },
+  "engines": {
+    "node": "8.6.0" 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/idrisadetunmbi/More-Recipes.git"
