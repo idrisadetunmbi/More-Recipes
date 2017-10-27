@@ -9,6 +9,8 @@
       percentPosition: true
     });
 
+    $('.modal').modal();
+
     $('.btn-browse-catalog').on('click', function () {
       $('html, body').animate({
         scrollTop: $("#recipe-gallery").offset().top-90

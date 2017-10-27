@@ -23,8 +23,8 @@
       
       <ul class="right hide-on-med-and-down">
         <li><a href="catalog.html">Browse Catalog</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
-        <li><a href="signin.html">Sign In</a></li>
+        <li><a class="modal-trigger" href="#sign-up-modal">Sign Up</a></li>
+        <li><a class="modal-trigger" href="#sign-in-modal">Sign In</a></li>
         <li><a id="about-btn" href="#">About</a></li>
       </ul>
 
@@ -283,6 +283,161 @@
     </div>
   </div>
 </footer>
+
+<!-- Sign up -->
+<div class="modal" id="sign-up-modal">
+  <div class="modal-content">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="row">
+            <div id="logo-container" class="center">
+              <a href="#" class="brand-logo">
+                <img style="margin-right: 0.8em;height: 60px;vertical-align: middle;" src="images/logo.jpg" alt=""> 
+                <span style="font-size: 1.7em;font-family:Lato;vertical-align:middle;color:#444;font-style:italic;font-weight:700;">More-Recipes</span>  
+              </a>
+            </div>
+          </div>
+        
+          <div class="divider"></div>
+        
+          <div class="row" style="">
+            <form class="col s12">
+              <div>
+                <h5 style="font-family:Raleway">Create an account</h5>
+              </div>
+          
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="username" type="text" class="validate">
+                  <label for="username">Username</label>
+                </div>
+              </div>
+        
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="email" type="email" class="validate">
+                  <label for="email">Email</label>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password" type="password" class="validate">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password_confirm" type="password" class="validate">
+                  <label for="password_confirm">Confirm Password</label>
+                </div>
+              </div>
+        
+              <div class="row">
+                  <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 8px;margin-right: 8px;background-color: #444;">Sign Up</a>
+              </div>
+              <p style="text-align:center">Already Have an Account? <a href="signin.html">Sign In</a> </p>
+            </form>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- Sign up end -->
+
+<!-- Sign in -->
+<div class="modal" id="sign-in-modal">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row">
+          <div class="col s12">
+            <div class="row">
+              <div id="logo-container" class="center">
+                <a href="#" class="brand-logo">
+                  <img style="margin-right: 0.8em;height: 60px;vertical-align: middle;" src="images/logo.jpg" alt=""> 
+                  <span style="font-size: 1.7em;font-family:Lato;vertical-align:middle;color:#444;font-style:italic;font-weight:700;">More-Recipes</span>  
+                </a>
+              </div>
+            </div>
+          
+            <div class="divider"></div>
+          
+            <!-- <div class="row" style="">
+              <form class="col s12">
+                <div>
+                  <h5 style="font-family:Raleway">Create an account</h5>
+                </div>
+            
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="username" type="text" class="validate">
+                    <label for="username">Username</label>
+                  </div>
+                </div>
+          
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="password" type="password" class="validate">
+                    <label for="password">Password</label>
+                  </div>
+                </div>
+            
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="password_confirm" type="password" class="validate">
+                    <label for="password_confirm">Confirm Password</label>
+                  </div>
+                </div>
+          
+                <div class="row">
+                    <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 8px;margin-right: 8px;background-color: #444;">Sign Up</a>
+                </div>
+                <p style="text-align:center">Already Have an Account? <a href="signin.html">Sign In</a> </p>
+              </form>
+            </div>   -->
+            <div class="row" style="">
+                <form class="">
+                  <div>
+                    <h5 style="font-family:Raleway">Log in to More-Recipes</h5>
+                  </div>
+                
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="username" type="text" class="validate">
+                      <label for="username">Username or email</label>
+                    </div>
+                  </div>
+                    
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input id="password" type="password" class="validate">
+                      <label for="password">Password</label>
+                    </div>
+                  </div>
+            
+                  <div class="row">
+                    <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 8px;margin-right: 8px;background-color: #444;">Sign In</a>
+                  </div>
+                  <p style="text-align:center">Don't Have an Account? <a class="" href="signup.html">Sign Up</a> </p>
+            
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- Sign up end -->
+
+
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
