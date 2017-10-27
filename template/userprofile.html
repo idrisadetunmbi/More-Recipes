@@ -70,6 +70,12 @@
     .tabs .indicator {
       background-color: #444;
     }
+
+    .modal {
+      width: 40% !important;
+      max-height: 100% !important;
+      overflow-y: hidden !important;
+    }
   </style>
 </head>
 <body>
@@ -130,11 +136,6 @@
           <div class="col s12">
             <ul class="tabs">
               <li class="tab col s3"><a class="black-text active" id="myrecipes-tab" href="#my-recipe">My Recipes</a></li>
-              <div class="fixed-action-btn">
-                <a class="btn-floating btn-large">
-                  <i class="large material-icons">add</i>
-                </a>
-              </div>
               <li class="tab s3"><a id="favorites-tab" class="black-text" href="#favorites">Favorites</a></li>
             </ul>
           </div>
@@ -459,6 +460,68 @@
     </div>
   </footer>
 
+  <div class="modal" id="add-recipe-modal">
+      <div class="modal-content">
+        <div class="container">
+          <div class="row">
+            <div class="col s12">                       
+              <div class="row" style="">
+                  <form class="col s12">
+                      <div>
+                        <h5 style="font-family:Raleway">Add a new recipe</h5>
+                      </div>
+                              
+                      <div class="row">
+                        <div class="input-field col s12">
+                            <input id="recipe-title" type="text" class="validate">
+                            <label for="recipe-title">Title</label>
+                        </div>
+              
+                        <div class="input-field col s12">
+                          <textarea id="recipe-description" class="materialize-textarea" rows="" cols=""></textarea>
+                          <label for="recipe-description">Description</label>
+                        </div>
+              
+                        <div class="input-field col s12">
+                          <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols=""></textarea>
+                          <label for="recipe-ingredients">Ingredients</label>
+                        </div>
+              
+                        <div class="input-field col s12">
+                          <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
+                          <label for="recipe-directions">Directions</label>
+                        </div>
+              
+                        <div>
+                          <img style="margin-top:2rem;height: 6rem;margin-left: 1rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">
+                          <p style="font-size: 1.3rem;opacity: 0.7;margin-left: 1.2rem;font-family: Raleway;">Add images</p>
+                        </div>
+                      </div>
+                
+                      <div class="row" id="recipe-action-btn" style="margin-top:3rem;margin-bottom:3rem;">
+                        <!-- <div class="divider"></div> -->
+                        <div class="col m6 s12" style="margin-bottom:2em">
+                          <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">SUBMIT</a>  
+                        </div>
+              
+                        <div class="col m6 s12">
+                          <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">CANCEL</a>  
+                        </div>
+                      </div>
+                    </form>    
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- Sign up end -->
+
+    <div class="fixed-action-btn">
+      <a href="#add-recipe-modal" class="btn-floating btn-large modal-trigger">
+        <i class="large material-icons">add</i>
+      </a>
+    </div>
+
 </body>
 
 
@@ -477,9 +540,11 @@
         percentPosition: true
       });
 
-      $('.fixed-action-btn').on('click', function(e) {
-        window.location = 'add_recipe.html';
-      });
+      $('.modal').modal();
+
+      // $('.fixed-action-btn').on('click', function(e) {
+      //   window.location = 'add_recipe.html';
+      // });
 
       $('#favorites-tab').on('click', function() {
         $('.fixed-action-btn').css('display', 'none');

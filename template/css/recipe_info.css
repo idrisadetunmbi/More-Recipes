@@ -161,3 +161,9 @@ ol {
   vertical-align:bottom;
   font-family: 'Open Sans', sans-serif
 }
+
+.modal {
+  width: 40% !important;
+  max-height: 100% !important;
+  overflow-y: hidden !important;
+}
