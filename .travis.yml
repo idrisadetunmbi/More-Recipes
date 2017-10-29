@@ -1,14 +1,16 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=51e7a765847b265522736cd407ffcdda461240971306f662d20ee2698bf4b815
 language: node_js
 node_js: 
   - "8"
 cache:
   directories:
     - "node_modules"
-addons:
-    code_climate:
-        repo_token: "R3HpLHMYqqKHHPsAhDljfcDI8DgsoXG2lY6Kcfe8gUb4V9jIyI4PBW9aDYb6VIl9MjsEGFcuwLybXlgLKr2cEe/eeP8dsiGiaZOP7BxVpLRIg9wV1HvHKDqkmQyBwo/C1AG9RTbgffsrCGbZ9saHPHSJQTtZ1qal7G84/zapeEzdDHMn6ZmQvBs5/akue05ofNwh9f+er8/lAoxo/SjIAJASgRGNZhZ6Erpa6J+moRvb1JVpvcn1cf+L8uZORO/aGv6aZzMJtIFJXHxayO1BYpCsnAZob6kXA4uQ2cVdvVuH8vyLqw6oMgYUDapoE+yJowAdQuG8B0AHeo6vgA36r8W3CDzts8Btk+LzC3TywlH/xJEXlGa97Onx0OtQdNNIBuRgWYhSkIU9HDJJrUr7Qj/75gQVMvMXIaUdvIs8o5oz++jXj4elqIPw6z/3wjp0a2MMBpqabra+ibUPtpBI8JNxirtlyaMQrrtKbtoTcAWDWj8naiIC7hl9qgy5gybfw7tUCmNgAqfvmtKx3gCr1fNnPWcXsnJ3v6Dfq2bl9NRt4SrmVvV21EmGfKccIIBiIFZJv9RIVzr04iDzu9G/aporXxKDzea9oYRFpdhe4eFY8TeLVDOdHBmeE37gYDyi+pHPMiuNIJIixuN/j1JyESGeSSEKesrvzcqfgLKFmmo="
 before_script:
-  - npm install codeclimate-test-reporter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 after_success:
   - npm run coverage
-  - codeclimate-test-reporter < ./coverage/lcov.info
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
