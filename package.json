@@ -4,8 +4,7 @@
   "description": "More Recipes; A Recipe management and social app",
   "scripts": {
     "clean": "rm -rf ./production",
-    "install:babel": "npm install --save babel-cli babel-preset-env babel-preset-stage-1",
-    "build": "npm run install:babel && npm run clean && mkdir ./production && babel ./server/ -d ./production && cd ./production && mkdir seeders && cp ../server/seeders/recipes.json ./seeders/",
+    "build": "npm run clean && mkdir ./production && babel ./server/ -d ./production && cd ./production && mkdir seeders && cp ../server/seeders/recipes.json ./seeders/",
     "start": "npm run build && node ./production/bin/www.js",
     "devstart": "nodemon ./server/bin/www --exec babel-node",
     "test": "NODE_ENV=test mocha ./server/tests --exit --compilers js:babel-register"
@@ -26,6 +25,9 @@
   "author": "Idris Adetunmbi",
   "license": "ISC",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",    
     "body-parser": "~1.18.2",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
@@ -38,10 +40,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.26.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
