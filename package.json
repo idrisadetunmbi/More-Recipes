@@ -10,7 +10,8 @@
     "test": "NODE_ENV=test mocha ./server/tests --exit --compilers js:babel-register"
   },
   "engines": {
-    "node": "8.6.0" 
+    "node": "8.6.0",
+    "npm": "5.4.2"
   },
   "repository": {
     "type": "git",

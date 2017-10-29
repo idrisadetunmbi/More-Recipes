@@ -29,12 +29,17 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(err.status || 500);
-  res.send({
-    error: `Cannot ${req.method} ${req.url}`,
-    message: 'specified path Not Found or method to path does not exist',
-  });
+  switch (err.status) {
+    case 404:
+      return res.status(404).send({
+        error: `Cannot ${req.method} ${req.url}`,
+        message: 'specified path Not Found or method to path does not exist',
+      });
+    default:
+      return res.status(500).send({
+        error: 'Could not complete request',
+      });
+  }
 });
 
 export default app;

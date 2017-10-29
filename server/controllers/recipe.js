@@ -77,14 +77,10 @@ export default class RecipeController {
    */
   postRecipe = (req, res) => {
     const recipe = RecipesService.addRecipe(req.body);
-    return recipe ?
-      res.status(201).send({
-        message: 'Recipe created successfully',
-        data: { ...req.body, id: recipe },
-      }) :
-      res.status(400).send({
-        message: 'Recipe with title already exists, please choose another title',
-      });
+    return res.status(201).send({
+      message: 'Recipe created successfully',
+      data: { ...req.body, id: recipe },
+    });
   }
 
   putRecipe = (req, res) => {
@@ -130,7 +126,9 @@ export default class RecipeController {
       res.status(200).json({
         data: recipeReviews,
       }) :
-      res.status(204).send();
+      res.status(200).send({
+        message: 'this recipe currently has no reviews',
+      });
   }
 
   validateRequestData = (req, res, next) => {
