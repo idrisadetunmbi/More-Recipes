@@ -1,9 +1,7 @@
 import express from 'express';
-
-import RecipeController from '../controllers/recipe';
+import recipeRouter from './recipe_routes';
 
 const router = express.Router();
-const recipeRouter = express.Router();
 
 router.get('/', (req, res) => {
   res.json({
@@ -11,7 +9,7 @@ router.get('/', (req, res) => {
   });
 });
 
-const Recipe = new RecipeController(recipeRouter);
+
 router.use('/recipes', recipeRouter);
 
 export default router;
