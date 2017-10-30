@@ -2,3 +2,4 @@ node_modules
 production
 .nyc_output
 coverage
+.env
