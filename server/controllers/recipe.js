@@ -3,11 +3,6 @@ import RecipesService from '../services/RecipesService';
 import ReviewService from '../services/ReviewService';
 
 export default class RecipeController {
-  constructor(router) {
-    this.router = router;
-    this.registerRoutes();
-  }
-
   /**
    * Array storing validations for a POST recipe request
    */
@@ -39,16 +34,6 @@ export default class RecipeController {
     validate.param('recipeId', 'invalid recipe id or recipe does not exist').isUUID()
       .custom((value, { req }) => RecipesService.getRecipe(value)),
   ];
-
-  registerRoutes() {
-    this.router.get('/', this.getRecipes);
-    this.router.get('/:id', this.recipeGetValidationChecks, this.validateRequestData, this.getRecipe);
-    this.router.post('/', this.recipePostValidationChecks, this.validateRequestData, this.postRecipe);
-    this.router.put('/:id', [...this.recipeGetValidationChecks, ...this.recipePutValidationChecks], this.validateRequestData, this.putRecipe);
-    this.router.delete('/:id', this.recipeGetValidationChecks, this.validateRequestData, this.deleteRecipe);
-    this.router.post('/:recipeId/reviews', this.reviewPostValidationChecks, this.validateRequestData, this.postRecipeReview);
-    this.router.get('/:recipeId/reviews', [this.reviewPostValidationChecks[1]], this.validateRequestData, this.getRecipeReviews);
-  }
 
   getRecipes = (req, res) => {
     const recipes = RecipesService.getRecipes();
