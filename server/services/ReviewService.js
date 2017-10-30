@@ -7,9 +7,8 @@ class ReviewService {
 
   addReview(reviewData) {
     const reviewConflicts = this.reviews.filter(review =>
-      (review.title === reviewData.title &&
       (review.postedBy === reviewData.user || review.postedBy === 'anonymous user') &&
-      review.review === reviewData.review)).length > 0;
+      review.review === reviewData.review).length > 0;
 
     if (reviewConflicts) {
       return false;
