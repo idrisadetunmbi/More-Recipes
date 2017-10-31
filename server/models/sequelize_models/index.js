@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-import configFile from '../config/config';
+import configFile from '../../config/config';
 
 dotenv.config({ path: `${__dirname}/../../.env` });
 const basename = path.basename(__filename);
