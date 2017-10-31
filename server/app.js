@@ -1,15 +1,16 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import expressJWT from 'express-jwt';
 
 import index from './routes/index';
 import api from './routes/api';
-
-
 import RecipeServices from './services/RecipesService';
 import recipeSeeders from './seeders/recipes.json';
 
+dotenv.config({ path: `${__dirname}/../.env` });
 
 const app = express();
 
@@ -17,6 +18,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(expressJWT({ secret: process.env.JWT_AUTH_SECRET })
+  .unless({ path: ['/', '/api/', '/api/users/signup', '/api/users/signin'] }));
+
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send({
+      error: 'you are not signed in or invalid token',
+    });
+  } else {
+    next();
+  }
+});
 
 app.use('/', index);
 app.use('/api', api);
