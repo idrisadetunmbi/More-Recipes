@@ -1,5 +1,6 @@
 import express from 'express';
 import recipeRouter from './recipe_routes';
+import userRouter from './user_routes';
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get('/', (req, res) => {
   });
 });
 
-
+router.use('/users', userRouter);
 router.use('/recipes', recipeRouter);
 
 export default router;
