@@ -33,6 +33,7 @@ export default (sequelize, DataTypes) => {
     vote: {
       type: DataTypes.ENUM,
       values: ['upvote', 'downvote'],
+      allowNull: true,
     },
   }, {
     classMethods: {
