@@ -5,6 +5,7 @@ import RecipesService from '../services/RecipesService';
 import models from '../models/sequelize_models';
 
 const RecipeModel = models.recipe;
+const ReviewModel = models.review;
 
 export default class RecipeController {
   /**
@@ -23,7 +24,8 @@ export default class RecipeController {
    * Stores validation for a GET request
    */
   recipeGetValidationChecks = [
-    validate.param('recipeId', 'recipe id is invalid').isUUID(),
+    validate.param('recipeId', 'recipe id is invalid or stated recipe does not exist').isUUID()
+      .custom(value => RecipeModel.findById(value)),
   ];
 
   recipePutValidationChecks = [
@@ -41,8 +43,9 @@ export default class RecipeController {
 
   reviewPostValidationChecks = [
     validate.body('review', 'you must add a review with at least 5 characters').isLength({ min: 5 }),
-    validate.param('recipeId', 'invalid recipe id or recipe does not exist').isUUID()
-      .custom((value, { req }) => RecipesService.getRecipe(value)),
+    // validate.param('recipeId', 'invalid recipe id or recipe does not exist').isUUID(),
+    validate.body('stars', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).optional().trim(),
+    // .custom((value, { req }) => RecipesService.getRecipe(value)),
   ];
 
   /**
@@ -56,8 +59,8 @@ export default class RecipeController {
         ...req.body, creatorId: req.user.id,
       });
     } catch (error) {
-      console.log(error);
-      return res.status(500).send({
+      return res.status(400).send({
+        message: 'user does not exist',
         error: error.message || error.errors[0].message,
       });
     }
@@ -70,7 +73,9 @@ export default class RecipeController {
   getRecipes = async (req, res) => {
     let recipes;
     try {
-      recipes = await RecipeModel.findAll();
+      recipes = await RecipeModel.findAll({
+        include: [{ model: models.user, as: 'creator', attributes: ['username'] }],
+      });
     } catch (error) {
       return res.status(500).send({
         error: error.message || error.errors[0].message,
@@ -81,33 +86,23 @@ export default class RecipeController {
     });
   }
 
-  getRecipeById = async (recipeId) => {
-    try {
-      return await RecipeModel.findById(recipeId);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   /**
    * Gets a single recipe from the database
    */
   getRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = await this.getRecipeById(req.params.recipeId);
+      recipe = await RecipeModel.findById(req.params.recipeId, {
+        include: [{ model: models.user, as: 'creator', attributes: ['username'] }],
+      });
     } catch (error) {
       return res.status(500).send({
         error: error.message || error.errors[0].message,
       });
     }
-    return recipe ?
-      res.status(200).send({
-        data: recipe,
-      }) :
-      res.status(404).send({
-        error: `recipe with id - ${req.params.recipeId} does not exist`,
-      });
+    return res.status(200).send({
+      data: recipe,
+    });
   }
 
   putRecipe = async (req, res) => {
@@ -118,10 +113,11 @@ export default class RecipeController {
     }
     let recipe;
     try {
-      recipe = await this.getRecipeById(req.params.recipeId);
-      if (!recipe) {
-        return res.status(404).send({
-          error: 'recipe with the specified id does not exist',
+      recipe = RecipeModel.findById(req.params.recipeId);
+      // disallow modification if recipe was not added by current user
+      if (recipe.creatorId !== req.user.id) {
+        return res.status(403).send({
+          error: 'this recipe was added by another user',
         });
       }
       recipe = await recipe.update({ ...req.body, creatorId: recipe.creatorId });
@@ -142,33 +138,74 @@ export default class RecipeController {
   deleteRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = await this.getRecipeById(req.params.recipeId);
+      recipe = RecipeModel.findById(req.params.recipeId);
+      // disallow deletion if recipe was not added by current user
+      if (recipe.creatorId !== req.user.id) {
+        return res.status(403).send({
+          error: 'this recipe was added by another user',
+        });
+      }
       await recipe.destroy();
     } catch (error) {
       return res.status(500).send({
         error: error.message || error.errors[0].message,
       });
     }
-    res.status(200).send({
+    return res.status(200).send({
       message: `recipe with ${req.params.recipeId} has been successfully deleted`,
     });
   }
 
-  postRecipeReview = (req, res) => {
-    return ReviewService.addReview({ ...req.body, recipeId: req.params.recipeId }) ?
-      res.status(201).json({
-        message: 'review added successfully',
-      }) :
-      res.status(422).json({
-        error: 'request data with the same details already exist',
+  postRecipeReview = async (req, res) => {
+    const recipe = await RecipeModel.findById(req.params.recipeId, {
+      attributes: ['creatorId'],
+    });
+    // disallow recipe creator from adding a review
+    if (recipe.creatorId === req.user.id) {
+      return res.status(400).send({
+        error: 'you cannot review a recipe you created',
       });
+    }
+    let review;
+    try {
+      review = await ReviewModel.create({
+        userId: req.user.id, recipeId: req.params.recipeId, ...req.body,
+      });
+    } catch (error) {
+      res.status(400).send({
+        message: 'specified recipeId or userId does not exist',
+        error: error.message || error.errors[0].message,
+      });
+    }
+    return res.status(201).json({
+      message: 'review added successfully',
+      data: review,
+    });
   }
 
-  getRecipeReviews = (req, res) => {
-    const recipeReviews = ReviewService.getReviews(req.params.recipeId);
-    return recipeReviews ?
+  getRecipeReviews = async (req, res) => {
+    let reviews;
+    let recipe;
+    try {
+      recipe = await RecipeModel.findById(req.params.recipeId);
+      reviews = await recipe.getReviews({
+        include: [{
+          model: models.user,
+          attributes: ['id', 'username', 'firstName', 'lastName'],
+        }, {
+          model: models.recipe,
+          attributes: ['title'],
+        }],
+      });
+    } catch (error) {
+      return res.status(500).send({
+        message: 'an error occurred',
+        error: error.message || error.errors[0].message,
+      });
+    }
+    return reviews.length > 0 ?
       res.status(200).json({
-        data: recipeReviews,
+        data: reviews,
       }) :
       res.status(200).send({
         message: 'this recipe currently has no reviews',
