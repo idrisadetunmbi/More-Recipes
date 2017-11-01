@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('recipe_actions', {
@@ -35,6 +36,7 @@ module.exports = {
       vote: {
         type: Sequelize.ENUM,
         values: ['upvote', 'downvote'],
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
