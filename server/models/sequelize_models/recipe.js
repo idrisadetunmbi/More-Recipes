@@ -5,10 +5,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    // creatorId: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false,
-    // },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -35,6 +31,7 @@ export default (sequelize, DataTypes) => {
   Recipe.associate = (models) => {
     Recipe.belongsTo(models.user, { as: 'creator', foreignKey: 'creatorId' });
     Recipe.belongsToMany(models.user, { as: 'userActions', through: models.recipe_action });
+    Recipe.hasMany(models.review);
   };
   return Recipe;
 };
