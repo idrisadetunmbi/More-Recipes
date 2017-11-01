@@ -55,11 +55,12 @@ export default class UserController {
       });
     }
     if (!user) {
-      return res.status(400).send({
+      return res.status(404).send({
         error: 'username does not exist',
       });
     }
-    if (!bcrypt.compareSync(req.body.password, user.password)) { // if password is not correct
+    // if password is not correct
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(401).send({
         error: 'you have entered a wrong password',
       });
