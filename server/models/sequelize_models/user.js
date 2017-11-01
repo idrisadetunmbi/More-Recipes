@@ -42,5 +42,9 @@ export default (sequelize, DataTypes) => {
   User.beforeCreate((user, options) => {
     user.password = bcrypt.hashSync(user.password, 10);
   });
+  User.associate = (models) => {
+    User.belongsToMany(models.recipe, { as: 'recipeActions', through: models.recipe_action });
+    User.hasMany(models.recipe, { as: 'recipes', foreignKey: 'creatorId' });
+  };
   return User;
 };
