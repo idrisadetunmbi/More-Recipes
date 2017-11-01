@@ -10,6 +10,6 @@ router.post('/', controller.recipePostValidationChecks, controller.validateReque
 router.put('/:recipeId', [...controller.recipeGetValidationChecks, ...controller.recipePutValidationChecks], controller.validateRequestData, controller.putRecipe);
 router.delete('/:recipeId', controller.recipeGetValidationChecks, controller.validateRequestData, controller.deleteRecipe);
 router.post('/:recipeId/reviews', controller.reviewPostValidationChecks, controller.validateRequestData, controller.postRecipeReview);
-router.get('/:recipeId/reviews', [controller.reviewPostValidationChecks[1]], controller.validateRequestData, controller.getRecipeReviews);
+router.get('/:recipeId/reviews', controller.recipeGetValidationChecks, controller.validateRequestData, controller.getRecipeReviews);
 
 export default router;
