@@ -375,7 +375,7 @@ export default class RecipeController {
     const results = validationResult(req);
     return results.isEmpty() ?
       next() :
-      res.status(422).json({
+      res.status(400).json({
         message: 'one or more of the required request data is not included or is invalid',
         errors: results.array(),
       });
