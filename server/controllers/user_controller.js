@@ -17,8 +17,8 @@ export default class UserController {
       .isLength({ min: 5, max: 15 }).isAlphanumeric().trim(),
     validate.body('password', 'include a password between 6 to 25 characters').isLength({ min: 5, max: 25 }).trim(),
     validate.body('email', 'invalid email').isEmail().normalizeEmail(),
-    validate.body('firstName', 'include a first name containing only letters').isAlpha().trim(),
-    validate.body('lastName', 'include a last name containing only letters').isAlpha().trim(),
+    validate.body('firstName', 'include a first name containing only letters').isLength({ min: 2, max: 21 }).isAlpha().trim(),
+    validate.body('lastName', 'include a last name containing only letters').isLength({ min: 2, max: 21 }).isAlpha().trim(),
   ];
 
   userGetRecipesValidationChecks = [
@@ -132,7 +132,7 @@ export default class UserController {
     const results = validationResult(req);
     return results.isEmpty() ?
       next() :
-      res.status(422).json({
+      res.status(400).json({
         message: 'one or more of the required request data is not included or is invalid',
         errors: results.array(),
       });
