@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import validate, { validationResult } from 'express-validator/check';
 
-import models from '../models/sequelize_models';
+import models from '../models';
 
 dotenv.config({ path: `${__dirname}/../../.env` });
 const UserModel = models.user;
@@ -21,6 +21,27 @@ export default class UserController {
     validate.body('lastName', 'include a last name containing only letters').isAlpha().trim(),
   ];
 
+  userGetRecipesValidationChecks = [
+    validate.param('userId', 'user id is invalid or specified user does not exist').isUUID()
+      .custom(value => UserModel.findById(value)),
+  ];
+
+  getAllUsers = async (req, res) => {
+    let users;
+    try {
+      users = await UserModel.all();
+    } catch (error) {
+      return res.status(500).send({
+        message: 'unhandled internal error',
+        error: error.message || error.errors[0].message,
+      });
+    }
+    return res.status(200).send({
+      message: 'all users',
+      data: users,
+    });
+  }
+
   createUser = async (req, res) => {
     let user;
     try {
@@ -31,8 +52,7 @@ export default class UserController {
         error: error.errors[0].message || error.message,
       });
     }
-    // user.password = undefined;
-    const { password, ...userDetails } = user.get();
+    const { password, updatedAt, ...userDetails } = user.get();
     const token = jwt.sign(
       userDetails,
       process.env.JWT_AUTH_SECRET,
@@ -55,14 +75,14 @@ export default class UserController {
       });
     }
     if (!user) {
-      return res.status(404).send({
-        error: 'username does not exist',
+      return res.status(401).send({
+        error: 'wrong username or password',
       });
     }
     // if password is not correct
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(401).send({
-        error: 'you have entered a wrong password',
+        error: 'wrong username or password',
       });
     }
     const { password, ...userDetails } = user.get();
@@ -74,6 +94,37 @@ export default class UserController {
     return res.status(200).send({
       message: 'you have successfully signed in',
       data: { ...userDetails, token },
+    });
+  }
+
+  getUserFavoriteRecipes = async (req, res) => {
+    let user;
+    try {
+      user = await UserModel.findById(req.params.userId, {
+        attributes: ['id', 'username', 'firstName', 'lastName'],
+        include: [{
+          model: models.recipe,
+          as: 'recipeActions',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          through: {
+            attributes: [],
+            where: {
+              favorite: true,
+            },
+          },
+        }],
+      });
+    } catch (error) {
+      return res.status(500).send({
+        error: error.message || error.errors[0].message,
+      });
+    }
+    // rename recipe actions to favoriteRecipes
+    const { recipeActions, ...userDetails } = user.get();
+    const favoriteRecipes = recipeActions;
+    return res.status(200).send({
+      message: 'user favorites',
+      data: { ...userDetails, favoriteRecipes },
     });
   }
 
