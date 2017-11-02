@@ -21,16 +21,32 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       ingredients: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       category: {
         type: Sequelize.STRING,
         defaultValue: 'uncategorized',
+      },
+      directions: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      upvotes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      downvotes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      favorites: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

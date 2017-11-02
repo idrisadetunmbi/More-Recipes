@@ -1,15 +1,54 @@
-import uuid from 'uuid';
+export default (sequelize, DataTypes) => {
+  const Recipe = sequelize.define('recipe', {
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    ingredients: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    directions: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    category: {
+      type: DataTypes.STRING,
+      defaultValue: 'uncategorized',
+    },
+    upvotes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    downvotes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    favorites: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+  }, {
+    classMethods: {
+      associate: (models) => {
+        // associations can be defined here
+      },
+    },
+  });
+  Recipe.associate = (models) => {
+    Recipe.belongsTo(models.user, { as: 'creator', foreignKey: 'creatorId' });
+    Recipe.belongsToMany(models.user, { as: 'userActions', through: models.recipe_action });
+    Recipe.hasMany(models.review);
+  };
+  return Recipe;
+};
 
-export default class Recipe {
-  constructor(reqBody) {
-    this.id = uuid.v4();
-    this.title = reqBody.title;
-    this.description = reqBody.description;
-    this.ingredients = reqBody.ingredients;
-    this.directions = reqBody.directions;
-    this.upvotes = 0;
-    this.downvotes = 0;
-    this.favorites = 0;
-    this.category = reqBody.category || '';
-  }
-}
