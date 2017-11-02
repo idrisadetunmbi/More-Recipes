@@ -4,7 +4,7 @@
   "description": "More Recipes; A Recipe management and social app",
   "scripts": {
     "clean": "rm -rf ./production",
-    "build": "npm run clean && mkdir ./production && babel ./server/ -d ./production && cd ./production && mkdir seeders && cp ../server/seeders/recipes.json ./seeders/",
+    "build": "npm run clean && mkdir ./production && babel ./server/ -d ./production",
     "start": "npm run build && node ./production/bin/www.js",
     "devstart": "nodemon ./server/bin/www --exec babel-node",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --compilers js:babel-register",
