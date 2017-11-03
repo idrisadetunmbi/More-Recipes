@@ -162,7 +162,7 @@ export default class RecipeController {
   deleteRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = RecipeModel.findById(req.params.recipeId);
+      recipe = await RecipeModel.findById(req.params.recipeId);
       // disallow deletion if recipe was not added by current user
       if (recipe.creatorId !== req.user.id) {
         return res.status(403).send({
@@ -213,12 +213,13 @@ export default class RecipeController {
     try {
       recipe = await RecipeModel.findById(req.params.recipeId);
       reviews = await recipe.getReviews({
+        attributes: ['review', 'stars', 'createdAt'],
         include: [{
           model: models.user,
           attributes: ['id', 'username', 'firstName', 'lastName'],
         }, {
           model: models.recipe,
-          attributes: ['title'],
+          attributes: ['title', 'id'],
         }],
       });
     } catch (error) {
@@ -238,9 +239,7 @@ export default class RecipeController {
   }
 
   voteRecipe = async (req, res) => {
-    const recipe = await RecipeModel.findById(req.params.recipeId, {
-      attributes: ['creatorId', 'upvotes', 'downvotes', 'favorites'],
-    });
+    const recipe = await RecipeModel.findById(req.params.recipeId);
     // disallow recipe creator from voting a review
     if (recipe.creatorId === req.user.id) {
       return res.status(400).send({
