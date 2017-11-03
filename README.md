@@ -4,7 +4,7 @@
 
 A recipe management web app for lovers of new tastes.
 
-## State - _Active Development_
+### State - _Active Development_
 
 **Project is still being developed both on client and server side. Few endpoints are however available for an overview of the app.**
 
@@ -18,6 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 nodejs (version 8^)
 npm
 git
+postgresql (Version 9.6.5)
 ```
 
 
@@ -30,11 +31,16 @@ git clone https://github.com/idrisadetunmbi/More-Recipes.git
 # install dependencies
 npm install
 
+# Ensure to run migrations for the db with the command below
+cd server
+../node_modules/.bin/sequelize db:migrate
+
 # for development
 npm run devstart
 
 # command below builds the app (with babel) into a deployable base and starts the server
 npm run start
+
 ```
 
 #### Active endpoints
@@ -43,6 +49,13 @@ A demo of the front end is hosted on Github Pages and is available at [More-Reci
 API (still under development) is hosted on Heroku and can be accessed through [More-Recipes API](https://emorerecipes.herokuapp.com)
 
 ```
+# User Signup
+POST /api/users/signup
+
+# User Signin
+POST /api/users/signin
+
+POST
 # API root
 GET /api/
 
@@ -69,6 +82,20 @@ GET /api/recipes/<recipeId>/reviews
 
 # Retrieve recipes sorted by upvotes
 GET /api/recipes?sort=upvotes&order=desc
+
+# Rate a recipe
+ # upvote a recipe
+POST /api/recipes/recipeId?action=upvote
+
+ # downvote a recipe
+POST /api/recipes/recipeId?action=downvote
+
+ # favorite a recipe
+POST /api/recipes/recipeId?action=favorite
+
+# Get User favorite recipes
+GET /api/users/userId/recipes
+
 ```
 
 ## Running the tests
@@ -93,4 +120,4 @@ npm run build
 
 ## Versioning
 
-_Available soon_
+API currently defaults to version 1. You can prepend `/v1/` to listed routes,e.g. `/api/v1/users/signup`
