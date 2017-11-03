@@ -48,7 +48,7 @@ export default class UserController {
       user = await UserModel.create(req.body);
     } catch (error) {
       return res.status(400).send({
-        message: 'an error occured while trying to complete the request',
+        message: 'username or email already exist',
         error: error.errors[0].message || error.message,
       });
     }
