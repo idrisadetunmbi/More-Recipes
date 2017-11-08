@@ -1,2 +1,7 @@
 node_modules/
 server/
+.env
+.nyc_output/
+coverage/
+production/
+
