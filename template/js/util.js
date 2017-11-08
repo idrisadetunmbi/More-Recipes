@@ -1,13 +1,6 @@
 (function($){
   $(function(){
     $('.button-collapse').sideNav();
-    var $container = $('#recipe-gallery');
-  
-    $container.masonry({
-      columnWidth: '.recipe',
-      itemSelector: '.recipe',
-      percentPosition: true
-    });
 
     $('.modal').modal();
 

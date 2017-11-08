@@ -15,11 +15,14 @@ p {
   min-height: 380px;
   line-height: 0;
   height: auto;
-  /* color: rgba(255,255,255,.9); */
 }
 
 .parallax-container .section {
     width: 100%;
+}
+
+.parallax {
+  opacity: 0.6;
 }
 
 @media only screen and (max-width : 992px) {
@@ -53,56 +56,8 @@ h5 {
   font-family: 'Open Sans', "Roboto", sans-serif;
 }
 
-#recipe-gallery .recipe {
-  margin-left: auto;
-  right: auto;
-  float: left;
-  box-sizing: border-box;
-  padding: 0 0.75rem;
-  min-height: 1px
-}
-
-@media only screen and (max-width : 468px) {
-  #recipe-gallery .recipe {
-    width: 100%;
-  }
-  #recipe-gallery {
-    margin-left: 2.5em;
-    margin-right: 2.5em;
-  } 
-}
-
-@media only screen and (min-width : 468px) and (max-width : 700px) {
-  #recipe-gallery .recipe {
-    width: 50%;
-  }
-
-  #recipe-gallery {
-    margin-left: 3.5em;
-    margin-right: 3.5em;
-  }
-}
-
-@media only screen and (min-width : 700px) and (max-width : 1100px) {
-  #recipe-gallery .recipe {
-    width: 33.33333333%
-  }
-
-  #recipe-gallery {
-    margin-left: 4,5em;
-    margin-right: 4.5em;
-  }
-}
-
-@media only screen and (min-width : 1100px) {
-  #recipe-gallery .recipe {
-    width: 25%;
-  }
-
-  #recipe-gallery {
-    margin-left: 6em;
-    margin-right: 6em;
-  }
+#recipe-gallery {
+  width: 90%;
 }
 
 #recipe-gallery .card-image img {
@@ -127,6 +82,7 @@ h5 {
 
 .card-action span {
   margin-right: 1.2rem;
+  color: #444;
 }
 
 .card .card-content .card-title {
@@ -139,10 +95,16 @@ h5 {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 2rem;
 }
 
 .modal {
   width: 40% !important;
   max-height: 100% !important;
   overflow-y: hidden !important;
+}
+
+.card-action span i {
+  vertical-align: bottom;
+  margin-right: 0.3rem;
 }
