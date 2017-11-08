@@ -112,12 +112,9 @@ footer.page-footer {
   background-color: #444;
 }
 
-.thumbnail-actions .btn-large {
-  width: 40%;
-  height: 37px;
-  line-height: 36px;
-  margin-top: 1rem;
-  display: block;
+.thumbnail-actions a i {
+  vertical-align: middle;
+  margin-right: .3rem;
 }
 
 .description-section {
@@ -127,17 +124,11 @@ footer.page-footer {
 }
 
 .ingredients li i {
-  /* display: inline; */
   vertical-align: bottom;
 }
 
 ol {
-  counter-reset: li; /* Initiate a counter */
-  list-style: decimal; 
-  font: 15px 'trebuchet MS', 'lucida sans';
   padding: 0;
-  margin-bottom: 4em;
-  text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
 .review-text {
@@ -166,4 +157,8 @@ ol {
   width: 40% !important;
   max-height: 100% !important;
   overflow-y: hidden !important;
+}
+
+#favorites-icon a {
+  color: #444;
 }

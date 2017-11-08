@@ -60,11 +60,19 @@
           </div> <!-- thumbnails end -->
     
           <div class="thumbnail-actions"> <!-- action buttons -->
-            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_up</i></a>
-            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_down</i></a>
-            <a href="#" class="btn waves-ripple"><i class="material-icons">favorite</i></a>
-            <a href="#review-modal" class="btn-large waves-ripple modal-trigger">Review</a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_up</i><span>52</span></a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">thumb_down</i><span>10</span></a>
+            <a href="#" class="btn waves-ripple"><i class="material-icons">favorite</i><span>5</span></a>
           </div> <!-- action buttons end-->
+
+          <div id="favorites-icon" style="margin-left:.5rem;margin-top:2rem;">
+            <p style="-webkit-margin-after:0;font-size:18px;margin-left:.2rem">Rate and Review</p>  
+            <a class="modal-trigger" href="#review-modal"><i class="material-icons">star</i></a>
+            <a class="modal-trigger" href="#review-modal"><i class="material-icons">star</i></a>
+            <a class="modal-trigger" href="#review-modal"><i class="material-icons">star</i></a>
+            <a class="modal-trigger" href="#review-modal"><i class="material-icons">star</i></a>
+            <a class="modal-trigger" href="#review-modal"><i class="material-icons">star</i></a>
+          </div>      
         </div>
       </div>
     
@@ -131,35 +139,6 @@
     </div> <!-- review section end -->
     
   </div>
-
-  <div class="">
-    <div class="row">
-      <div id="review-modal" class="col l3 offset-l4 modal">
-        <div class="modal-content">
-          <div id="review-form">
-            <p>Add a review</p>
-            <form>
-              <div class="input-field">
-                <input id="review-title" type="text" class="validate">
-                <label for="review-title">Title</label>
-              </div>
-              <div class="input-field">
-                <textarea id="review-text" type="text" class="materialize-textarea"></textarea>
-                <label for="review-text">Review</label>
-              </div>
-            </form>
-          </div>
-          <div id="favorites-icon" style="margin-left:4em;">
-            <a href=""><i class="material-icons">star</i></a>
-            <a href=""><i class="material-icons">star</i></a>
-            <a href=""><i class="material-icons">star</i></a>
-            <a href=""><i class="material-icons">star</i></a>
-            <a href=""><i class="material-icons">star</i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   
   <footer class="page-footer" style="margin-top:8em;background-color:#444">
     <div class="container">
@@ -179,72 +158,90 @@
       
       </div>
     </div>
+
   </footer>
 
-  
+  <!-- modals and action buttons -->
+
+  <!-- edit recipe action button -->
   <div class="fixed-action-btn">
     <a href="#edit-recipe-modal" class="btn-floating btn-large modal-trigger">
       <i class="large material-icons">edit</i>
     </a>
   </div>
 
-  <div class="modal" id="edit-recipe-modal">
+  <div id="review-modal" class="modal">   <!-- review modal start -->    
+    <div class="modal-content">
+      <div id="review-form">
+        <p>Add a Review</p>
+        <form>
+          <div class="input-field">
+            <textarea id="review-text" type="text" class="materialize-textarea"></textarea>
+            <label for="review-text">Your review</label>
+          </div>
+          <button class="btn waves-effect waves-light">Submit</button>
+        </form>
+      </div>
+    </div>   <!-- review modal end -->  
+  </div>
+
+  <div class="modal" id="edit-recipe-modal"> <!--edit recipe modal -->
       <div class="modal-content">
         <div class="container">
           <div class="row">
             <div class="col s12">                       
-              <div class="row" style="">
-                  <form class="col s12">
-                      <div>
-                        <h5 style="font-family:Raleway">Edit recipe</h5>
-                      </div>
-                              
-                      <div class="row">
-                        <div class="input-field col s12">
-                            <input id="recipe-title" type="text" value="Ewa Agoyin and Vegetable Soup With Vinegar Varo" class="validate">
-                            <label for="recipe-title">Title</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-description" class="materialize-textarea" rows="" cols="">This is a great recipe with an exciting taste. It takes you through an adventure that makes you want to complete it on time and taste it.
-                          </textarea>
-                          <label for="recipe-description">Description</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols="">Pour 5 cups of water into a pressure cooker and allow it boil for 10minutes Mix ingredient 1 and ingredient 5 together
-                          </textarea>
-                          <label for="recipe-ingredients">Ingredients</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
-                          <label for="recipe-directions">Directions</label>
-                        </div>
-              
-                        <div>
-                          <img style="margin-top:2rem;height: 6rem;margin-left: 1rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">
-                          <p style="font-size: 1.3rem;opacity: 0.7;margin-left: 1.2rem;font-family: Raleway;">Add images</p>
-                        </div>
-                      </div>
-                
-                      <div class="row" id="recipe-action-btn" style="margin-top:3rem;margin-bottom:3rem;">
-                        <!-- <div class="divider"></div> -->
-                        <div class="col m6 s12" style="margin-bottom:2em">
-                          <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">SUBMIT</a>  
-                        </div>
-              
-                        <div class="col m6 s12">
-                          <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">CANCEL</a>  
-                        </div>
-                      </div>
-                    </form>    
+              <div class="row">
+              <form class="col s12">
+                  <div>
+                    <h5 style="font-family:Raleway">Edit recipe</h5>
+                  </div>
+                          
+                  <div class="row">
+                    <div class="input-field col s12">
+                        <input id="recipe-title" type="text" value="Ewa Agoyin and Vegetable Soup With Vinegar Varo" class="validate">
+                        <label for="recipe-title">Title</label>
+                    </div>
+          
+                    <div class="input-field col s12">
+                      <textarea id="recipe-description" class="materialize-textarea" rows="" cols="">This is a great recipe with an exciting taste. It takes you through an adventure that makes you want to complete it on time and taste it.
+                      </textarea>
+                      <label for="recipe-description">Description</label>
+                    </div>
+          
+                    <div class="input-field col s12">
+                      <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols="">Pour 5 cups of water into a pressure cooker and allow it boil for 10minutes Mix ingredient 1 and ingredient 5 together
+                      </textarea>
+                      <label for="recipe-ingredients">Ingredients</label>
+                    </div>
+          
+                    <div class="input-field col s12">
+                      <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
+                      <label for="recipe-directions">Directions</label>
+                    </div>
+          
+                    <div>
+                      <img style="margin-top:2rem;height: 6rem;margin-left: 1rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">
+                      <p style="font-size: 1.3rem;opacity: 0.7;margin-left: 1.2rem;font-family: Raleway;">Add images</p>
+                    </div>
+                  </div>
+            
+                  <div class="row" id="recipe-action-btn" style="margin-top:3rem;margin-bottom:3rem;">
+                    <!-- <div class="divider"></div> -->
+                    <div class="col m6 s12" style="margin-bottom:2em">
+                      <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">SUBMIT</a>  
+                    </div>
+          
+                    <div class="col m6 s12">
+                      <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">CANCEL</a>  
+                    </div>
+                  </div>
+                </form>    
               </div>  
             </div>
           </div>
         </div>
       </div>
-    </div> <!-- Sign up end -->
+    </div> <!-- edit recipe modal end -->
 </body>
 
 
