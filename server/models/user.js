@@ -44,7 +44,7 @@ export default (sequelize, DataTypes) => {
   });
   User.associate = (models) => {
     User.belongsToMany(models.recipe, { as: 'recipeActions', through: models.recipe_action });
-    User.hasMany(models.recipe, { as: 'recipes', foreignKey: 'creatorId' });
+    User.hasMany(models.recipe, { as: 'recipes', foreignKey: 'authorId' });
     User.hasMany(models.review);
   };
   return User;

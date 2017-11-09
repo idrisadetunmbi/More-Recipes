@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      stars: {
+      rating: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
@@ -48,5 +48,5 @@ module.exports = {
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('reviews');
-  }
+  },
 };

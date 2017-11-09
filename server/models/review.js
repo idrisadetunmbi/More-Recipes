@@ -1,5 +1,3 @@
-'use strict';
-
 export default (sequelize, DataTypes) => {
   const Review = sequelize.define('review', {
     id: {
@@ -7,11 +5,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    review: {
+    content: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
-    stars: {
+    rating: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

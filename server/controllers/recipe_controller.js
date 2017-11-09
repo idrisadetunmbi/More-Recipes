@@ -41,8 +41,8 @@ export default class RecipeController {
   ];
 
   reviewPostValidationChecks = [
-    validate.body('review', 'you must add a review with at least 5 characters').isLength({ min: 5 }),
-    validate.body('stars', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).optional().trim(),
+    validate.body('content', 'you must add a review with at least 5 characters').optional().isLength({ min: 5 }),
+    validate.body('rating', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).optional().trim(),
   ];
 
   voteRecipeValidationCheck = [
@@ -59,7 +59,7 @@ export default class RecipeController {
     try {
       recipe = await RecipeModel.create({
         ...req.body,
-        creatorId: req.user.id,
+        authorId: req.user.id,
         upvotes: 0,
         downvotes: 0,
         favorites: 0,
@@ -75,7 +75,7 @@ export default class RecipeController {
       data: {
         ...req.body,
         id: recipe.id,
-        creator: req.user.username,
+        author: req.user.username,
         upvotes: recipe.upvotes,
         downvotes: recipe.downvotes,
         favorites: recipe.favorites,
@@ -88,11 +88,12 @@ export default class RecipeController {
     let recipes;
     try {
       recipes = await RecipeModel.findAll({
-        include: [{ model: models.user, as: 'creator', attributes: ['username'] }],
+        include: [{ model: models.user, as: 'author', attributes: ['username'] }],
         order: req.query.sort === 'upvotes' ? ['upvotes'] : '',
       });
     } catch (error) {
       return res.status(500).send({
+        message: 'unhandled server error',
         error: error.message || error.errors[0].message,
       });
     }
@@ -109,11 +110,11 @@ export default class RecipeController {
     let recipe;
     try {
       recipe = await RecipeModel.findById(req.params.recipeId, {
-        include: [{ model: models.user, as: 'creator', attributes: ['username'] }],
+        include: [{ model: models.user, as: 'author', attributes: ['username'] }],
       });
     } catch (error) {
       return res.status(500).send({
-        message: 'server unhandled error',
+        message: 'unhandled server error',
         error: error.message || error.errors[0].message,
       });
     }
@@ -132,14 +133,14 @@ export default class RecipeController {
     try {
       recipe = await RecipeModel.findById(req.params.recipeId);
       // disallow modification if recipe was not added by current user
-      if (recipe.creatorId !== req.user.id) {
+      if (recipe.authorId !== req.user.id) {
         return res.status(403).send({
           error: 'this recipe was added by another user',
         });
       }
       recipe = await recipe.update({
         ...req.body,
-        creatorId: recipe.creatorId,
+        authorId: recipe.authorId,
         upvotes: recipe.upvotes,
         downvotes: recipe.downvotes,
         favorites: recipe.favorites,
@@ -164,7 +165,7 @@ export default class RecipeController {
     try {
       recipe = await RecipeModel.findById(req.params.recipeId);
       // disallow deletion if recipe was not added by current user
-      if (recipe.creatorId !== req.user.id) {
+      if (recipe.authorId !== req.user.id) {
         return res.status(403).send({
           error: 'this recipe was added by another user',
         });
@@ -182,10 +183,10 @@ export default class RecipeController {
 
   postRecipeReview = async (req, res) => {
     const recipe = await RecipeModel.findById(req.params.recipeId, {
-      attributes: ['creatorId'],
+      attributes: ['authorId'],
     });
-    // disallow recipe creator from adding a review
-    if (recipe.creatorId === req.user.id) {
+    // disallow recipe author from adding a review
+    if (recipe.authorId === req.user.id) {
       return res.status(400).send({
         error: 'you cannot review a recipe you created',
       });
@@ -240,8 +241,8 @@ export default class RecipeController {
 
   voteRecipe = async (req, res) => {
     const recipe = await RecipeModel.findById(req.params.recipeId);
-    // disallow recipe creator from voting a review
-    if (recipe.creatorId === req.user.id) {
+    // disallow recipe author from voting a recipe
+    if (recipe.authorId === req.user.id) {
       return res.status(400).send({
         error: 'you cannot vote a recipe you created',
       });
