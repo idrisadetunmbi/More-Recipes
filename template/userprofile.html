@@ -47,7 +47,7 @@
       border: none; 
     }
 
-    #recipe-gallery .recipe {
+    .recipe {
       margin-left: auto;
       right: auto;
       float: left;
@@ -65,6 +65,53 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    #my-recipe {
+      width: 95%;
+    }
+
+    .card-image img {
+      height: 250px;
+      padding: .5rem;
+    }
+
+
+    .card-content p {
+      display: block;
+      display: -webkit-box;
+      margin: 0 auto;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .recipe-gallery-links {
+      color: #444;
+    }
+
+    .card-action span {
+      margin-right: 1.2rem;
+      color: #444;
+    }
+
+    .card .card-content .card-title {
+      font-size: 19px;
+      font-weight: 500;
+      display: block;
+      display: -webkit-box;
+      margin: 0 auto;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 2rem;
+    }
+
+    .card-action span i {
+      vertical-align: bottom;
+      margin-right: 0.3rem;
     }
 
     .tabs .indicator {
@@ -102,17 +149,17 @@
   </nav>
 
   <div class="container" id="container-section">
-    <div class="row" id="user-info">
-
-      <div class="col l4"> <!-- user profile section -->
-        <div style="margin-top:3em"> <!-- User profile picture -->
+    <div class="row">
+      <div class="col l4" id="user-info">
+        <div style="margin-top:3em">
           <img class="circle responsive-img" style="height:215px" src="images/avatar_img.png" alt="userprofilepic">
         </div>
-          
+  
         <h5 class="title" style="margin-left:3rem">@Username</h5>
         <div class="divider" style="width:87%;"></div>
-          
-        <div> <!-- user-details -->
+  
+        <div>
+          <!-- user-details -->
           <div class="row user-details">
             <p class="col s4">Full Name:</p>
             <p class="col s8">John Doe</p>
@@ -126,316 +173,222 @@
           <div>
             <a class="btn-large btn-edit-profile" href="#">Edit Profile</a>
           </div>
-        </div>    
+        </div>
       </div> <!-- user profile section end -->
-        
-      <!-- user recipes and faveroties -->
-      <div class="col l8" style="margin-top:3rem">
-
-        <div class="row">
+      
+    
+      <div class="col l8" style="margin-top:3rem"><!-- user recipes and faveroties -->
+        <div class="row"> <!-- tabs start -->
           <div class="col s12">
             <ul class="tabs">
-              <li class="tab col s3"><a class="black-text active" id="myrecipes-tab" href="#my-recipe">My Recipes</a></li>
-              <li class="tab s3"><a id="favorites-tab" class="black-text" href="#favorites">Favorites</a></li>
+              <li class="tab col s3">
+                <a class="black-text active" id="myrecipes-tab" href="#my-recipe">My Recipes</a>
+              </li>
+              <li class="tab col s3">
+                <a id="favorites-tab" class="black-text" href="#favorites">Favorites</a>
+              </li>
             </ul>
           </div>
-
-          <div id="my-recipe" class="col s12">
-              <div id="recipe-gallery" style="margin-top:1.5rem;width:100%">
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                        
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                        
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Fried-slaw-crack-slaw-recipe-low-carb-keto-nigerian-.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Fried Slaw Low Carb Keto</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                    
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-              
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>    
-                    </div>
-                  </div>  
-                </div> <!-- recipe gallery end -->
+        </div> <!-- tabs end -->
+        
+        <div id="my-recipe" class="row"> <!-- recipe gallery start -->
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/Amala-and-efo.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Amala and Efo Riro</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
           </div>
-
-          <div id="favorites" class="col s12">
-              <div id="recipe-gallery" style="margin-top:1.5rem;width:100%">
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                        
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                        
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Fried-slaw-crack-slaw-recipe-low-carb-keto-nigerian-.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Fried Slaw Low Carb Keto</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                    
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>      
-                  </div>
-              
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/Amala-and-efo.jpg">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Amala and Efo Riro</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>
-                    </div>  
-                  </div>
-                      
-                  <div class="recipe">
-                    <div class="card">
-                      <div class="card-image">
-                        <img src="images/sample_recipes/DSC04065.JPG">
-                      </div>
-                      <div class="card-content">
-                        <span class="card-title">Ewa Agoyin With Special Soup</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">This is a link</a>
-                      </div>    
-                    </div>
-                  </div>  
-                </div> <!-- recipe gallery end -->
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/DSC04065.JPG">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Ewa Agoyin With Special Soup</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
           </div>
-        </div>    
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/Fried-slaw-crack-slaw-recipe-low-carb-keto-nigerian-.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Fried Slaw Low Carb Keto</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/Amala-and-efo.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Amala and Efo Riro</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">  
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/DSC04065.JPG">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Ewa Agoyin With Special Soup</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/Amala-and-efo.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Amala and Efo Riro</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">          
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/DSC04065.JPG">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Ewa Agoyin With Special Soup</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        </div><!-- recipe gallery end -->
+
+        <div id="my-recipe" class="row"> <!-- recipe gallery start -->        
+          <div class="recipe col l6">  
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/DSC04065.JPG">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Ewa Agoyin With Special Soup</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/recipe0116-xl-farro-with-vinegar-glazed-sweet-potato-and-apples.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/Amala-and-efo.jpg">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Amala and Efo Riro</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="recipe col l6">          
+            <div class="card">
+              <div class="card-image">
+                <img src="images/sample_recipes/DSC04065.JPG">
+              </div>
+              <div class="card-content">
+                <span class="card-title">Ewa Agoyin With Special Soup</span>
+                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+              </div>
+              <div class="card-action">
+                <a href="#">This is a link</a>
+              </div>
+            </div>
+          </div>
+        </div><!-- recipe gallery end -->
       </div>
     </div>
   </div>
@@ -460,91 +413,67 @@
     </div>
   </footer>
 
-  <div class="modal" id="add-recipe-modal">
-      <div class="modal-content">
-        <div class="container">
-          <div class="row">
-            <div class="col s12">                       
-              <div class="row" style="">
-                  <form class="col s12">
-                      <div>
-                        <h5 style="font-family:Raleway">Add a new recipe</h5>
-                      </div>
-                              
-                      <div class="row">
-                        <div class="input-field col s12">
-                            <input id="recipe-title" type="text" class="validate">
-                            <label for="recipe-title">Title</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-description" class="materialize-textarea" rows="" cols=""></textarea>
-                          <label for="recipe-description">Description</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols=""></textarea>
-                          <label for="recipe-ingredients">Ingredients</label>
-                        </div>
-              
-                        <div class="input-field col s12">
-                          <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
-                          <label for="recipe-directions">Directions</label>
-                        </div>
-              
-                        <div>
-                          <img style="margin-top:2rem;height: 6rem;margin-left: 1rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">
-                          <p style="font-size: 1.3rem;opacity: 0.7;margin-left: 1.2rem;font-family: Raleway;">Add images</p>
-                        </div>
-                      </div>
-                
-                      <div class="row" id="recipe-action-btn" style="margin-top:3rem;margin-bottom:3rem;">
-                        <!-- <div class="divider"></div> -->
-                        <div class="col m6 s12" style="margin-bottom:2em">
-                          <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">SUBMIT</a>  
-                        </div>
-              
-                        <div class="col m6 s12">
-                          <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">CANCEL</a>  
-                        </div>
-                      </div>
-                    </form>    
-              </div>  
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> <!-- Sign up end -->
+  <div class="fixed-action-btn">
+    <a href="#add-recipe-modal" class="btn-floating btn-large modal-trigger">
+      <i class="large material-icons">add</i>
+    </a>
+  </div>
 
-    <div class="fixed-action-btn">
-      <a href="#add-recipe-modal" class="btn-floating btn-large modal-trigger">
-        <i class="large material-icons">add</i>
-      </a>
+  <div class="modal" id="add-recipe-modal">
+    <div class="modal-content" style="padding:4rem">
+      <div class="row">
+        <form>
+          <h5 style="font-family:Raleway">Add a new recipe</h5>
+  
+          <div class="input-field col s12">
+              <input id="recipe-title" type="text" class="validate">
+              <label for="recipe-title">Title</label>
+          </div>
+  
+          <div class="input-field col s12">
+            <textarea id="recipe-description" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-description">Description</label>
+          </div>
+  
+          <div class="input-field col s12">
+            <textarea id="recipe-ingredients" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-ingredients">Ingredients</label>
+          </div>
+  
+          <div class="input-field col s12">
+            <textarea id="recipe-directions" class="materialize-textarea" rows="" cols=""></textarea>
+            <label for="recipe-directions">Directions</label>
+          </div>
+
+          <div style="border:.5px dashed gray;width:95%;margin-left:0.6rem;" class="col s12 file-field input-field center">
+            <img style="margin-top:2rem;height:2.5rem;" alt="add recipe photo" src="images/photo-video-slr-camera-icon.png" alt="">            
+            <input type="file" multiple>
+            <p style="font-size:1.3rem;opacity:0.7;text-align:center;font-family:Raleway;">Add images</p>
+          </div>
+      
+          <div class="col m6 s12" style="margin-bottom:2em;margin-top:3em">
+            <a href="#" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">SUBMIT</a>  
+          </div>
+
+          <div class="col m6 s12" style="margin-bottom:2em;margin-top:3em">
+            <a href="userprofile.html" id="download-button" class="btn-large waves-effect waves-light" style="text-transform:none; display: block;margin-left: 0px;margin-right: 0px;background-color: #444;">CANCEL</a>  
+          </div>
+        </form>    
+      </div>  
     </div>
+  </div> <!-- Add recipe modal end -->
 
 </body>
 
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script>
   (function($){
     $(function(){
       $('.button-collapse').sideNav();
-      var $container = $('#recipe-gallery');
-    
-      $container.masonry({
-        columnWidth: '.recipe',
-        itemSelector: '.recipe',
-        percentPosition: true
-      });
 
       $('.modal').modal();
-
-      // $('.fixed-action-btn').on('click', function(e) {
-      //   window.location = 'add_recipe.html';
-      // });
 
       $('#favorites-tab').on('click', function() {
         $('.fixed-action-btn').css('display', 'none');
