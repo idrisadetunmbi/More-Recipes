@@ -214,7 +214,7 @@ export default class RecipeController {
     try {
       recipe = await RecipeModel.findById(req.params.recipeId);
       reviews = await recipe.getReviews({
-        attributes: ['review', 'stars', 'createdAt'],
+        attributes: ['content', 'rating', 'createdAt'],
         include: [{
           model: models.user,
           attributes: ['id', 'username', 'firstName', 'lastName'],
