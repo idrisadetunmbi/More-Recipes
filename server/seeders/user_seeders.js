@@ -56,6 +56,14 @@ export default {
       firstName: 'usersfirstname',
       lastName: 'userslastname',
     },
+
+    altUser: {
+      username: 'user002',
+      password: 'javascript',
+      email: 'user002@mail.com',
+      firstName: 'usersfirstname',
+      lastName: 'userslastname',
+    },
   },
 
   signIn: {
