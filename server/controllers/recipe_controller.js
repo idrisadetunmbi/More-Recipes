@@ -4,7 +4,8 @@ import models from '../models';
 
 const RecipeModel = models.recipe;
 const ReviewModel = models.review;
-const RecipeActionModel = models.recipe_action;
+// const RecipeActionModel = models.recipe_action;
+const UserModel = models.user;
 
 export default class RecipeController {
   /**
@@ -46,8 +47,8 @@ export default class RecipeController {
   ];
 
   voteRecipeValidationCheck = [
-    validate.query('action', 'please specify an action (upvote, downvote or favorite) for this method')
-      .isIn(['upvote', 'downvote', 'favorite']).trim(),
+    validate.query('action', 'please specify an action (upvote or favorite) for this method')
+      .isIn(['upvote', 'favorite']).trim(),
   ];
 
   /**
@@ -77,7 +78,6 @@ export default class RecipeController {
         id: recipe.id,
         author: req.user.username,
         upvotes: recipe.upvotes,
-        downvotes: recipe.downvotes,
         favorites: recipe.favorites,
         createdAt: recipe.createdAt,
       },
@@ -142,7 +142,6 @@ export default class RecipeController {
         ...req.body,
         authorId: recipe.authorId,
         upvotes: recipe.upvotes,
-        downvotes: recipe.downvotes,
         favorites: recipe.favorites,
       });
     } catch (error) {
@@ -187,7 +186,7 @@ export default class RecipeController {
     });
     // disallow recipe author from adding a review
     if (recipe.authorId === req.user.id) {
-      return res.status(400).send({
+      return res.status(403).send({
         error: 'you cannot review a recipe you created',
       });
     }
@@ -240,131 +239,61 @@ export default class RecipeController {
   }
 
   voteRecipe = async (req, res) => {
-    const recipe = await RecipeModel.findById(req.params.recipeId);
-    // disallow recipe author from voting a recipe
-    if (recipe.authorId === req.user.id) {
-      return res.status(400).send({
-        error: 'you cannot vote a recipe you created',
-      });
-    }
-
-    const { action } = req.query;
-    const userId = req.user.id;
-    const { recipeId } = req.params;
-
-    let record;
+    let user;
+    let recipe;
     try {
-      record = await RecipeActionModel.findOne({
-        where: {
-          userId,
-          recipeId,
-        },
-      });
+      user = await UserModel.findById(req.user.id);
+      recipe = await RecipeModel.findById(req.params.recipeId);
     } catch (error) {
       return res.status(500).send({
         message: 'unhandled error',
         error: error.message || error.errors[0].message,
       });
     }
+    if (user.id === recipe.authorId) {
+      return res.status(403).send({
+        error: 'you cannot favorite or upvote a recipe you created',
+      });
+    }
 
-    switch (action) {
-      case 'upvote':
-        if (record) {
-          if (record.vote === 'upvote') {
-            return res.status(400).send({
-              error: 'you had previously upvoted this recipe',
-            });
-          } else if (record.vote === 'downvote') {
-            await recipe.update({
-              upvotes: recipe.upvotes + 1,
-              downvotes: recipe.downvotes - 1,
-            });
-          } else {
-            await recipe.update({
-              upvotes: recipe.upvotes + 1,
-            });
-          }
-          await record.update({
-            vote: 'upvote',
+    let recipeIsUsersFavorite;
+    let userHasUpvotedRecipe;
+    switch (req.query.action) {
+      case 'favorite':
+        recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
+        if (recipeIsUsersFavorite) {
+          await user.removeFavoriteRecipe(recipe);
+          recipe.update({
+            favorites: recipe.favorites - 1,
           });
           return res.status(200).send({
-            message: 'you have successfully upvoted this recipe',
+            message: 'recipe has been removed as favorite',
           });
         }
-        // if record does not exist, create the record with vote as downvote
-        await RecipeActionModel.create({
-          userId,
-          recipeId,
-          vote: 'upvote',
+        await user.addFavoriteRecipe(recipe);
+        recipe.update({
+          favorites: recipe.favorites + 1,
         });
-        await recipe.update({
+        return res.status(200).send({
+          message: 'recipe has been added as favorite',
+        });
+      case 'upvote':
+        userHasUpvotedRecipe = await user.hasUpvotedRecipe(recipe);
+        if (userHasUpvotedRecipe) {
+          await user.removeUpvotedRecipe(recipe);
+          recipe.update({
+            upvotes: recipe.upvotes - 1,
+          });
+          return res.status(200).send({
+            message: 'upvote on recipe has been removed',
+          });
+        }
+        await user.addUpvotedRecipe(recipe);
+        recipe.update({
           upvotes: recipe.upvotes + 1,
         });
         return res.status(200).send({
-          message: 'you have successfully upvoted this recipe',
-        });
-      case 'downvote':
-        if (record) {
-          if (record.vote === 'downvote') {
-            return res.status(400).send({
-              error: 'you had previously downvoted this recipe',
-            });
-          } else if (record.vote === 'upvote') {
-            await recipe.update({
-              upvotes: recipe.upvotes - 1,
-              downvotes: recipe.downvotes + 1,
-            });
-          } else {
-            await recipe.update({
-              downvotes: recipe.downvotes + 1,
-            });
-          }
-          await record.update({
-            vote: 'downvote',
-          });
-          return res.status(200).send({
-            message: 'you have successfully downvoted this recipe',
-          });
-        }
-        // if record does not exist, create the record with vote as downvote
-        await RecipeActionModel.create({
-          userId,
-          recipeId,
-          vote: 'downvote',
-        });
-        await recipe.update({
-          downvotes: recipe.downvotes + 1,
-        });
-        return res.status(200).send({
-          message: 'you have successfully downvoted this recipe',
-        });
-      case 'favorite':
-        if (!record) {
-          await RecipeActionModel.create({
-            userId,
-            recipeId,
-            favorite: true,
-          });
-          await recipe.update({
-            favorites: recipe.favorites + 1,
-          });
-          return res.status(201).send({
-            message: 'you have successfully favoured this recipe',
-          });
-        }
-        if (record.favorite) {
-          return res.status(400).send({
-            error: 'this recipe is already a favorite',
-          });
-        }
-        await recipe.update({
-          favorites: recipe.favorites + 1,
-        });
-        await record.update({
-          favorite: true,
-        });
-        return res.status(200).send({
-          message: 'you have successfully favoured this recipe',
+          message: 'recipe has been upvoted',
         });
       default:
         break;
