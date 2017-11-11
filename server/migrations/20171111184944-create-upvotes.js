@@ -2,13 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('recipe_actions', {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-      },
+    return queryInterface.createTable('upvotes', {
       userId: {
         type: Sequelize.UUID,
         references: {
@@ -29,15 +23,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         allowNull: false,
       },
-      favorite: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      vote: {
-        type: Sequelize.ENUM,
-        values: ['upvote', 'downvote'],
-        allowNull: true,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -49,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('recipe_actions');
+    return queryInterface.dropTable('upvotes');
   },
 };
