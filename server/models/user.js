@@ -43,8 +43,9 @@ export default (sequelize, DataTypes) => {
     user.password = bcrypt.hashSync(user.password, 10);
   });
   User.associate = (models) => {
-    User.belongsToMany(models.recipe, { as: 'recipeActions', through: models.recipe_action });
     User.hasMany(models.recipe, { as: 'recipes', foreignKey: 'authorId' });
+    User.belongsToMany(models.recipe, { as: 'favoriteRecipes', through: 'favorites' });
+    User.belongsToMany(models.recipe, { as: 'upvotedRecipes', through: 'upvotes' });
     User.hasMany(models.review);
   };
   return User;
