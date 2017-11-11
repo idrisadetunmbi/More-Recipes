@@ -8,10 +8,7 @@ const { assert } = chai;
 chai.use(chaiHttp);
 
 describe('Recipes routes and actions', () => {
-  // let postedRecipeID;
-  // let userAuthToken;
-  // let userId;
-  let testData = {};
+  const testData = {};
 
   before((done) => {
     // sign in required user for recipe CRUD actions
@@ -37,12 +34,12 @@ describe('Recipes routes and actions', () => {
   });
 
   describe('POST /api/recipes', () => {
-    it('should return statusCode:401 and error:\'you are not signed in or invalid token\' without a user token', (done) => {
+    it('returns an error without a user token', (done) => {
       chai.request(server)
-        .post('/api/recipes/')
+        .post('/api/recipes')
         .end((err, res) => {
           assert.equal(res.statusCode, 401);
-          assert.equal(res.body.error, 'you are not signed in or invalid token');
+          assert.include(res.body.error, 'please include user token');
           done();
         });
     });
@@ -130,12 +127,12 @@ describe('Recipes routes and actions', () => {
   });
 
   describe('GET /api/recipes/:id/', () => {
-    it('should return statusCode:401 and error:\'you are not signed in or invalid token\' without a user token', (done) => {
+    it('returns error without a user token', (done) => {
       chai.request(server)
-        .get('/api/recipes/')
+        .get('/api/recipes/recipeId')
         .end((err, res) => {
           assert.equal(res.statusCode, 401);
-          assert.equal(res.body.error, 'you are not signed in or invalid token');
+          assert.include(res.body.error, 'please include user token');
           done();
         });
     });
@@ -259,12 +256,12 @@ describe('Recipes routes and actions', () => {
   });
 
   describe('DELETE /api/recipes/:id/', () => {
-    it('should return statusCode:401 and error:\'you are not signed in or invalid token\' without a user token', (done) => {
+    it('returns an error without a user token', (done) => {
       chai.request(server)
         .del(`/api/recipes/${testData.postedRecipeID}/`)
         .end((err, res) => {
           assert.equal(res.statusCode, 401);
-          assert.equal(res.body.error, 'you are not signed in or invalid token');
+          assert.include(res.body.error, 'please include user token');
           done();
         });
     });
