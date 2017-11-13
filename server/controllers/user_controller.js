@@ -54,7 +54,7 @@ export default class UserController {
     }
     const { password, updatedAt, ...userDetails } = user.get();
     const token = jwt.sign(
-      userDetails,
+      { userId: userDetails.id },
       process.env.JWT_AUTH_SECRET,
       { expiresIn: '7d' },
     );
@@ -85,9 +85,9 @@ export default class UserController {
         error: 'wrong username or password',
       });
     }
-    const { password, ...userDetails } = user.get();
+    const { password, updatedAt, ...userDetails } = user.get();
     const token = jwt.sign(
-      userDetails,
+      { userId: userDetails.id },
       process.env.JWT_AUTH_SECRET,
       { expiresIn: '7d' },
     );
@@ -104,13 +104,10 @@ export default class UserController {
         attributes: ['id', 'username', 'firstName', 'lastName'],
         include: [{
           model: models.recipe,
-          as: 'recipeActions',
+          as: 'favoriteRecipes',
           attributes: { exclude: ['createdAt', 'updatedAt'] },
           through: {
             attributes: [],
-            where: {
-              favorite: true,
-            },
           },
         }],
       });
@@ -119,12 +116,9 @@ export default class UserController {
         error: error.message || error.errors[0].message,
       });
     }
-    // rename recipe actions to favoriteRecipes
-    const { recipeActions, ...userDetails } = user.get();
-    const favoriteRecipes = recipeActions;
     return res.status(200).send({
       message: 'user favorites',
-      data: { ...userDetails, favoriteRecipes },
+      data: user,
     });
   }
 

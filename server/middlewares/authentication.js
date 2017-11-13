@@ -22,12 +22,13 @@ export default async (req, res, next) => {
       error: 'invalid or expired token',
     });
   }
-  const user = await UserModel.findById(decodedPayload.id);
+  const user = await UserModel.findById(decodedPayload.userId);
+  // ensure user still exists in db before allowing to take any action
   if (!user) {
     return res.status(404).send({
       message: 'user does not exist, please sign up a new account',
     });
   }
-  req.user = decodedPayload;
+  req.user = user;
   return next();
 };
