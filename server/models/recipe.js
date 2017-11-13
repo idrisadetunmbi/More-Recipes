@@ -44,6 +44,7 @@ export default (sequelize, DataTypes) => {
     Recipe.belongsTo(models.user, { as: 'author', foreignKey: 'authorId' });
     Recipe.belongsToMany(models.user, { as: 'favoritedUsers', through: 'favorites' });
     Recipe.belongsToMany(models.user, { as: 'upvotedUsers', through: 'upvotes' });
+    Recipe.belongsToMany(models.user, { as: 'userReviews', through: models.review });
     Recipe.hasMany(models.review);
   };
   return Recipe;
