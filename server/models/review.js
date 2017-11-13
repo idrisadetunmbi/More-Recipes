@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
   }, {
     classMethods: {
@@ -20,9 +20,5 @@ export default (sequelize, DataTypes) => {
       },
     },
   });
-  Review.associate = (models) => {
-    Review.belongsTo(models.user);
-    Review.belongsTo(models.recipe);
-  };
   return Review;
 };
