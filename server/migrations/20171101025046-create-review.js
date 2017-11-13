@@ -28,13 +28,13 @@ module.exports = {
         onUpdate: 'CASCADE',
         allowNull: false,
       },
-      review: {
+      content: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       rating: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
