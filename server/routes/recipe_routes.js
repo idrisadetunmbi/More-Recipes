@@ -33,7 +33,7 @@ router.post(
 );
 
 router.post(
-  '/:recipeId/reviews', authenticateUser, controller.reviewPostValidationChecks,
+  '/:recipeId/reviews', authenticateUser, [...controller.recipeGetValidationChecks, ...controller.reviewPostValidationChecks],
   controller.validateRequestData, controller.postRecipeReview,
 );
 
