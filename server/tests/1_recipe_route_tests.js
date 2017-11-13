@@ -126,6 +126,29 @@ describe('Recipes routes and actions', () => {
     });
   });
 
+  describe('GET /api/recipes/', () => {
+    it('returns error without a user token', (done) => {
+      chai.request(server)
+        .get('/api/recipes')
+        .end((err, res) => {
+          assert.equal(res.statusCode, 401);
+          assert.include(res.body.error, 'please include user token');
+          done();
+        });
+    });
+
+    it('returns an array of recipes', (done) => {
+      chai.request(server)
+        .get('/api/recipes/')
+        .set('authorization', `Bearer ${testData.userAuthToken}`)
+        .end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body.data);
+          done();
+        });
+    });
+  });
+
   describe('GET /api/recipes/:id/', () => {
     it('returns error without a user token', (done) => {
       chai.request(server)
