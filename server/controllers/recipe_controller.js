@@ -1,11 +1,7 @@
 import validate, { validationResult } from 'express-validator/check';
-
 import models from '../models';
 
 const RecipeModel = models.recipe;
-const ReviewModel = models.review;
-// const RecipeActionModel = models.recipe_action;
-const UserModel = models.user;
 
 export default class RecipeController {
   /**
@@ -43,7 +39,7 @@ export default class RecipeController {
 
   reviewPostValidationChecks = [
     validate.body('content', 'you must add a review with at least 5 characters').optional().isLength({ min: 5 }),
-    validate.body('rating', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).optional().trim(),
+    validate.body('rating', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).trim(),
   ];
 
   voteRecipeValidationCheck = [
@@ -181,45 +177,39 @@ export default class RecipeController {
   }
 
   postRecipeReview = async (req, res) => {
-    const recipe = await RecipeModel.findById(req.params.recipeId, {
-      attributes: ['authorId'],
-    });
+    const recipe = await RecipeModel.findById(req.params.recipeId);
+    const { user } = req;
     // disallow recipe author from adding a review
-    if (recipe.authorId === req.user.id) {
+    if (recipe.authorId === user.id) {
       return res.status(403).send({
         error: 'you cannot review a recipe you created',
       });
     }
-    let review;
-    try {
-      review = await ReviewModel.create({
-        userId: req.user.id, recipeId: req.params.recipeId, ...req.body,
-      });
-    } catch (error) {
-      res.status(400).send({
-        message: 'specified recipeId or userId does not exist',
-        error: error.message || error.errors[0].message,
-      });
-    }
+    user.review = req.body;
+    await recipe.addUserReview(user);
     return res.status(201).json({
       message: 'review added successfully',
-      data: review,
+      data: {
+        ...req.body,
+        content: req.body.content || null,
+        userId: user.id,
+        recipeId: recipe.id,
+      },
     });
   }
 
   getRecipeReviews = async (req, res) => {
-    let reviews;
     let recipe;
     try {
-      recipe = await RecipeModel.findById(req.params.recipeId);
-      reviews = await recipe.getReviews({
-        attributes: ['content', 'rating', 'createdAt'],
+      recipe = await RecipeModel.findById(req.params.recipeId, {
+        attributes: ['id', 'title'],
         include: [{
           model: models.user,
-          attributes: ['id', 'username', 'firstName', 'lastName'],
-        }, {
-          model: models.recipe,
-          attributes: ['title', 'id'],
+          as: 'userReviews',
+          attributes: ['username', 'firstName', 'lastName'],
+          through: {
+            attributes: ['content', 'rating', 'createdAt'],
+          },
         }],
       });
     } catch (error) {
@@ -228,28 +218,19 @@ export default class RecipeController {
         error: error.message || error.errors[0].message,
       });
     }
-    return reviews.length > 0 ?
+    return recipe.userReviews.length > 0 ?
       res.status(200).json({
         message: `reviews for recipe with id ${recipe.id}`,
-        data: reviews,
+        data: recipe,
       }) :
-      res.status(200).send({
+      res.status(200).json({
         message: 'this recipe currently has no reviews',
       });
   }
 
   voteRecipe = async (req, res) => {
-    let user;
-    let recipe;
-    try {
-      user = await UserModel.findById(req.user.id);
-      recipe = await RecipeModel.findById(req.params.recipeId);
-    } catch (error) {
-      return res.status(500).send({
-        message: 'unhandled error',
-        error: error.message || error.errors[0].message,
-      });
-    }
+    const { user } = req;
+    const recipe = await RecipeModel.findById(req.params.recipeId);
     if (user.id === recipe.authorId) {
       return res.status(403).send({
         error: 'you cannot favorite or upvote a recipe you created',
