@@ -1,0 +1,1771 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "More Recipes",
+    "description": "# Introduction\nAPI for the MoreRecipes Web App\n\n# Overview\nMoreRecipes is a recipe management web app (We know you love to try new things, especially new tastes) built with Node/ExpressJS (Backend) and ReactJS/MaterializeCSS (FrontEnd). This is documentation for the API built with ExpressJS.\n\n# Authentication\nA JSONWebToken generated during user signup/signin is required for recipe action routes. This token should be included in the 'authorization' portion of the request headers\n\n# Error Codes\n201 - A resource is successfully created (e.g. user account creation or adding a new recipe)\n200 - Get resources\n400 - Request parameters are invalid\n401 - Invalid, expired or excluded token which is required for a request\n403 - Voting or reviewing a recipe for a recipe owner\n",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/v1/users/signup": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "User sign-up",
+        "description": "TODO: Add Description",
+        "operationId": "User signUp",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "janedoe"
+            },
+            "example": "janedoe"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "password"
+            },
+            "example": "password"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "janedoe@mail.com"
+            },
+            "example": "janedoe@mail.com"
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "jane"
+            },
+            "example": "jane"
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "doe"
+            },
+            "example": "doe"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "user signup is successful",
+                    "data": {
+                      "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "username": "janedoe",
+                      "email": "janedoe@mail.com",
+                      "firstName": "jane",
+                      "lastName": "doe",
+                      "createdAt": "2017-11-14T07:18:37.992Z",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDM5MTgsImV4cCI6MTUxMTI0ODcxOH0.S6G_MC14O8w6sbNrQaxhouzBhY5VYHhNMfHZqGiJUN0"
+                    }
+                  },
+                  "$ref": "#/components/schemas/User signUpresponse"
+                },
+                "example": {
+                  "message": "user signup is successful",
+                  "data": {
+                    "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                    "username": "janedoe",
+                    "email": "janedoe@mail.com",
+                    "firstName": "jane",
+                    "lastName": "doe",
+                    "createdAt": "2017-11-14T07:18:37.992Z",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDM5MTgsImV4cCI6MTUxMTI0ODcxOH0.S6G_MC14O8w6sbNrQaxhouzBhY5VYHhNMfHZqGiJUN0"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/users/signin": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "User Sign-in",
+        "description": "TODO: Add Description",
+        "operationId": "User signIn",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "idris90"
+            },
+            "example": "idris90"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "passwor"
+            },
+            "example": "passwor"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "you have successfully signed in",
+                    "data": {
+                      "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "username": "janedoe",
+                      "email": "janedoe@mail.com",
+                      "firstName": "jane",
+                      "lastName": "doe",
+                      "createdAt": "2017-11-14T07:18:37.992Z",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDQwNzEsImV4cCI6MTUxMTI0ODg3MX0.w2wpOLJgq5Ur-6HGlsOnCASTUwVzlAIQ0orWnM3kVRk"
+                    }
+                  },
+                  "$ref": "#/components/schemas/User signInresponse"
+                },
+                "example": {
+                  "message": "you have successfully signed in",
+                  "data": {
+                    "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                    "username": "janedoe",
+                    "email": "janedoe@mail.com",
+                    "firstName": "jane",
+                    "lastName": "doe",
+                    "createdAt": "2017-11-14T07:18:37.992Z",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDQwNzEsImV4cCI6MTUxMTI0ODg3MX0.w2wpOLJgq5Ur-6HGlsOnCASTUwVzlAIQ0orWnM3kVRk"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/recipes": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "GET All Recipes",
+        "description": "TODO: Add Description",
+        "operationId": "GetAllRecipes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "messgae": "recipe listing",
+                    "data": [
+                      {
+                        "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                        "title": "Anothernew recipe",
+                        "description": "a great recipe",
+                        "ingredients": "this and that",
+                        "directions": "put everything together",
+                        "category": "breakfast",
+                        "upvotes": 0,
+                        "favorites": 0,
+                        "createdAt": "2017-11-12T10:29:32.69Z",
+                        "updatedAt": "2017-11-12T10:29:32.69Z",
+                        "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+                        "author": {
+                          "username": "idris90"
+                        }
+                      },
+                      {
+                        "id": "8948ce65-1087-48e2-a163-4044d92a0079",
+                        "title": "Anothernew recipe",
+                        "description": "a great recipe",
+                        "ingredients": "this and that",
+                        "directions": "put everything together",
+                        "category": "breakfast",
+                        "upvotes": 0,
+                        "favorites": 0,
+                        "createdAt": "2017-11-12T12:29:52.893Z",
+                        "updatedAt": "2017-11-12T12:29:52.893Z",
+                        "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+                        "author": {
+                          "username": "idris90"
+                        }
+                      },
+                      {
+                        "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+                        "title": "Ewa agoyin and fried soup",
+                        "description": "A great recipe",
+                        "ingredients": "This and that",
+                        "directions": "pour everything together",
+                        "category": "breakfast",
+                        "upvotes": 0,
+                        "favorites": 0,
+                        "createdAt": "2017-11-14T07:33:43.726Z",
+                        "updatedAt": "2017-11-14T07:33:43.726Z",
+                        "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                        "author": {
+                          "username": "janedoe"
+                        }
+                      },
+                      {
+                        "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                        "title": "Ewa agoyin and fried soup",
+                        "description": "A great recipe",
+                        "ingredients": "This and that",
+                        "directions": "pour everything together",
+                        "category": "breakfast",
+                        "upvotes": 0,
+                        "favorites": 0,
+                        "createdAt": "2017-11-14T07:36:18.336Z",
+                        "updatedAt": "2017-11-14T07:36:18.336Z",
+                        "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                        "author": {
+                          "username": "janedoe"
+                        }
+                      }
+                    ]
+                  },
+                  "$ref": "#/components/schemas/GetAllRecipesresponse"
+                },
+                "example": {
+                  "messgae": "recipe listing",
+                  "data": [
+                    {
+                      "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                      "title": "Anothernew recipe",
+                      "description": "a great recipe",
+                      "ingredients": "this and that",
+                      "directions": "put everything together",
+                      "category": "breakfast",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-12T10:29:32.69Z",
+                      "updatedAt": "2017-11-12T10:29:32.69Z",
+                      "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+                      "author": {
+                        "username": "idris90"
+                      }
+                    },
+                    {
+                      "id": "8948ce65-1087-48e2-a163-4044d92a0079",
+                      "title": "Anothernew recipe",
+                      "description": "a great recipe",
+                      "ingredients": "this and that",
+                      "directions": "put everything together",
+                      "category": "breakfast",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-12T12:29:52.893Z",
+                      "updatedAt": "2017-11-12T12:29:52.893Z",
+                      "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+                      "author": {
+                        "username": "idris90"
+                      }
+                    },
+                    {
+                      "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+                      "title": "Ewa agoyin and fried soup",
+                      "description": "A great recipe",
+                      "ingredients": "This and that",
+                      "directions": "pour everything together",
+                      "category": "breakfast",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-14T07:33:43.726Z",
+                      "updatedAt": "2017-11-14T07:33:43.726Z",
+                      "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "author": {
+                        "username": "janedoe"
+                      }
+                    },
+                    {
+                      "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                      "title": "Ewa agoyin and fried soup",
+                      "description": "A great recipe",
+                      "ingredients": "This and that",
+                      "directions": "pour everything together",
+                      "category": "breakfast",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-14T07:36:18.336Z",
+                      "updatedAt": "2017-11-14T07:36:18.336Z",
+                      "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "author": {
+                        "username": "janedoe"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "POST Create A Recipe",
+        "description": "TODO: Add Description",
+        "operationId": "PostCreateARecipe",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "Ewa agoyin and fried soup"
+            },
+            "example": "Ewa agoyin and fried soup"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "breakfast"
+            },
+            "example": "breakfast"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "A great recipe"
+            },
+            "example": "A great recipe"
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "This and that"
+            },
+            "example": "This and that"
+          },
+          {
+            "name": "directions",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "pour everything together"
+            },
+            "example": "pour everything together"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZiNzMyMGRlLWQ2MzItNGMyMy1hYTZkLTY0YTAwZmY3MzEyYyIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImlhdCI6MTUwOTQ3NTY5MCwiZXhwIjoxNTEwMDgwNDkwfQ.qhX7oEUB2v53b-hWAEZUwJYjczgPZgGJjZm5ihP-ACk"
+            },
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZiNzMyMGRlLWQ2MzItNGMyMy1hYTZkLTY0YTAwZmY3MzEyYyIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImlhdCI6MTUwOTQ3NTY5MCwiZXhwIjoxNTEwMDgwNDkwfQ.qhX7oEUB2v53b-hWAEZUwJYjczgPZgGJjZm5ihP-ACk"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Recipe created successfully",
+                    "data": {
+                      "title": "Ewa agoyin and fried soup",
+                      "category": "breakfast",
+                      "description": "A great recipe",
+                      "ingredients": "This and that",
+                      "directions": "pour everything together",
+                      "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+                      "author": "janedoe",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-14T07:33:43.726Z"
+                    }
+                  },
+                  "$ref": "#/components/schemas/PostCreateAReciperesponse"
+                },
+                "example": {
+                  "message": "Recipe created successfully",
+                  "data": {
+                    "title": "Ewa agoyin and fried soup",
+                    "category": "breakfast",
+                    "description": "A great recipe",
+                    "ingredients": "This and that",
+                    "directions": "pour everything together",
+                    "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+                    "author": "janedoe",
+                    "upvotes": 0,
+                    "favorites": 0,
+                    "createdAt": "2017-11-14T07:33:43.726Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/recipes/4f8cfef7-661c-44ae-b4fe-82d54f99f33c": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "GET A recipe",
+        "description": "TODO: Add Description",
+        "operationId": "GetARecipe",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgwNTI1OGUzLTc0NjktNDAyMS1hZmQ1LTYzNjQzODhmMThkZCIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTc6NDI6NTQuNzQ5WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTc6NDI6NTQuNzQ5WiIsImlhdCI6MTUwOTQ3MTc3NSwiZXhwIjoxNTEwMDc2NTc1fQ.5TczzfleVJa6PcFn1zo2TTm6ENoemqsyNYB6CcJU_sQ"
+            },
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgwNTI1OGUzLTc0NjktNDAyMS1hZmQ1LTYzNjQzODhmMThkZCIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTc6NDI6NTQuNzQ5WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTc6NDI6NTQuNzQ5WiIsImlhdCI6MTUwOTQ3MTc3NSwiZXhwIjoxNTEwMDc2NTc1fQ.5TczzfleVJa6PcFn1zo2TTm6ENoemqsyNYB6CcJU_sQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "data": {
+                      "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                      "title": "Ewa agoyin and fried soup",
+                      "description": "A great recipe",
+                      "ingredients": "This and that",
+                      "directions": "pour everything together",
+                      "category": "breakfast",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-14T07:36:18.336Z",
+                      "updatedAt": "2017-11-14T07:36:18.336Z",
+                      "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "author": {
+                        "username": "janedoe"
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetAReciperesponse"
+                },
+                "example": {
+                  "data": {
+                    "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                    "title": "Ewa agoyin and fried soup",
+                    "description": "A great recipe",
+                    "ingredients": "This and that",
+                    "directions": "pour everything together",
+                    "category": "breakfast",
+                    "upvotes": 0,
+                    "favorites": 0,
+                    "createdAt": "2017-11-14T07:36:18.336Z",
+                    "updatedAt": "2017-11-14T07:36:18.336Z",
+                    "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                    "author": {
+                      "username": "janedoe"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "put": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "PUT Modify A Recipe",
+        "description": "TODO: Add Description",
+        "operationId": "PutModifyARecipe",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "Special beans and fried soup"
+            },
+            "example": "Special beans and fried soup"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "lunch"
+            },
+            "example": "lunch"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZiNzMyMGRlLWQ2MzItNGMyMy1hYTZkLTY0YTAwZmY3MzEyYyIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImlhdCI6MTUwOTQ3NTY5MCwiZXhwIjoxNTEwMDgwNDkwfQ.qhX7oEUB2v53b-hWAEZUwJYjczgPZgGJjZm5ihP-ACk"
+            },
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZiNzMyMGRlLWQ2MzItNGMyMy1hYTZkLTY0YTAwZmY3MzEyYyIsInVzZXJuYW1lIjoiaWRyaXM5MCIsImVtYWlsIjoiaWRyaXM5MEBtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImlkcmlzIiwibGFzdE5hbWUiOiJpbW9sZSIsInVwZGF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImNyZWF0ZWRBdCI6IjIwMTctMTAtMzFUMTg6NDg6MTAuNzI2WiIsImlhdCI6MTUwOTQ3NTY5MCwiZXhwIjoxNTEwMDgwNDkwfQ.qhX7oEUB2v53b-hWAEZUwJYjczgPZgGJjZm5ihP-ACk"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "recipe updated successfully",
+                    "data": {
+                      "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                      "title": "Special beans and fried soup",
+                      "description": "A great recipe",
+                      "ingredients": "This and that",
+                      "directions": "pour everything together",
+                      "category": "lunch",
+                      "upvotes": 0,
+                      "favorites": 0,
+                      "createdAt": "2017-11-14T07:36:18.336Z",
+                      "updatedAt": "2017-11-14T07:44:35.498Z",
+                      "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742"
+                    }
+                  },
+                  "$ref": "#/components/schemas/PutModifyAReciperesponse"
+                },
+                "example": {
+                  "message": "recipe updated successfully",
+                  "data": {
+                    "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+                    "title": "Special beans and fried soup",
+                    "description": "A great recipe",
+                    "ingredients": "This and that",
+                    "directions": "pour everything together",
+                    "category": "lunch",
+                    "upvotes": 0,
+                    "favorites": 0,
+                    "createdAt": "2017-11-14T07:36:18.336Z",
+                    "updatedAt": "2017-11-14T07:44:35.498Z",
+                    "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/recipes/92b0a396-b384-4cc9-aa1e-f4b715e96e13": {
+      "delete": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "DELETE A Recipe",
+        "description": "TODO: Add Description",
+        "operationId": "DeleteARecipe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "recipe with 92b0a396-b384-4cc9-aa1e-f4b715e96e13 has been successfully deleted"
+                  },
+                  "$ref": "#/components/schemas/DeleteAReciperesponse"
+                },
+                "example": {
+                  "message": "recipe with 92b0a396-b384-4cc9-aa1e-f4b715e96e13 has been successfully deleted"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/5ba782c4-9b66-4b37-bdfb-90bfb190d9da": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "POST Favorite a Recipe",
+        "description": "TODO: Add Description",
+        "operationId": "PostFavoriteARecipe",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "favorite"
+            },
+            "example": "favorite"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "recipe has been added as favorite"
+                  },
+                  "$ref": "#/components/schemas/PostFavoriteAReciperesponse"
+                },
+                "example": {
+                  "message": "recipe has been added as favorite"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/recipes/5ba782c4-9b66-4b37-bdfb-90bfb190d9da/reviews": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get Recipe Reviews",
+        "description": "TODO: Add Description",
+        "operationId": "GetRecipeReviews",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "reviews for recipe with id 5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                    "data": {
+                      "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                      "title": "Anothernew recipe",
+                      "userReviews": [
+                        {
+                          "username": "user001",
+                          "firstName": "idris",
+                          "lastName": "imole",
+                          "review": {
+                            "content": "this is a great recipe",
+                            "rating": 1,
+                            "createdAt": "2017-11-12T10:53:09.512Z"
+                          }
+                        },
+                        {
+                          "username": "janedoe",
+                          "firstName": "jane",
+                          "lastName": "doe",
+                          "review": {
+                            "content": "A great recipe",
+                            "rating": 5,
+                            "createdAt": "2017-11-14T07:56:26.213Z"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetRecipeReviewsresponse"
+                },
+                "example": {
+                  "message": "reviews for recipe with id 5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                  "data": {
+                    "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                    "title": "Anothernew recipe",
+                    "userReviews": [
+                      {
+                        "username": "user001",
+                        "firstName": "idris",
+                        "lastName": "imole",
+                        "review": {
+                          "content": "this is a great recipe",
+                          "rating": 1,
+                          "createdAt": "2017-11-12T10:53:09.512Z"
+                        }
+                      },
+                      {
+                        "username": "janedoe",
+                        "firstName": "jane",
+                        "lastName": "doe",
+                        "review": {
+                          "content": "A great recipe",
+                          "rating": 5,
+                          "createdAt": "2017-11-14T07:56:26.213Z"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "POST Add A Recipe Review",
+        "description": "TODO: Add Description",
+        "operationId": "PostAddARecipeReview",
+        "parameters": [
+          {
+            "name": "rating",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "5"
+            },
+            "example": "5"
+          },
+          {
+            "name": "content",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "A great recipe"
+            },
+            "example": "A great recipe"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/users/2eab3111-e3b9-435d-834c-4f2955eb7742/recipes": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "GET User Favorite Recipes",
+        "description": "TODO: Add Description",
+        "operationId": "GetUserFavoriteRecipes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "user favorites",
+                    "data": {
+                      "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                      "username": "janedoe",
+                      "firstName": "jane",
+                      "lastName": "doe",
+                      "favoriteRecipes": [
+                        {
+                          "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                          "title": "Anothernew recipe",
+                          "description": "a great recipe",
+                          "ingredients": "this and that",
+                          "directions": "put everything together",
+                          "category": "breakfast",
+                          "upvotes": 1,
+                          "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f"
+                        }
+                      ]
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetUserFavoriteRecipesresponse"
+                },
+                "example": {
+                  "message": "user favorites",
+                  "data": {
+                    "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+                    "username": "janedoe",
+                    "firstName": "jane",
+                    "lastName": "doe",
+                    "favoriteRecipes": [
+                      {
+                        "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                        "title": "Anothernew recipe",
+                        "description": "a great recipe",
+                        "ingredients": "this and that",
+                        "directions": "put everything together",
+                        "category": "breakfast",
+                        "upvotes": 1,
+                        "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User signUpresponse": {
+        "title": "User sign-upResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data"
+          }
+        },
+        "example": {
+          "message": "user signup is successful",
+          "data": {
+            "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+            "username": "janedoe",
+            "email": "janedoe@mail.com",
+            "firstName": "jane",
+            "lastName": "doe",
+            "createdAt": "2017-11-14T07:18:37.992Z",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDM5MTgsImV4cCI6MTUxMTI0ODcxOH0.S6G_MC14O8w6sbNrQaxhouzBhY5VYHhNMfHZqGiJUN0"
+          }
+        }
+      },
+      "Data": {
+        "title": "Data",
+        "required": [
+          "id",
+          "username",
+          "email",
+          "firstName",
+          "lastName",
+          "createdAt",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "User signInresponse": {
+        "title": "User Sign-inResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data"
+          }
+        },
+        "example": {
+          "message": "you have successfully signed in",
+          "data": {
+            "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+            "username": "janedoe",
+            "email": "janedoe@mail.com",
+            "firstName": "jane",
+            "lastName": "doe",
+            "createdAt": "2017-11-14T07:18:37.992Z",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyZWFiMzExMS1lM2I5LTQzNWQtODM0Yy00ZjI5NTVlYjc3NDIiLCJpYXQiOjE1MTA2NDQwNzEsImV4cCI6MTUxMTI0ODg3MX0.w2wpOLJgq5Ur-6HGlsOnCASTUwVzlAIQ0orWnM3kVRk"
+          }
+        }
+      },
+      "PostCreateAReciperesponse": {
+        "title": "POST Create A RecipeResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data5"
+          }
+        },
+        "example": {
+          "message": "Recipe created successfully",
+          "data": {
+            "title": "Ewa agoyin and fried soup",
+            "category": "breakfast",
+            "description": "A great recipe",
+            "ingredients": "This and that",
+            "directions": "pour everything together",
+            "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+            "author": "janedoe",
+            "upvotes": 0,
+            "favorites": 0,
+            "createdAt": "2017-11-14T07:33:43.726Z"
+          }
+        }
+      },
+      "Data5": {
+        "title": "Data5",
+        "required": [
+          "title",
+          "category",
+          "description",
+          "ingredients",
+          "directions",
+          "id",
+          "author",
+          "upvotes",
+          "favorites",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "directions": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "upvotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favorites": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        }
+      },
+      "GetAllRecipesresponse": {
+        "title": "GET All RecipesResponse",
+        "required": [
+          "messgae",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "messgae": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Data7"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "messgae": "recipe listing",
+          "data": [
+            {
+              "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+              "title": "Anothernew recipe",
+              "description": "a great recipe",
+              "ingredients": "this and that",
+              "directions": "put everything together",
+              "category": "breakfast",
+              "upvotes": 0,
+              "favorites": 0,
+              "createdAt": "2017-11-12T10:29:32.69Z",
+              "updatedAt": "2017-11-12T10:29:32.69Z",
+              "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+              "author": {
+                "username": "idris90"
+              }
+            },
+            {
+              "id": "8948ce65-1087-48e2-a163-4044d92a0079",
+              "title": "Anothernew recipe",
+              "description": "a great recipe",
+              "ingredients": "this and that",
+              "directions": "put everything together",
+              "category": "breakfast",
+              "upvotes": 0,
+              "favorites": 0,
+              "createdAt": "2017-11-12T12:29:52.893Z",
+              "updatedAt": "2017-11-12T12:29:52.893Z",
+              "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f",
+              "author": {
+                "username": "idris90"
+              }
+            },
+            {
+              "id": "92b0a396-b384-4cc9-aa1e-f4b715e96e13",
+              "title": "Ewa agoyin and fried soup",
+              "description": "A great recipe",
+              "ingredients": "This and that",
+              "directions": "pour everything together",
+              "category": "breakfast",
+              "upvotes": 0,
+              "favorites": 0,
+              "createdAt": "2017-11-14T07:33:43.726Z",
+              "updatedAt": "2017-11-14T07:33:43.726Z",
+              "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+              "author": {
+                "username": "janedoe"
+              }
+            },
+            {
+              "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+              "title": "Ewa agoyin and fried soup",
+              "description": "A great recipe",
+              "ingredients": "This and that",
+              "directions": "pour everything together",
+              "category": "breakfast",
+              "upvotes": 0,
+              "favorites": 0,
+              "createdAt": "2017-11-14T07:36:18.336Z",
+              "updatedAt": "2017-11-14T07:36:18.336Z",
+              "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+              "author": {
+                "username": "janedoe"
+              }
+            }
+          ]
+        }
+      },
+      "Data7": {
+        "title": "Data7",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "ingredients",
+          "directions",
+          "category",
+          "upvotes",
+          "favorites",
+          "createdAt",
+          "updatedAt",
+          "authorId",
+          "author"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "directions": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "upvotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favorites": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "string"
+          },
+          "author": {
+            "$ref": "#/components/schemas/Author"
+          }
+        }
+      },
+      "Author": {
+        "title": "Author",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "GetAReciperesponse": {
+        "title": "GET A recipeResponse",
+        "required": [
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Data7"
+          }
+        },
+        "example": {
+          "data": {
+            "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+            "title": "Ewa agoyin and fried soup",
+            "description": "A great recipe",
+            "ingredients": "This and that",
+            "directions": "pour everything together",
+            "category": "breakfast",
+            "upvotes": 0,
+            "favorites": 0,
+            "createdAt": "2017-11-14T07:36:18.336Z",
+            "updatedAt": "2017-11-14T07:36:18.336Z",
+            "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+            "author": {
+              "username": "janedoe"
+            }
+          }
+        }
+      },
+      "PutModifyAReciperesponse": {
+        "title": "PUT Modify A RecipeResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data13"
+          }
+        },
+        "example": {
+          "message": "recipe updated successfully",
+          "data": {
+            "id": "4f8cfef7-661c-44ae-b4fe-82d54f99f33c",
+            "title": "Special beans and fried soup",
+            "description": "A great recipe",
+            "ingredients": "This and that",
+            "directions": "pour everything together",
+            "category": "lunch",
+            "upvotes": 0,
+            "favorites": 0,
+            "createdAt": "2017-11-14T07:36:18.336Z",
+            "updatedAt": "2017-11-14T07:44:35.498Z",
+            "authorId": "2eab3111-e3b9-435d-834c-4f2955eb7742"
+          }
+        }
+      },
+      "Data13": {
+        "title": "Data13",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "ingredients",
+          "directions",
+          "category",
+          "upvotes",
+          "favorites",
+          "createdAt",
+          "updatedAt",
+          "authorId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "directions": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "upvotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "favorites": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "authorId": {
+            "type": "string"
+          }
+        }
+      },
+      "DeleteAReciperesponse": {
+        "title": "DELETE A RecipeResponse",
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "recipe with 92b0a396-b384-4cc9-aa1e-f4b715e96e13 has been successfully deleted"
+        }
+      },
+      "PostFavoriteAReciperesponse": {
+        "title": "POST Favorite a RecipeResponse",
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "recipe has been added as favorite"
+        }
+      },
+      "GetRecipeReviewsresponse": {
+        "title": "Get Recipe ReviewsResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data17"
+          }
+        },
+        "example": {
+          "message": "reviews for recipe with id 5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+          "data": {
+            "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+            "title": "Anothernew recipe",
+            "userReviews": [
+              {
+                "username": "user001",
+                "firstName": "idris",
+                "lastName": "imole",
+                "review": {
+                  "content": "this is a great recipe",
+                  "rating": 1,
+                  "createdAt": "2017-11-12T10:53:09.512Z"
+                }
+              },
+              {
+                "username": "janedoe",
+                "firstName": "jane",
+                "lastName": "doe",
+                "review": {
+                  "content": "A great recipe",
+                  "rating": 5,
+                  "createdAt": "2017-11-14T07:56:26.213Z"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Data17": {
+        "title": "Data17",
+        "required": [
+          "id",
+          "title",
+          "userReviews"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "userReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserReview"
+            },
+            "description": ""
+          }
+        }
+      },
+      "UserReview": {
+        "title": "UserReview",
+        "required": [
+          "username",
+          "firstName",
+          "lastName",
+          "review"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "review": {
+            "$ref": "#/components/schemas/Review"
+          }
+        }
+      },
+      "Review": {
+        "title": "Review",
+        "required": [
+          "content",
+          "rating",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        }
+      },
+      "GetUserFavoriteRecipesresponse": {
+        "title": "GET User Favorite RecipesResponse",
+        "required": [
+          "message",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data21"
+          }
+        },
+        "example": {
+          "message": "user favorites",
+          "data": {
+            "id": "2eab3111-e3b9-435d-834c-4f2955eb7742",
+            "username": "janedoe",
+            "firstName": "jane",
+            "lastName": "doe",
+            "favoriteRecipes": [
+              {
+                "id": "5ba782c4-9b66-4b37-bdfb-90bfb190d9da",
+                "title": "Anothernew recipe",
+                "description": "a great recipe",
+                "ingredients": "this and that",
+                "directions": "put everything together",
+                "category": "breakfast",
+                "upvotes": 1,
+                "authorId": "db21ed5b-3aff-4b56-8f20-8d926dda9e4f"
+              }
+            ]
+          }
+        }
+      },
+      "Data21": {
+        "title": "Data21",
+        "required": [
+          "id",
+          "username",
+          "firstName",
+          "lastName",
+          "favoriteRecipes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "favoriteRecipes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FavoriteRecipe"
+            },
+            "description": ""
+          }
+        }
+      },
+      "FavoriteRecipe": {
+        "title": "FavoriteRecipe",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "ingredients",
+          "directions",
+          "category",
+          "upvotes",
+          "authorId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          },
+          "directions": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "upvotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "authorId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {}
+  ]
+}
