@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "More Recipes",
-    "description": "# Introduction\nAPI for the MoreRecipes Web App\n\n# Overview\nMoreRecipes is a recipe management web app (We know you love to try new things, especially new tastes) built with Node/ExpressJS (Backend) and ReactJS/MaterializeCSS (FrontEnd). This is documentation for the API built with ExpressJS.\n\n# Authentication\nA JSONWebToken generated during user signup/signin is required for recipe action routes. This token should be included in the 'authorization' portion of the request headers\n\n# Error Codes\n201 - A resource is successfully created (e.g. user account creation or adding a new recipe)\n200 - Get resources\n400 - Request parameters are invalid\n401 - Invalid, expired or excluded token which is required for a request\n403 - Voting or reviewing a recipe for a recipe owner\n",
+    "description": "# Introduction\nAPI for the MoreRecipes Web App\n\n# Overview\nMoreRecipes is a recipe management web app (We know you love to try new things, especially new tastes) built with Node/ExpressJS (Backend) and ReactJS/MaterializeCSS (FrontEnd). This is the documentation for the API built with ExpressJS.\n\n# Authentication\nA JSONWebToken generated during user signup/signin is required for recipe action routes. This token should be included in the 'authorization' portion of the request headers\n\n# Error Codes\n\n201 - A resource is successfully created (e.g. user account creation or adding a new recipe)\n\n200 - Get resources\n\n400 - Request parameters are invalid\n\n401 - Invalid, expired or excluded token which is required for a request\n\n403 - Voting or reviewing a recipe for a recipe owner\n",
     "version": "1.0"
   },
   "servers": [

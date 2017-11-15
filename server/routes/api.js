@@ -5,7 +5,7 @@ import apiDocs from '../api-docs.json';
 import v1Router from './v1';
 
 const router = express.Router();
-router.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiDocs));
+router.use('/docs', swaggerUI.serve, swaggerUI.setup(apiDocs));
 
 router.use('/', v1Router);
 router.use('/v1', v1Router);
