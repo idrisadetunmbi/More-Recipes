@@ -3,8 +3,6 @@ import express from 'express';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-
-import index from './routes/index';
 import api from './routes/api';
 
 dotenv.config({ path: `${__dirname}/../.env` });
@@ -16,7 +14,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', index);
+if (process.env.NODE_ENV !== 'production') {
+  require('../webpack_devserver_config')(app);
+}
+
 app.use('/api', api);
 
 app.use((req, res, next) => {
