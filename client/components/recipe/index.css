@@ -1,0 +1,38 @@
+.card-image img {
+  height: 250px;
+  padding: 0.5rem;
+}
+
+.card-title {
+  font-size: 19px;
+  font-weight: 500;
+  display: block;
+  display: -webkit-box;
+  margin: 0 auto;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2rem;
+}
+
+.card-content p {
+  display: block;
+  display: -webkit-box;
+  margin: 0 auto;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-action span {
+  margin-right: 1.2rem;
+  color: #444;
+}
+
+.card-action span i {
+  vertical-align: bottom;
+  margin-right: 0.3rem;
+  font-size: 21px;
+}

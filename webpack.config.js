@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: [path.resolve(__dirname, 'client/index.jsx'), 'webpack-hot-middleware/client'],
+  entry: ['babel-polyfill', path.resolve(__dirname, 'client/index.jsx'), 'webpack-hot-middleware/client'],
   devtool: 'inline-source-map',
   plugins: [
     new CleanWebpackPlugin(['dist']),

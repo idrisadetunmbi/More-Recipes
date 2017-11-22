@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import LandingPage from './components/landing_page';
 
-const App = () => (
-  <div>
-    <h1 style={{ fontFamily: 'Roboto' }}>React is live</h1>
-  </div>
-);
-
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<LandingPage />, document.getElementById('app'));
 
 if (module.hot) {
   module.hot.accept();
