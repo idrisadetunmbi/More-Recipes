@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import LandingPage from './components/landing_page';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Root from './components/containers/Root';
+import store from './store';
 
-ReactDOM.render(<LandingPage />, document.getElementById('app'));
+
+ReactDOM.render(
+  <Root store={store} />,
+  document.getElementById('app'),
+);
 
 if (module.hot) {
   module.hot.accept();

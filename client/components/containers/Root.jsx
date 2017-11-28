@@ -1,0 +1,29 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import LandingPage from '../LandingPage';
+import RecipeDetails from '../RecipeDetails';
+import NavBar from '../NavBar';
+
+
+const Root = ({ store }) => (
+  <Provider store={store}>
+    <Router>
+      <div>
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/recipes/:recipeId" component={RecipeDetails} />
+        </Switch>
+      </div>
+    </Router>
+  </Provider>
+);
+
+Root.propTypes = {
+  store: PropTypes.object.isRequired,
+};
+
+export default Root;
