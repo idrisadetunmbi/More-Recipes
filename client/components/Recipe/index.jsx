@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
 import './index.css';
 
-// Sample Recipe Images
-// import SampleRecipeImage1 from './sample_images/sample_recipe_1';
-// import SampleRecipeImage2 from './sample_images/sample_recipe_2';
-// import SampleRecipeImage3 from './sample_images/sample_recipe_3';
-// import SampleRecipeImage4 from './sample_images/sample_recipe_4';
-
 export default class Recipe extends Component {
   state = {
 
   }
-
-  
 
   componentDidMount() {
 

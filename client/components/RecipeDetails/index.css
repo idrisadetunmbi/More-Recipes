@@ -1,0 +1,83 @@
+p {
+  line-height: 2rem
+}
+
+.title {
+  font-family: 'Raleway', sans-serif
+}
+
+#recipe-info {
+  margin-top: 1rem;
+}
+
+.container-section {
+  width: 90%;
+}
+
+.thumbnails img {
+  width: 100%;
+  height: 121px;
+  margin-bottom: 1rem;
+  /* padding: .5rem; */
+}
+
+.thumbnails {
+  padding: 0 1rem;
+}
+
+.vote-actions a {
+  padding: 0 1rem;
+  margin-left: 1rem;
+  background-color: #444;
+}
+
+.vote-actions a i {
+  vertical-align: middle;
+  margin-right: .3rem;
+}
+
+.description-section h5 {
+  font-family: 'Lato';
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.ingredients li i {
+  vertical-align: bottom;
+}
+
+ol {
+  padding: 0;
+}
+
+.review-text {
+  display: block;
+  display: -webkit-box;
+  margin: 0 auto;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Dosis';
+  font-size: 1.2rem;
+}
+
+#review-section h5 {
+  font-size: 1.3rem;
+}
+
+.reviewers-name {
+  display:inline-block;
+  vertical-align:bottom;
+  font-family: 'Open Sans', sans-serif
+}
+
+.modal {
+  width: 40% !important;
+  max-height: 100% !important;
+  overflow-y: hidden !important;
+}
+
+#favorites-icon a {
+  color: #444;
+}

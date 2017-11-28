@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBar from '../nav_bar';
-import RecipeGallery from '../recipe_gallery';
+import NavBar from '../NavBar';
+import RecipeList from '../containers/RecipeList';
 import BannerBackground from './banner_background.jpg';
 import DiscoverIcon from './discover.png';
 import ReviewIcon from './review_icon.png';
@@ -9,7 +9,7 @@ import './index.css';
 const LandingPage = () => (
   <div>
     {/* Navigation Bar Start */}
-    <NavBar />
+    {/* <NavBar /> */}
     {/* Navigation Bar End */}
 
     { /* Banner Section Start */}
@@ -68,7 +68,7 @@ const LandingPage = () => (
     {/* About Section End */}
 
     {/* Recipe gallery start */}
-    <RecipeGallery />
+    <RecipeList />
 
   </div>
 );
