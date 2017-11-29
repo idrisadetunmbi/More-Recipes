@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './index.css';
 import Logo from './logo.jpg';
 
@@ -11,10 +13,21 @@ const NavBar = () => (
         </a>
       </div>
       <ul className="right">
-        <li><a href="catalog.html">Browse Catalog</a></li>
-        <li><a href="./">Sign Up</a></li>
-        <li><a className="modal-trigger" href="./">Sign In</a></li>
-        <li><a id="about-btn" href="./">About</a></li>
+        <li>
+          <a href="#!" className="dropdown-button" data-activates="dropdown">
+            <i style={{ fontSize: '3rem' }} className="large material-icons">
+              account_circle
+              <i style={{ marginLeft: '0px' }} className="material-icons right">arrow_drop_down</i>
+            </i>
+          </a>
+        </li>
+      </ul>
+      <ul id="dropdown" className="dropdown-content">
+        <li>
+          <Link to="/signup">Sign In</Link>
+        </li>
+        <li><a href="#!">two</a></li>
+        <li><a href="#!">three</a></li>
       </ul>
     </div>
   </nav>
