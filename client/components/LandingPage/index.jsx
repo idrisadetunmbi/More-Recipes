@@ -1,5 +1,4 @@
 import React from 'react';
-import NavBar from '../NavBar';
 import RecipeList from '../containers/RecipeList';
 import BannerBackground from './banner_background.jpg';
 import DiscoverIcon from './discover.png';
@@ -8,11 +7,6 @@ import './index.css';
 
 const LandingPage = () => (
   <div>
-    {/* Navigation Bar Start */}
-    {/* <NavBar /> */}
-    {/* Navigation Bar End */}
-
-    { /* Banner Section Start */}
     <div id="index-banner" className="parallax-container">
       <div className="section no-pad-bot">
         <div className="container">
