@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from '../LandingPage';
 import RecipeDetails from '../RecipeDetails';
 import NavBar from '../NavBar';
+import SignUp from '../SignUp';
 
 
 const Root = ({ store }) => (
@@ -15,6 +16,7 @@ const Root = ({ store }) => (
         <NavBar />
         <Switch>
           <Route exact path="/" component={LandingPage} />
+          <Route path="/signup" component={SignUp} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
         </Switch>
       </div>
