@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import recipes from './recipes';
-import { routerReducer } from 'react-router-redux';
+import user from './user';
 
 const rootReducer = combineReducers({
   recipes,
-  router: routerReducer,
+  user,
 });
 
 export default rootReducer;
