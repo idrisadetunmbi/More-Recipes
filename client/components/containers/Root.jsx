@@ -1,25 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import LandingPage from '../LandingPage';
-import RecipeDetails from '../RecipeDetails';
-import NavBar from '../NavBar';
-import SignUp from '../SignUp';
+import App from '../App';
 
 
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router>
-      <div>
-        <NavBar />
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/recipes/:recipeId" component={RecipeDetails} />
-        </Switch>
-      </div>
+      <Route component={App} />
     </Router>
   </Provider>
 );
