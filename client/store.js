@@ -4,13 +4,11 @@ import loggerMiddleware from 'redux-logger';
 
 import rootReducer from './reducers';
 
-const initialState = {
-  recipes: {
-    isFetching: false,
-    error: null,
-    recipes: [],
-  },
-};
+// load initial state from local storage if available
+const cachedStore = JSON.parse(localStorage.getItem('store'));
+const initialState = cachedStore || {};
+
+console.log('initial state', initialState);
 
 const store = createStore(
   rootReducer,
