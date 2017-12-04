@@ -20,6 +20,7 @@ const recipes = (state = {
     case RecipeActions.ERROR_RECIPES_REQUEST:
       return {
         ...state,
+        isFetching: false,
         error: action.error,
       };
     default:
