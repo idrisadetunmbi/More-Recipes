@@ -23,7 +23,7 @@ export default class Authentication extends React.Component {
 
   escKeyPress = (e) => {
     if (e.keyCode === 27) {
-      this.props.history.goBack();
+      this.back(e);
     }
   };
 
