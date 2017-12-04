@@ -1,5 +1,5 @@
 import React from 'react';
-import RecipeList from '../containers/RecipeList';
+import RecipeList from '../RecipeList';
 import BannerBackground from './banner_background.jpg';
 import DiscoverIcon from './discover.png';
 import ReviewIcon from './review_icon.png';
