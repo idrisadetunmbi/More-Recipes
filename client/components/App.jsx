@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LandingPage from './LandingPage';
 import RecipeDetails from './RecipeDetails';
 import NavBar from './NavBar';
 import Authentication from './Authentication';
+import { fetchRecipes } from '../actions/recipes';
 
-export default class App extends Component {
+class App extends React.Component {
 
   // eslint-disable-next-line
   previousLocation = this.props.location
 
+  componentWillMount() {
+    this.props.fetchRecipes();
+  }
+  
   componentWillUpdate(nextProps) {
+    localStorage.setItem('store', JSON.stringify(nextProps.state));
     const { location } = this.props;
     if (
       nextProps.history.action !== 'POP' &&
@@ -42,3 +49,17 @@ export default class App extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchRecipes: () => dispatch(fetchRecipes()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
