@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchRecipes } from '../../actions/recipes';
 
 
 import Recipe from '../Recipe';
 
-export default class RecipeList extends Component {
+class RecipeList extends Component {
   componentWillMount() {
-    this.props.fetchRecipes();
-  }
 
+  }
+  
   render() {
     const { recipes, isFetching, error } = this.props.recipes;
     return (
@@ -26,3 +28,16 @@ export default class RecipeList extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    recipes: state.recipes,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchRecipes: () => dispatch(fetchRecipes()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeList);
