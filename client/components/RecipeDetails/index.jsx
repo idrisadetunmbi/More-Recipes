@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-import NavBar from '../NavBar';
 import './index.css';
 
 // TODO: add more props as might be required
@@ -17,7 +17,6 @@ const RecipeDetails = ({ recipe = {
   ]
 } }) => (
   <div>
-    {/* <NavBar /> */}
     <div className="container-section container">
       <div className="row" id="recipe-info">
         {/* recipe images and action buttons start */}
@@ -28,7 +27,7 @@ const RecipeDetails = ({ recipe = {
           <div>
             {/* <div><span style={{ fontStyle: 'italic', verticalAlign: 'top' }} >Recipe by</span></div> */}
             <i style={{ fontSize: '4rem', margin: '1rem', color: '#444' }} className="material-icons">account_circle</i>
-            <p style={{ display: 'inline-block', verticalAlign: 'top' }} >Recipe Author</p>
+            <p style={{ display: 'inline-block', verticalAlign: 'top' }} >{recipe.author.username}</p>
           </div>
           {/* <div className="divider" style={{}} /> */}
           <div>
@@ -75,7 +74,7 @@ const RecipeDetails = ({ recipe = {
             <h5>Ingredients</h5>
             <ul>
               {
-                recipe.ingredients.map((ingredient, i) => <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
+                recipe.ingredients.split('.').map((ingredient, i) => <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
               }
             </ul>
           </div>
@@ -84,7 +83,7 @@ const RecipeDetails = ({ recipe = {
             <h5>Directions</h5>
             <ol>
               {
-                recipe.directions.map((direction, i) => <li><p>{direction}</p></li>)
+                recipe.directions.split('.').map((direction, i) => <li><p>{direction}</p></li>)
               }
             </ol>
           </div>
@@ -110,4 +109,10 @@ const RecipeDetails = ({ recipe = {
 //   recipe: PropTypes.objectOf().isRequired,
 // };
 
-export default RecipeDetails;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    recipe: state.recipes.recipes.filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
+  };
+};
+
+export default connect(mapStateToProps)(RecipeDetails);
