@@ -7,6 +7,8 @@ import LandingPage from './LandingPage';
 import RecipeDetails from './RecipeDetails';
 import NavBar from './NavBar';
 import Authentication from './Authentication';
+import Catalog from './Catalog';
+
 import { fetchRecipes } from '../actions/recipes';
 
 class App extends React.Component {
@@ -42,6 +44,7 @@ class App extends React.Component {
         <Route component={NavBar} />
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" component={LandingPage} />
+          <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
         </Switch>
         {isModal ? <Route component={Authentication} /> : null }

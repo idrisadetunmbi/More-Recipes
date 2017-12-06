@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import RecipeList from '../RecipeList';
 import BannerBackground from './banner_background.jpg';
 import DiscoverIcon from './discover.png';
@@ -15,7 +17,9 @@ const LandingPage = () => (
             <h5 className="header col blue-grey-text text-darken-4 s12" style={{ fontFamily: 'Raleway', fontStyle: 'italic' }}>We Know You Love to Try New things.... Especially New Tastes</h5>
           </div>
           <div className="center">
-            <a href="." id="download-button" style={{ marginTop: '4em' }} className="btn-browse-catalog btn-large waves-effect waves-light grey darken-4 lighten-1">Browse catalog</a>
+            <a id="btn-browse-catalog" style={{ marginTop: '4em' }} className="btn-large waves-effect waves-light grey darken-4 lighten-1">
+              Browse Catalog
+            </a>
           </div>
         </div>
       </div>
@@ -62,7 +66,14 @@ const LandingPage = () => (
     {/* About Section End */}
 
     {/* Recipe gallery start */}
-    <RecipeList />
+    <div className="divider" style={{ marginLeft: '3em', marginRight: '3em' }} />
+    <div className="section">
+      <h5 style={{ fontFamily: 'Raleway', fontStyle: 'italic', textAlign: 'center' }}>Featured Recipes</h5>
+    </div>
+    <RecipeList style={{ width: '90%' }} gridStyle="l3" />
+    <div className="center" style={{ marginTop: '6em' }}>
+      <Link to="/catalog" className="btn-large waves-effect waves-light grey darken-4 lighten-1">view entire catalog</Link>
+    </div>
 
   </div>
 );

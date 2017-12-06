@@ -26,8 +26,16 @@
         constrainWidth: false,
         // gutter: 20,
         // stopPropagation: true,
-      });  
+      });
+
+      $('#btn-browse-catalog').on('click', function () {
+        console.log('Recipe gallery', $('#recipe-gallery'));
+        $('html, body').animate({
+          scrollTop: $("#recipe-gallery").offset().top-90
+        }, 500);
+      });
     });
+
   </script>
 </body>
 </html>
