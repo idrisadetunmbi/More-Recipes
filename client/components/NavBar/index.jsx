@@ -38,9 +38,7 @@ const NavBar = (props) => {
         
         <ul id="dropdown" className="dropdown-content">
           <li>
-            { props.user.data.token &&
-              <Link to={{pathname: '/signin', state: { modal: true, previousLocation: props.location.pathname }}}>Sign In</Link>
-            }
+            <Link to={linkTo}>{props.user.data.token ? 'My Profile' : 'Sign In'}</Link>
           </li>
         </ul>
 
