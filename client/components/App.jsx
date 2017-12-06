@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import LandingPage from './LandingPage';
@@ -43,7 +43,15 @@ class App extends React.Component {
       <div>
         <Route component={NavBar} />
         <Switch location={isModal ? this.previousLocation : location}>
-          <Route exact path="/" component={LandingPage} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              this.props.state.user.data.token ? (
+                <Redirect to="/catalog" />) :
+                (<LandingPage />)
+            )}
+          />
           <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
         </Switch>
