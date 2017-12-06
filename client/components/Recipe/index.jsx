@@ -11,9 +11,9 @@ export default class Recipe extends Component {
   }
 
   render() {
-    const { recipe } = this.props;
+    const { recipe, gridStyle } = this.props;
     return (
-      <div className="col s12 l3 m4">
+      <div className={`col ${gridStyle}`}>
         <div className="card">
           <div className="card-image">
             <img alt={recipe.title} />

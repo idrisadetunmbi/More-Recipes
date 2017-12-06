@@ -13,15 +13,19 @@ class RecipeList extends Component {
   
   render() {
     const { recipes, isFetching, error } = this.props.recipes;
+    const { style, gridStyle } = this.props;
     return (
       isFetching ?
         <div>Loading Recipe</div> :
-        <div className="row" style={{ width: '90%' }}>
+        <div className="row" id="recipe-gallery" style={style}>
           {
             error ?
               <div className="center">There was an error loading recipes - {error.error}</div> :
               recipes.map(recipe =>
-                <Link key={recipe.id} to={`/recipes/${recipe.id}`}><Recipe key={recipe.id} recipe={recipe} /></Link>)
+                (
+                  <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
+                    <Recipe gridStyle={gridStyle} key={recipe.id} recipe={recipe} />
+                  </Link>))
           }
         </div>
     );
