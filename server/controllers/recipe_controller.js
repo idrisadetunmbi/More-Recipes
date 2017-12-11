@@ -69,14 +69,7 @@ export default class RecipeController {
     }
     return res.status(201).send({
       message: 'Recipe created successfully',
-      data: {
-        ...req.body,
-        id: recipe.id,
-        author: req.user.username,
-        upvotes: recipe.upvotes,
-        favorites: recipe.favorites,
-        createdAt: recipe.createdAt,
-      },
+      data: recipe,
     });
   }
 

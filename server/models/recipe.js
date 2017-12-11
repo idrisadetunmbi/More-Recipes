@@ -33,6 +33,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    images: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+    },
   }, {
     classMethods: {
       associate: (models) => {
