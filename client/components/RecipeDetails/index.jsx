@@ -33,7 +33,7 @@ const RecipeDetails = ({ recipe = {
           <div>
             <div>
               {/* TODO: replace image source */}
-              <img src="" alt={`${recipe.title} - main image`} style={{ marginTop: '1rem', width: '100%', padding: '0rem', minHeight: '250px' }} />
+              <img src="" alt={`${recipe.title} - main`} style={{ marginTop: '1rem', width: '100%', padding: '0rem', minHeight: '250px' }} />
 
               <div className="thumbnails row">
                 {
@@ -74,7 +74,7 @@ const RecipeDetails = ({ recipe = {
             <h5>Ingredients</h5>
             <ul>
               {
-                recipe.ingredients.split('.').map((ingredient, i) => <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
+                recipe.ingredients.split('\n').map((ingredient, i) => <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
               }
             </ul>
           </div>
@@ -83,7 +83,7 @@ const RecipeDetails = ({ recipe = {
             <h5>Directions</h5>
             <ol>
               {
-                recipe.directions.split('.').map((direction, i) => <li><p>{direction}</p></li>)
+                recipe.directions.split('\n').map((direction, i) => <li><p>{direction}</p></li>)
               }
             </ol>
           </div>
