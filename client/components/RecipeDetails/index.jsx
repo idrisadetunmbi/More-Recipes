@@ -25,21 +25,19 @@ const RecipeDetails = ({ recipe = {
           <div className="divider" style={{}} />
           {/* recipe author section */}
           <div>
-            {/* <div><span style={{ fontStyle: 'italic', verticalAlign: 'top' }} >Recipe by</span></div> */}
             <i style={{ fontSize: '4rem', margin: '1rem', color: '#444' }} className="material-icons">account_circle</i>
             <p style={{ display: 'inline-block', verticalAlign: 'top' }} >{recipe.author.username}</p>
           </div>
-          {/* <div className="divider" style={{}} /> */}
           <div>
             <div>
-              {/* TODO: replace image source */}
-              <img src="" alt={`${recipe.title} - main`} style={{ marginTop: '1rem', width: '100%', padding: '0rem', minHeight: '250px' }} />
-
+              <div className="recipe-main-img">
+                <img src={`${recipe.images[0]}`} alt={`${recipe.title} - main`} style={{ width: '100%', maxHeight: '250px' }} />
+              </div>
               <div className="thumbnails row">
                 {
                   // TODO: replace image sources
-                  (new Array(6)).fill(1).map((image, index) =>
-                    <img className="col s6 thumbnails" src="" alt={`thumbnail - ${index}`} />)
+                  (recipe.images.slice(1).map((image, index) =>
+                    <img className="col s6 thumbnails" src="" alt={`thumbnail - ${index}`} />))
                 }
               </div>
             </div>

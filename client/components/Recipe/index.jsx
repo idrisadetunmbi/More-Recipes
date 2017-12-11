@@ -16,7 +16,7 @@ export default class Recipe extends Component {
       <div className={`col ${gridStyle}`}>
         <div className="card">
           <div className="card-image">
-            <img alt={recipe.title} />
+            <img src={`${recipe.images[0]}`} alt={recipe.title} />
           </div>
           <div className="card-content">
             <span className="card-title">{recipe.title}</span>
