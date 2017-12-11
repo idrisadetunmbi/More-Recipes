@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import CreateRecipe from '../CreateRecipe';
 
 export default class Authentication extends React.Component {
 
@@ -39,7 +40,7 @@ export default class Authentication extends React.Component {
             opacity: 1,
             transform: 'scaleX(1)',
             top: '10%',
-            maxHeight: '100% important',
+            maxHeight: '100% !important',
         }}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -49,6 +50,7 @@ export default class Authentication extends React.Component {
                   <Switch>
                     <Route path="/signin" component={SignIn} />
                     <Route path="/signup" component={SignUp} />
+                    <Route path="/recipes/create" component={CreateRecipe} />
                   </Switch>
                 </div>
               </div>

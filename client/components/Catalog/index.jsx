@@ -1,7 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import RecipeList from '../RecipeList';
 
-const Catalog = () => {
+
+const Catalog = (props) => {
   return (
     <div>
       <div id="search-section" className="row" style={{ margin: '3em', marginBottom: '0' }}>
@@ -60,6 +63,15 @@ const Catalog = () => {
           <div className="divider" style={{ marginRight: '3em', marginTop: '2em', marginBottom: '1em' }} />
           <RecipeList style={{ width: '97%', marginLeft: '-0.6em' }} gridStyle="l4" />
         </div>
+      </div>
+
+      <div className="fixed-action-btn">
+        <Link
+          to={{ pathname: '/recipes/create', state: { modal: true, previousLocation: props.location.pathname } }}
+          className="btn-floating btn-large"
+        >
+          <i className="material-icons">add</i>
+        </Link>
       </div>
     </div>
   );
