@@ -8,7 +8,7 @@
     "start": "npm run build && node ./production/bin/www.js",
     "devstart": "nodemon ./server/bin/www --exec babel-node",
     "start:dev": "babel-node ./server/bin/www",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --compilers js:babel-register",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --require babel-register --timeout=4000",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "engines": {
