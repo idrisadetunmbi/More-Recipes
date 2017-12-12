@@ -327,10 +327,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createRecipe: (recipeData) => {
-      console.log('I am called', recipeData);
-      return dispatch(recipeAction('create', recipeData));
-    },
+    createRecipe: recipeData => dispatch(recipeAction('create', recipeData)),
   };
 };
 

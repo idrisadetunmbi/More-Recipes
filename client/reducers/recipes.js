@@ -54,15 +54,29 @@ const recipes = (state = {
         error: action.error,
       };
     case RecipeAction.RECEIVE_RECIPE_ACTION_RESPONSE:
-      return {
-        ...state,
-        recipes: [action.response, ...state.recipes],
-        recipeAction: {
-          ...state.recipeAction,
-          initiated: false,
-          error: null,
-        },
-      };
+      switch (state.recipeAction.type) {
+        case 'create':
+          return {
+            ...state,
+            recipes: [action.response, ...state.recipes],
+            recipeAction: {
+              initiated: false,
+              error: null,
+            },
+          };
+        case 'delete':
+          return {
+            ...state,
+            recipes: state.recipes.filter(recipe => recipe.id !== action.response),
+            recipeAction: {
+              initiated: false,
+              error: null,
+            },
+          };
+        default:
+          break;
+      }
+      break;
     case RecipeAction.INITIATE_RECIPE_ACTION_REQUEST:
     case RecipeAction.ERROR_RECIPE_ACTION_REQUEST:
       return {

@@ -21,9 +21,9 @@ const NavBar = (props) => {
     <nav className="white">
       <ul className="nav-wrapper container">
         <div id="logo-container">
-          <a href="." className="brand-logo">
+          <Link to="/" className="brand-logo">
             <img style={{ height: '56px', verticalAlign: 'middle' }} src={Logo} alt="" />
-          </a>
+          </Link>
         </div>
         <ul className="right">
           <li>

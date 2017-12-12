@@ -24,27 +24,42 @@ export const errorRecipeAction = (error) => {
   };
 };
 
-export const recipeAction = (actionType, recipeData) => (dispatch, getState) => {
-  console.log('I am dispatched too with', actionType, recipeData);
+/**
+ *
+ * @param {string} actionType - one of 'create', 'delete' or 'update'
+ * @param {any} recipeData - an object or a string representing the recipe data
+ * (case - 'create', 'update') or recipe Id
+ */
+export const recipeAction = (actionType, recipeData) => async (dispatch, getState) => {
   dispatch(initiateRecipeActionRequest(actionType));
   const userToken = getState().user.data.token;
+
   switch (actionType) {
-    case 'create':
-      return axios.post(
-        '/api/v1/recipes',
-        recipeData,
-        { headers: { Authorization: `Bearer ${userToken}` } },
-      )
-        .then(
-          (response) => {
-            const createdRecipeId = response.data.data.id;
-            return axios.get(`/api/v1/recipes/${createdRecipeId}`)
-              .then((resp) => {
-                dispatch(receiveRecipeActionResponse(resp.data.data));
-              });
-          },
-          error => dispatch(errorRecipeAction(error.response.data)),
+    case 'create': {
+      let resp;
+      try {
+        resp = await axios.post(
+          '/api/v1/recipes',
+          recipeData,
+          { headers: { Authorization: `Bearer ${userToken}` } },
         );
+        const createdRecipeId = resp.data.data.id;
+        resp = await axios.get(`/api/v1/recipes/${createdRecipeId}`);
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
+    }
+    case 'delete':
+      try {
+        await axios.delete(
+          `/api/v1/recipes/${recipeData}`,
+          { headers: { Authorization: `Bearer ${userToken}` } },
+        );
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      return dispatch(receiveRecipeActionResponse(recipeData));
     default:
       break;
   }
