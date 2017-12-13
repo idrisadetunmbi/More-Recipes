@@ -127,16 +127,6 @@ describe('Recipes routes and actions', () => {
   });
 
   describe('GET /api/recipes/', () => {
-    it('returns error without a user token', (done) => {
-      chai.request(server)
-        .get('/api/recipes')
-        .end((err, res) => {
-          assert.equal(res.statusCode, 401);
-          assert.include(res.body.error, 'please include user token');
-          done();
-        });
-    });
-
     it('returns an array of recipes', (done) => {
       chai.request(server)
         .get('/api/recipes/')
@@ -150,16 +140,6 @@ describe('Recipes routes and actions', () => {
   });
 
   describe('GET /api/recipes/:id/', () => {
-    it('returns error without a user token', (done) => {
-      chai.request(server)
-        .get('/api/recipes/recipeId')
-        .end((err, res) => {
-          assert.equal(res.statusCode, 401);
-          assert.include(res.body.error, 'please include user token');
-          done();
-        });
-    });
-
     it('should return statusCode:400 for an invalid id', (done) => {
       chai.request(server)
         .get('/api/recipes/1/')
@@ -181,6 +161,7 @@ describe('Recipes routes and actions', () => {
           done();
         });
     });
+    
     it('should return 200 for a valid and existing id', (done) => {
       chai.request(server)
         .get(`/api/recipes/${testData.postedRecipeID}/`)
@@ -190,6 +171,7 @@ describe('Recipes routes and actions', () => {
           done();
         });
     });
+    
     it('returns a response with a data property on the body', (done) => {
       chai.request(server)
         .get(`/api/recipes/${testData.postedRecipeID}/`)
