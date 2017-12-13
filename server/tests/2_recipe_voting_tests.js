@@ -312,15 +312,6 @@ describe('Recipe voting review actions', () => {
   });
 
   describe('GET /api/recipes/:recipeId/reviews', () => {
-    it('returns an error without a user token', (done) => {
-      chai.request(server)
-        .get(`/api/recipes/${testData.postedRecipeID}/reviews`)
-        .end((err, res) => {
-          assert.equal(res.statusCode, 401);
-          assert.include(res.body.error, 'please include user token');
-          done();
-        });
-    });
 
     it('returns an error with an invalid recipe id', (done) => {
       chai.request(server)
