@@ -24,15 +24,39 @@ const recipeAction = (state = {
   }
 };
 
+const updateRecipes = (recipes, recipe, actionType) => {
+  let updatedRecipes;
+  switch (actionType) {
+    case 'create':
+      updatedRecipes = [recipe, ...recipes];
+      break;
+    case 'delete': {
+      // in case delete, only recipe id is passed for deletion
+      const recipeId = recipe;
+      updatedRecipes = recipes.filter(element => element.id !== recipeId);
+      break;
+    }
+    case 'update':
+      updatedRecipes = recipes.map((recp) => {
+        if (recp.id === recipe.id) {
+          return recipe;
+        }
+        return recp;
+      });
+      break;
+    default:
+      updatedRecipes = recipes;
+      break;
+  }
+  console.log(updatedRecipes);
+  return updatedRecipes;
+};
+
 const recipes = (state = {
   isFetching: false,
   error: null,
   recipes: [],
-  recipeAction: {
-    // type: null, // create, edit/update or delete
-    // error: null,
-    // initiated: false,
-  },
+  recipeAction: {},
 }, action) => {
   switch (action.type) {
     case Recipes.REQUEST_RECIPES:
@@ -54,29 +78,14 @@ const recipes = (state = {
         error: action.error,
       };
     case RecipeAction.RECEIVE_RECIPE_ACTION_RESPONSE:
-      switch (state.recipeAction.type) {
-        case 'create':
-          return {
-            ...state,
-            recipes: [action.response, ...state.recipes],
-            recipeAction: {
-              initiated: false,
-              error: null,
-            },
-          };
-        case 'delete':
-          return {
-            ...state,
-            recipes: state.recipes.filter(recipe => recipe.id !== action.response),
-            recipeAction: {
-              initiated: false,
-              error: null,
-            },
-          };
-        default:
-          break;
-      }
-      break;
+      return {
+        ...state,
+        recipeAction: {
+          initiated: false,
+          error: null,
+        },
+        recipes: updateRecipes(state.recipes, action.recipe, state.recipeAction.type),
+      };
     case RecipeAction.INITIATE_RECIPE_ACTION_REQUEST:
     case RecipeAction.ERROR_RECIPE_ACTION_REQUEST:
       return {

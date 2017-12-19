@@ -9,10 +9,10 @@ export const initiateRecipeActionRequest = (actionType) => {
 };
 
 export const RECEIVE_RECIPE_ACTION_RESPONSE = 'RECEIVE_RECIPE_ACTION_RESPONSE';
-export const receiveRecipeActionResponse = (response) => {
+export const receiveRecipeActionResponse = (recipe) => {
   return {
     type: RECEIVE_RECIPE_ACTION_RESPONSE,
-    response,
+    recipe,
   };
 };
 
@@ -48,8 +48,9 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      return dispatch(receiveRecipeActionResponse(resp.data.data));
+      dispatch(receiveRecipeActionResponse(resp.data.data));
     }
+      break;
     case 'delete':
       try {
         await axios.delete(
@@ -59,7 +60,24 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      return dispatch(receiveRecipeActionResponse(recipeData));
+      dispatch(receiveRecipeActionResponse(recipeData));
+      break;
+    case 'update': {
+      let resp;
+      try {
+        resp = await axios.put(
+          `/api/v1/recipes/${recipeData.id}`,
+          recipeData,
+          { headers: { Authorization: `Bearer ${userToken}` } },
+        );
+        resp = await axios.get(`/api/v1/recipes/${recipeData.id}`);
+      } catch (error) {
+        console.log('An error occured while updating recipe', error);
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      dispatch(receiveRecipeActionResponse(resp.data.data));
+    }
+      break;
     default:
       break;
   }
