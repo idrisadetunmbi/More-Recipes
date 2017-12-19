@@ -1,8 +1,11 @@
-[![Build Status](https://travis-ci.org/idrisadetunmbi/More-Recipes.svg?branch=server-development)](https://travis-ci.org/idrisadetunmbi/More-Recipes) [![Coverage Status](https://coveralls.io/repos/github/idrisadetunmbi/More-Recipes/badge.svg?branch=server-development)](https://coveralls.io/github/idrisadetunmbi/More-Recipes?branch=server-development) [![Maintainability](https://api.codeclimate.com/v1/badges/a5634122fa0eb6fe9aff/maintainability)](https://codeclimate.com/github/idrisadetunmbi/More-Recipes/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/a5634122fa0eb6fe9aff/test_coverage)](https://codeclimate.com/github/idrisadetunmbi/More-Recipes/test_coverage)
+[![Build Status](https://travis-ci.org/idrisadetunmbi/More-Recipes.svg?branch=development)](https://travis-ci.org/idrisadetunmbi/More-Recipes) [![Coverage Status](https://coveralls.io/repos/github/idrisadetunmbi/More-Recipes/badge.svg?branch=server-development)](https://coveralls.io/github/idrisadetunmbi/More-Recipes?branch=server-development) [![Maintainability](https://api.codeclimate.com/v1/badges/a5634122fa0eb6fe9aff/maintainability)](https://codeclimate.com/github/idrisadetunmbi/More-Recipes/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/a5634122fa0eb6fe9aff/test_coverage)](https://codeclimate.com/github/idrisadetunmbi/More-Recipes/test_coverage)
 
 # More-Recipes
 
-A recipe management web app for lovers of new tastes.
+_The social network web app for lovers of new tastes... We know you love to try new things, especially new tastes._
+
+This platform allows users to share thier food recipe discoveries with other users. Users can create new recipes (along with tantalizing images of course) and it will be available to other users to try out, vote, favorite and review.
+
 
 ### State - _Active Development_
 
@@ -48,59 +51,11 @@ A demo of the front end is hosted on Github Pages and is available at [More-Reci
 
 API (still under development) is hosted on Heroku and can be accessed through [More-Recipes API](https://emorerecipes.herokuapp.com)
 
-```
-# User Signup
-POST /api/users/signup
-
-# User Signin
-POST /api/users/signin
-
-POST
-# API root
-GET /api/
-
-# Get all recipes
-GET /api/recipes
-
-# Add a new recipe
-POST /api/recipes
-
-# Get a recipe
-GET /api/recipes/<recipeId>
-
-# Modify a recipe
-PUT /api/recipes/<recipeId>
-
-# Delete a recipe
-DELETE /api/recipes/<recipeId>
-
-# Add review for a recipe
-POST /api/recipes/<recipeId>/reviews
-
-# Retrieve reviews for a recipe
-GET /api/recipes/<recipeId>/reviews
-
-# Retrieve recipes sorted by upvotes
-GET /api/recipes?sort=upvotes&order=desc
-
-# Rate a recipe
- # upvote a recipe
-POST /api/recipes/recipeId?action=upvote
-
- # downvote a recipe
-POST /api/recipes/recipeId?action=downvote
-
- # favorite a recipe
-POST /api/recipes/recipeId?action=favorite
-
-# Get User favorite recipes
-GET /api/users/userId/recipes
-
-```
+API DOCS (showing available routes) is available at [More-Recipes API DOCS](https://emorerecipes.herokuapp.com/api/docs/)
 
 ## Running the tests
 
-Tests have been configured to run with Mocha
+Tests have been configured to run with Mocha.
 ```
 npm run test
 ```
@@ -117,7 +72,14 @@ npm run build
 * [ExpressJS](https://expressjs.com/) - The web framework used
 * [Materialize CSS](materializecss.com) - Templates/FE development
 
-
 ## Versioning
 
 API currently defaults to version 1. You can prepend `/v1/` to listed routes,e.g. `/api/v1/users/signup`
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details and process for submitting pull requests.
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT)
