@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import './index.css';
 import Logo from './logo.jpg';
+import { signOutUser } from '../../actions/user';
 
 const NavBar = (props) => {
   const linkTo = props.user.data.token ?
@@ -35,12 +36,29 @@ const NavBar = (props) => {
             </Link>
           </li>
         </ul>
-        
-        <ul id="dropdown" className="dropdown-content">
-          <li>
-            <Link to={linkTo}>{props.user.data.token ? 'My Profile' : 'Sign In'}</Link>
-          </li>
-        </ul>
+
+        {
+          props.user.data.token ?
+            <ul id="dropdown" className="dropdown-content">
+              <li>
+                <Link to="/user">My Profile</Link>
+                <a onClick={props.signOutUser}>Sign Out</a>
+              </li>
+            </ul> :
+            <ul id="dropdown" className="dropdown-content">
+              <li>
+                <Link to={{
+                  pathname: '/signin',
+                  state: {
+                    modal: true,
+                    previousLocation: props.location.pathname,
+                  },
+                }}
+                >Sign In
+                </Link>
+              </li>
+            </ul>
+        }
 
       </ul>
     </nav>
@@ -53,4 +71,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(NavBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOutUser: () => dispatch(signOutUser()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

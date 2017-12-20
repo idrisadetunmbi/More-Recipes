@@ -90,7 +90,7 @@ const DetailsView = (props) => {
       </div>
       
       {
-        user.data.id === recipe.authorId &&
+        user.data.token && user.data.id === recipe.authorId &&
         (
         <div className="fixed-action-btn">
           <a className="btn-floating btn-large">

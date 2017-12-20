@@ -24,6 +24,14 @@ const user = (state = {
         authError: action.error,
         data: {},
       };
+    case UserAuthActions.REMOVE_USER_TOKEN:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          token: null,
+        },
+      };
     default:
       return state;
   }

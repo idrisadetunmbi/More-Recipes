@@ -23,6 +23,13 @@ export const errorAuthRequest = (error) => {
   };
 };
 
+export const REMOVE_USER_TOKEN = 'REMOVE_USER_TOKEN';
+export const signOutUser = () => {
+  return {
+    type: REMOVE_USER_TOKEN,
+  };
+};
+
 export const userAuthRequest = (userData, authType) => (dispatch) => {
   dispatch(initiateAuthRequest());
   return axios.post(`/api/v1/users/${authType}`, userData)
