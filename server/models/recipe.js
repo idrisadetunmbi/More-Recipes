@@ -29,6 +29,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    downvotes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     favorites: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
@@ -47,7 +51,7 @@ export default (sequelize, DataTypes) => {
   Recipe.associate = (models) => {
     Recipe.belongsTo(models.user, { as: 'author', foreignKey: 'authorId' });
     Recipe.belongsToMany(models.user, { as: 'favoritedUsers', through: 'favorites' });
-    Recipe.belongsToMany(models.user, { as: 'upvotedUsers', through: 'upvotes' });
+    Recipe.belongsToMany(models.user, { as: 'votedUsers', through: 'votes' });
     Recipe.belongsToMany(models.user, { as: 'userReviews', through: models.review });
     Recipe.hasMany(models.review);
   };

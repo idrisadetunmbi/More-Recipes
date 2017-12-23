@@ -2,6 +2,7 @@ import validate, { validationResult } from 'express-validator/check';
 import models from '../models';
 
 const RecipeModel = models.recipe;
+const VoteModel = models.vote;
 
 export default class RecipeController {
   /**
@@ -43,8 +44,8 @@ export default class RecipeController {
   ];
 
   voteRecipeValidationCheck = [
-    validate.query('action', 'please specify an action (upvote or favorite) for this method')
-      .isIn(['upvote', 'favorite']).trim(),
+    validate.query('action', 'please specify an action (one of "upvote", "downvote" or "favorite") for this method')
+      .isIn(['upvote', 'favorite', 'downvote']).trim(),
   ];
 
   /**
@@ -231,7 +232,6 @@ export default class RecipeController {
     }
 
     let recipeIsUsersFavorite;
-    let userHasUpvotedRecipe;
     switch (req.query.action) {
       case 'favorite':
         recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
@@ -251,24 +251,84 @@ export default class RecipeController {
         return res.status(200).send({
           message: 'recipe has been added as favorite',
         });
-      case 'upvote':
-        userHasUpvotedRecipe = await user.hasUpvotedRecipe(recipe);
-        if (userHasUpvotedRecipe) {
-          await user.removeUpvotedRecipe(recipe);
-          recipe.update({
-            upvotes: recipe.upvotes - 1,
+      case 'upvote': {
+        const userHasVotedRecipe = await user
+          .hasVotedRecipe(recipe);
+        if (!userHasVotedRecipe) {
+          VoteModel.create({
+            userId: user.id,
+            recipeId: recipe.id,
+            type: 'upvote',
           });
+          recipe.increment('upvotes');
           return res.status(200).send({
-            message: 'upvote on recipe has been removed',
+            message: 'recipe has been upvoted successfully',
           });
         }
-        await user.addUpvotedRecipe(recipe);
-        recipe.update({
-          upvotes: recipe.upvotes + 1,
+        const voteRecord = await VoteModel.findOne({
+          where: {
+            recipeId: recipe.id,
+            userId: user.id,
+          },
         });
-        return res.status(200).send({
-          message: 'recipe has been upvoted',
+        if (voteRecord.type === 'upvote') {
+          await user.removeVotedRecipe(recipe);
+          recipe.decrement('upvotes');
+          return res.status(200).send({
+            message: 'upvote has been removed on recipe',
+          });
+        }
+        if (voteRecord.type === 'downvote') {
+          await voteRecord.update({
+            type: 'upvote',
+          });
+          recipe.increment('upvotes');
+          recipe.decrement('downvotes');
+          return res.status(200).send({
+            message: 'recipe has been upvoted successfully',
+          });
+        }
+      }
+        break;
+      case 'downvote': {
+        const userHasVotedRecipe = await user
+          .hasVotedRecipe(recipe);
+        if (!userHasVotedRecipe) {
+          VoteModel.create({
+            userId: user.id,
+            recipeId: recipe.id,
+            type: 'downvote',
+          });
+          recipe.increment('downvotes');
+          return res.status(200).send({
+            message: 'recipe has been downvoted successfully',
+          });
+        }
+        const voteRecord = await VoteModel.findOne({
+          where: {
+            recipeId: recipe.id,
+            userId: user.id,
+          },
         });
+        if (voteRecord.type === 'downvote') {
+          await user.removeVotedRecipe(recipe);
+          recipe.decrement('downvote');
+          return res.status(200).send({
+            message: 'downvote has been removed on recipe',
+          });
+        }
+        if (voteRecord.type === 'upvote') {
+          await voteRecord.update({
+            type: 'downvote',
+          });
+          recipe.decrement('upvotes');
+          recipe.increment('downvotes');
+          return res.status(200).send({
+            message: 'recipe has been downvoted successfully',
+          });
+        }
+      }
+        break;
       default:
         break;
     }

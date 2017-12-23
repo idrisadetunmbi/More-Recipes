@@ -2,7 +2,17 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('upvotes', {
+    return queryInterface.createTable('votes', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      type: {
+        type: Sequelize.ENUM,
+        values: ['upvote', 'downvote'],
+      },
       userId: {
         type: Sequelize.UUID,
         references: {
@@ -34,6 +44,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('upvotes');
+    return queryInterface.dropTable('votes');
   },
 };
