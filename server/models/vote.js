@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const vote = sequelize.define('vote', {
     type: {
       type: DataTypes.ENUM,
