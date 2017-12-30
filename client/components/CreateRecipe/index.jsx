@@ -5,6 +5,7 @@ import validator from 'validator';
 
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { recipeAction } from '../../actions/recipe';
+import { showToast } from '../../utils';
 
 
 class CreateRecipe extends React.Component {
@@ -26,16 +27,6 @@ class CreateRecipe extends React.Component {
   }
 
   // eslint-disable-next-line
-  generateFileArrayFromFileList = (files) => {
-    const fileArray = [];
-    for (let i = 0; i < files.length; i += 1) {
-      const file = files[i];
-      fileArray.push(file);
-    }
-    return fileArray;
-  }
-
-  // eslint-disable-next-line
   onChange = (e) => {
     const inputFieldName = e.target.name;
     this.setState({
@@ -44,13 +35,14 @@ class CreateRecipe extends React.Component {
         images: '',
       },
     });
+    // refers to first image upload, i.e. clicking the 'add images' input field
     if (inputFieldName === 'images upload') {
-      const fileArray = this.generateFileArrayFromFileList(e.target.files);
+      const fileArray = Array.from(e.target.files);
       this.setState({ imagesSelected: fileArray });
       return;
     }
     if (inputFieldName === 'add more images') {
-      const fileArray = this.generateFileArrayFromFileList(e.target.files);
+      const fileArray = Array.from(e.target.files);
       const selectedImagesNames = this.state.imagesSelected.map(image => image.name);
       const newImages = fileArray.filter(file => !selectedImagesNames.includes(file.name));
       this.setState({ imagesSelected: [...this.state.imagesSelected, ...newImages] });
@@ -78,12 +70,12 @@ class CreateRecipe extends React.Component {
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              title: 'invalid title - must be longer than 5 characters',
+              title: 'please include a title with at least 5 characters',
             },
           });
         } else {
-          this.setState({ title: inputFieldValue });
           this.setState({
+            title: inputFieldValue,
             fieldErrors: {
               ...this.state.fieldErrors,
               title: '',
@@ -104,8 +96,8 @@ class CreateRecipe extends React.Component {
             },
           });
         } else {
-          this.setState({ [inputFieldName]: inputFieldValue });
           this.setState({
+            [inputFieldName]: inputFieldValue,
             fieldErrors: {
               ...this.state.fieldErrors,
               [inputFieldName]: '',
@@ -128,24 +120,27 @@ class CreateRecipe extends React.Component {
       });
       return;
     }
+    // if any of the input field errors has not been corrected
     if (
       !(Object.values(this.state.fieldErrors).every(val => val.length === 0))
     ) {
       return;
     }
-    if (this.state.uploadedImageUrls.length === 0) { // prevent image upload duplication
+    // upload images if only they had not been previously uploaded
+    // this can only occur if there was error from the server the
+    // first time the user tried to create the recipe
+    if (this.state.uploadedImageUrls.length === 0) {
       const imageUploadURLS = this.generateImageUploadURLS(this.state.imagesSelected);
       await this.sendImagesToCloudinary(imageUploadURLS);
     } else {
       // TODO: Check if new images have been added to this.state.imagesSelected
       // compare already uploaded images to new images
     }
+    const {
+      title, description, ingredients, directions, uploadedImageUrls,
+    } = this.state;
     const recipeData = {
-      title: this.state.title,
-      description: this.state.description,
-      ingredients: this.state.ingredients,
-      directions: this.state.directions,
-      images: this.state.uploadedImageUrls,
+      title, description, ingredients, directions, images: uploadedImageUrls,
     };
     this.props.createRecipe(recipeData);
   }
@@ -182,13 +177,15 @@ class CreateRecipe extends React.Component {
     });
   }
 
+  // eslint-disable-next-line
   componentWillReceiveProps(nextProps) {
     const { initiated, error } = nextProps.recipeAction;
     if (initiated) {
       return;
     }
     if (error) {
-      console.log('error adding recipe', error);
+      showToast(`error creating recipe - ${error}`);
+      return;
     }
     this.props.history.goBack();
   }
@@ -302,8 +299,21 @@ class CreateRecipe extends React.Component {
 }
 
 const UploadingOverlay = () => (
-  <div style={{ background: '#000', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1002, opacity: 0.5 }}>
-    <div style={{ position: 'absolute', top: '33%', left: '36%' }} className="preloader-wrapper active">
+  <div style={{
+    background: '#000',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 1002,
+    opacity: 0.5,
+    }}
+  >
+    <div
+      style={{ position: 'absolute', top: '33%', left: '36%' }}
+      className="preloader-wrapper active"
+    >
       <div className="spinner-layer spinner-green-only">
         <div className="circle-clipper left">
           <div className="circle" />

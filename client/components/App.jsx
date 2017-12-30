@@ -6,22 +6,21 @@ import { connect } from 'react-redux';
 import LandingPage from './LandingPage';
 import RecipeDetails from './RecipeDetails';
 import NavBar from './NavBar';
-import Authentication from './Authentication';
+import Modal from './Modal';
 import Catalog from './Catalog';
 
 import { fetchRecipes } from '../actions/recipes';
 
-class App extends React.Component {
-
+class App extends Component {
   // eslint-disable-next-line
   previousLocation = this.props.location
 
   componentWillMount() {
     this.props.fetchRecipes();
   }
-  
+
   componentWillUpdate(nextProps) {
-    localStorage.setItem('store', JSON.stringify(nextProps.state));
+    localStorage.setItem('user', JSON.stringify(nextProps.user));
     const { location } = this.props;
     if (
       nextProps.history.action !== 'POP' &&
@@ -47,7 +46,7 @@ class App extends React.Component {
             exact
             path="/"
             render={() => (
-              this.props.state.user.data.token ? (
+              this.props.user.data.token ? (
                 <Redirect to="/catalog" />) :
                 (<LandingPage />)
             )}
@@ -55,7 +54,7 @@ class App extends React.Component {
           <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
         </Switch>
-        {isModal ? <Route component={Authentication} /> : null }
+        {isModal ? <Route component={Modal} /> : null }
       </div>
     );
   }
@@ -63,7 +62,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    state,
+    user: state.user,
   };
 };
 

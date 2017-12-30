@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import { userAuthRequest } from '../../../actions/user';
+import { userAuthRequest } from '../../actions/user';
+import { showToast } from '../../utils';
 
 class SignIn extends React.Component {
   state = {
@@ -93,6 +94,7 @@ class SignIn extends React.Component {
       // eslint-disable-next-line
       this.setState({ authError: error });
     } else {
+      showToast('You are now signed in!!!');
       this.props.history.replace(this.props.location.state.previousLocation);
     }
   }

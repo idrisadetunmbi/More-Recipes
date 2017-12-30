@@ -20,3 +20,5 @@ export const sendImagesToCloudinary = (imageUploadURLS) => {
     });
   });
 };
+
+export const showToast = message => Materialize.toast(message, 2000);

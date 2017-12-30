@@ -35,8 +35,18 @@ const DetailsView = (props) => {
               {/* TODO: wire actions to onClicks of the action buttons */}
               <div>
                 <div className="vote-actions">
-                  <a style={{ marginLeft: '0' }} href="." className="btn waves-ripple"><i className="material-icons">thumb_up</i><span>{recipe.upvotes}</span></a>
-                  <a href="." className="btn waves-ripple"><i className="material-icons">favorite</i><span>{recipe.favorites}</span></a>
+                  <a style={{ marginLeft: '0' }} href="." className="btn waves-ripple">
+                    <i className="material-icons">thumb_up</i>
+                    <span>{recipe.upvotes}</span>
+                  </a>
+                  <a href="." className="btn waves-ripple">
+                    <i className="material-icons">thumb_down</i>
+                    <span>{recipe.downvotes}</span>
+                  </a>
+                  <a href="." className="btn waves-ripple">
+                    <i className="material-icons">favorite</i>
+                    <span>{recipe.favorites}</span>
+                  </a>
                 </div>
 
                 <div id="favorites-icon" style={{ marginLeft: '0', marginTop: '2rem' }}>

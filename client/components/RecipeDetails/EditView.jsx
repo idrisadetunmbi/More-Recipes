@@ -4,7 +4,7 @@ import deepEqual from 'deep-equal';
 
 import './index.css';
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
-import { generateImageUploadURLS, sendImagesToCloudinary } from '../../utils/utils';
+import { generateImageUploadURLS, sendImagesToCloudinary } from '../../utils';
 
 // TODO: add more props as might be required
 class EditView extends Component {

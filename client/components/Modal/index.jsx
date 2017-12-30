@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from '../SignIn';
+import SignUp from '../SignUp';
 import CreateRecipe from '../CreateRecipe';
 
 export default class Authentication extends React.Component {

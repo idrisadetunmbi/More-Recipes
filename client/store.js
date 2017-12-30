@@ -4,15 +4,15 @@ import loggerMiddleware from 'redux-logger';
 
 import rootReducer from './reducers';
 
-// load initial state from local storage if available
-const cachedStore = JSON.parse(localStorage.getItem('store'));
-const initialState = cachedStore || {};
+// load initial user data from local storage if available
+const cachedUserData = JSON.parse(localStorage.getItem('user'))
+  || { data: {} };
 
-console.log('initial state', initialState);
+console.log('initial user data', cachedUserData);
 
 const store = createStore(
   rootReducer,
-  initialState,
+  { user: cachedUserData },
   applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 

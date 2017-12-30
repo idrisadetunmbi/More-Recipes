@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import { userAuthRequest } from '../../../actions/user';
+import { userAuthRequest } from '../../actions/user';
+import { showToast } from '../../utils';
 
 class SignUp extends React.Component {
   state = {
@@ -139,6 +140,7 @@ class SignUp extends React.Component {
         this.setState({ fieldError: { ...this.state.fieldError, username: 'username has been taken' } }) :
         this.setState({ fieldError: { ...this.state.fieldError, email: 'this email is already registered' } })
     } else {
+      showToast('You have signed up successfully!!!');
       this.props.history.replace(this.props.location.state.previousLocation);
     }
   }
