@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './index.css';
 import Logo from './logo.jpg';
 import { signOutUser } from '../../actions/user';
+import './index.scss';
 
 const NavBar = (props) => {
   const linkTo = props.user.data.token ?
@@ -19,11 +19,11 @@ const NavBar = (props) => {
 
 
   return (
-    <nav className="white">
+    <nav className="white" id="navbar-component">
       <ul className="nav-wrapper container">
         <div id="logo-container">
-          <Link to="/" className="brand-logo">
-            <img style={{ height: '56px', verticalAlign: 'middle' }} src={Logo} alt="" />
+          <Link to="/catalog" className="brand-logo">
+            <img src={Logo} alt="navbar logo" />
           </Link>
         </div>
         <ul className="right">

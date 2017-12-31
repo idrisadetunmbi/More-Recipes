@@ -1,0 +1,129 @@
+.recipe-details-component {
+  p {
+    line-height: 2rem
+  }
+
+  #recipe-author-section {
+    i {
+      font-size: 4rem;
+      margin: 1rem;
+      color: #444;
+    };
+    p {
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+  
+  .title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.64rem
+  }
+  
+  #recipe-info {
+    margin-top: 1rem;
+  }
+  
+  .container-section {
+    width: 90%;
+  }
+  
+  #thumbnails-row img {
+    height: 121px;
+    margin-bottom: 1rem;
+    padding: .5rem;
+  }
+  
+  #thumbnails-row {
+    padding: 0 1rem;
+    margin-top: 1rem;
+  }
+  
+  .vote-actions a {
+    padding: 0 1rem;
+    margin-left: 1rem;
+    background-color: #444;
+  }
+  
+  .vote-actions a i {
+    vertical-align: middle;
+    margin-right: .3rem;
+  }
+  
+  .description-section {
+    margin-left: 3rem;
+    margin-top: 3rem;
+    h5 {
+      font-family: 'Lato';
+      font-style: italic;
+      font-size: 1.5rem;
+    }
+  }
+  
+  .ingredients li i {
+    vertical-align: bottom;
+  }
+  
+  ol {
+    padding: 0;
+  }
+  
+  .review-text {
+    display: block;
+    display: -webkit-box;
+    margin: 0 auto;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Dosis';
+    font-size: 1.2rem;
+  }
+  
+  #review-section {
+    h5 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-family: 'Raleway';
+      font-style: 'normal';
+    }
+  }
+  
+  .reviewers-name {
+    display:inline-block;
+    vertical-align:bottom;
+    font-family: 'Open Sans', sans-serif
+  }
+  
+  .modal {
+    width: 40% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+  }
+  
+  #favorites-icon {
+    margin-left: 0;
+    margin-top: 2rem;
+    a {
+      color: #444;
+    };
+    p {
+      font-size: 18px;
+      margin-left: 2rem;
+    }
+  }
+  
+  .recipe-main-img {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    padding: .5rem;
+    img {
+      width: 100%;
+      max-height: 250px;
+    }
+  }
+  
+  textarea {
+    margin-bottom: '0'
+  }
+}

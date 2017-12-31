@@ -6,6 +6,7 @@ import validator from 'validator';
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { recipeAction } from '../../actions/recipe';
 import { showToast } from '../../utils';
+import './index.scss';
 
 
 class CreateRecipe extends React.Component {
@@ -92,7 +93,7 @@ class CreateRecipe extends React.Component {
           this.setState({
             fieldErrors: {
               ...this.state.fieldErrors,
-              [inputFieldName]: `invalid ${inputFieldName} - must be longer than 5 characters`,
+              [inputFieldName]: `please include a ${inputFieldName}`,
             },
           });
         } else {
@@ -196,74 +197,68 @@ class CreateRecipe extends React.Component {
     } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit} style={{ paddingBottom: '3rem' }}>
-        <div style={{ marginTop: '3rem', marginBottom: '1rem' }}>
-          <h5 style={{ fontFamily: 'Raleway' }}>Add a New Recipe</h5>
+      <form onSubmit={this.onSubmit} id="create-recipe-component">
+        <div id="title">
+          <h5>Add a New Recipe</h5>
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="title">Title</label>
-          <input required name="title" style={{ marginBottom: '0' }} type="text" onBlur={this.onBlur} onFocus={this.onFocus} />
-          {fieldErrors.title.length > 0 && <span style={{ color: 'red' }}>{fieldErrors.title}</span>}
+          <input required name="title" type="text" onBlur={this.onBlur} onFocus={this.onFocus} />
+          {fieldErrors.title.length > 0 && <span>{fieldErrors.title}</span>}
         </div>
 
         <div className="input-field" style={{ marginBottom: '20px' }}>
           <label htmlFor="description">Description</label>
           <textarea
             className="materialize-textarea"
-            // value={description}
             onFocus={this.onFocus}
-            style={{ marginBottom: '0' }}
             required
             name="description"
             onBlur={this.onBlur}
           />
-          {fieldErrors.description.length > 0 && <span style={{ color: 'red' }}>{fieldErrors.description}</span>}
+          {fieldErrors.description.length > 0 && <span>{fieldErrors.description}</span>}
         </div>
       
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label className="active" htmlFor="ingredients">Ingredients</label>
           <textarea
             placeholder="Each ingredient should go on a new line"
             className="materialize-textarea"
-            // value={ingredients}
             onFocus={this.onFocus}
-            style={{ marginBottom: '0' }}
             required
             name="ingredients"
             onBlur={this.onBlur}
           />
-          {fieldErrors.ingredients.length > 0 && <span style={{ color: 'red' }}>{fieldErrors.ingredients}</span>}
+          {fieldErrors.ingredients.length > 0 && <span>{fieldErrors.ingredients}</span>}
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label className="active" htmlFor="directions">Directions</label>
           <textarea
             placeholder="new direction should go on a new line"
             className="materialize-textarea"
-            // value={directions}
             onFocus={this.onFocus}
-            style={{ marginBottom: '0' }}
             required
             name="directions"
             onBlur={this.onBlur}
           />
-          {fieldErrors.directions.length > 0 && <span style={{ color: 'red' }}>{fieldErrors.directions}</span>}
+          {fieldErrors.directions.length > 0 && <span>{fieldErrors.directions}</span>}
         </div>
 
         {
           imagesSelected.length === 0 ?
           (
-            <div style={{ border: '.5px dashed gray', marginBottom: '1rem' }} className="col s12 file-field input-field center">
-              <img style={{ marginTop: '2rem', height: '2.5rem' }} alt="add recipe" src={IconAddRecipe} />
+            <div id="add-image-section" className="col s12 file-field input-field center">
+              <img alt="add recipe" src={IconAddRecipe} />
               <input type="file" accept=".jpg, .jpeg, .png" name="images upload" multiple onChange={this.onChange} />
-              <p style={{ fontSize: '1.3rem', opacity: '0.7', textAlign: 'center', fontFamily: 'Raleway' }}>Add images</p>
-              {fieldErrors.images.length > 0 && <span style={{ color: 'red' }}>{fieldErrors.images}</span>}
+              <p>Add images</p>
+              {fieldErrors.images.length > 0 && <span>{fieldErrors.images}</span>}
             </div>
           ) :
           (
             <div>
-              <div style={{ position: 'relative', border: '.5px dashed gray', padding: '.5rem 0', textAlign: 'center' }} className="col s12">
+              <div id="image-preview-section" className="col s12">
                 {
                   this.state.isUploadingImages && <UploadingOverlay />
                 }
@@ -271,9 +266,9 @@ class CreateRecipe extends React.Component {
                   imagesSelected.map((image, i) => {
                     const preview = window.URL.createObjectURL(image);
                     return (
-                      <div key={`${image.name}`} style={{ width: '50%', display: 'inline-block', padding: '.5rem' }}>
-                        <img src={preview} alt="" style={{ width: '100%' }} />
-                        <span style={{ cursor: 'pointer', opacity: '0.5' }} onClick={() => this.removeImage(`${image.name}`)}>
+                      <div id="image-preview" key={`${image.name}`}>
+                        <img src={preview} alt="" />
+                        <span onClick={() => this.removeImage(`${image.name}`)}>
                           <i className="material-icons">cancel</i>
                         </span>
                       </div>
@@ -281,16 +276,23 @@ class CreateRecipe extends React.Component {
                   })
                 }
               </div>
-              <div style={{ border: '.5px dashed gray', padding: '1rem', marginBottom: '1rem' }} className="col s12 file-field input-field center">
-                <img style={{ height: '2.5rem' }} alt="add recipe" src={IconAddRecipe} />
-                <input disabled={this.state.isUploadingImages} type="file" accept=".jpg, .jpeg, .png" name="add more images" multiple onChange={this.onChange} />
-                <span style={{ fontSize: '1.3rem', opacity: '0.7', verticalAlign: 'super', marginLeft: '1rem', fontFamily: 'Raleway' }}>Add more</span>
+              <div id="add-more-images" className="col s12 file-field input-field center">
+                <img alt="add recipe" src={IconAddRecipe} />
+                <input
+                  disabled={this.state.isUploadingImages}
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  name="add more images"
+                  multiple
+                  onChange={this.onChange}
+                />
+                <span>Add more</span>
               </div>
             </div>
           )
         }
         <div>
-          <button disabled={this.state.isUploadingImages} className="btn-large waves-effect waves-light" style={{ textTransform: 'none', width: '100%', backgroundColor: '#444' }}>SUBMIT</button>
+          <button disabled={this.state.isUploadingImages} className="btn-large waves-effect waves-light">SUBMIT</button>
           {this.props.recipeAction.initiated && <div className="progress"><div className="indeterminate" /></div>}
         </div>
       </form>
@@ -299,21 +301,8 @@ class CreateRecipe extends React.Component {
 }
 
 const UploadingOverlay = () => (
-  <div style={{
-    background: '#000',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 1002,
-    opacity: 0.5,
-    }}
-  >
-    <div
-      style={{ position: 'absolute', top: '33%', left: '36%' }}
-      className="preloader-wrapper active"
-    >
+  <div id="uploading-overlay">
+    <div className="preloader-wrapper active">
       <div className="spinner-layer spinner-green-only">
         <div className="circle-clipper left">
           <div className="circle" />

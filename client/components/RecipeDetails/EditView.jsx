@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import validator from 'validator';
 import deepEqual from 'deep-equal';
 
-import './index.css';
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { generateImageUploadURLS, sendImagesToCloudinary } from '../../utils';
 

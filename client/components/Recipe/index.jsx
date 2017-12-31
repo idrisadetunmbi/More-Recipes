@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+import './index.scss';
 
 export default class Recipe extends Component {
   state = {
@@ -13,7 +13,7 @@ export default class Recipe extends Component {
   render() {
     const { recipe, gridStyle } = this.props;
     return (
-      <div className={`col ${gridStyle}`}>
+      <div id="recipe-card-component" className={`col ${gridStyle}`}>
         <div className="card">
           <div className="card-image">
             <img src={`${recipe.images[0]}`} alt={recipe.title} />

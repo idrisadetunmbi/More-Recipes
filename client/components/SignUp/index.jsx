@@ -5,6 +5,7 @@ import validator from 'validator';
 
 import { userAuthRequest } from '../../actions/user';
 import { showToast } from '../../utils';
+import './index.scss';
 
 class SignUp extends React.Component {
   state = {
@@ -151,40 +152,40 @@ class SignUp extends React.Component {
     } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} id="signup-component">
         <div style={{ marginTop: '3rem', marginBottom: '1rem' }}>
           <h5 style={{ fontFamily: 'Raleway' }}>Create an account</h5>
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="username">Username</label>
-          <input value={username} required style={{ marginBottom: '0' }} name="username" id="username" type="text" onChange={this.onChange} />
-          {fieldError.username.length > 0 && <span style={{ color: 'red' }}>{fieldError.username}</span>}
+          <input value={username} required name="username" id="username" type="text" onChange={this.onChange} />
+          {fieldError.username.length > 0 && <span>{fieldError.username}</span>}
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="email">Email</label>
-          <input value={email} required style={{ marginBottom: '0' }} name="email" id="email" type="email" onChange={this.onChange} />
-          {fieldError.email.length > 0 && <span style={{ color: 'red' }}>{fieldError.email}</span>}
+          <input value={email} required name="email" id="email" type="email" onChange={this.onChange} />
+          {fieldError.email.length > 0 && <span>{fieldError.email}</span>}
         </div>
       
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="password">Password</label>
-          <input value={password} required style={{ marginBottom: '0' }} name="password" id="password" type="password" onChange={this.onChange} />
-          {fieldError.password.length > 0 && <span style={{ color: 'red' }}>{fieldError.password}</span>}
+          <input value={password} required name="password" id="password" type="password" onChange={this.onChange} />
+          {fieldError.password.length > 0 && <span>{fieldError.password}</span>}
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="passwordConfirm">Confirm Password</label>
-          <input value={passwordConfirm} required style={{ marginBottom: '0' }} name="passwordConfirm" id="passwordConfirm" onChange={this.onChange} type="password" />
-          {fieldError.passwordConfirm.length > 0 && <span style={{ color: 'red' }}>{fieldError.passwordConfirm}</span>}
+          <input value={passwordConfirm} required name="passwordConfirm" id="passwordConfirm" onChange={this.onChange} type="password" />
+          {fieldError.passwordConfirm.length > 0 && <span>{fieldError.passwordConfirm}</span>}
         </div>
 
-        <button id="download-button" className="btn-large waves-effect waves-light" style={{ textTransform: 'none', display: 'block', backgroundColor: '#444', width: '100%' }}>
+        <button id="download-button" className="btn-large waves-effect waves-light">
           Sign Up
         </button>
         {this.props.user.authRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
-        <p style={{ textAlign: 'center' }}>Already Have an Account? <Link to={{ pathname: '/signin', state: this.props.location.state }}>Sign In</Link> </p>
+        <p>Already Have an Account? <Link to={{ pathname: '/signin', state: this.props.location.state }}>Sign In</Link> </p>
       </form>
     );
   }

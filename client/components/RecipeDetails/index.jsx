@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
 
 import { recipeAction } from '../../actions/recipe';
-import './index.css';
+import './index.scss';
 import DetailsView from './DetailsView';
 import EditView from './EditView';
 

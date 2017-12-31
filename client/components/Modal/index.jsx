@@ -1,13 +1,12 @@
-
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import SignIn from '../SignIn';
 import SignUp from '../SignUp';
 import CreateRecipe from '../CreateRecipe';
+import './index.scss';
 
-export default class Authentication extends React.Component {
-
+export default class Modal extends React.Component {
   componentDidMount() {
     document.addEventListener('keydown', this.escKeyPress);
     document.body.style.overflow = 'hidden';
@@ -17,13 +16,14 @@ export default class Authentication extends React.Component {
     document.body.style.overflow = '';
     document.removeEventListener('keydown', this.escKeyPress);
   }
-  
+
   back = (e) => {
     e.stopPropagation();
     this.props.history.replace(this.props.location.state.previousLocation);
   };
 
   escKeyPress = (e) => {
+    // if esc key is pressed
     if (e.keyCode === 27) {
       this.back(e);
     }
@@ -31,19 +31,9 @@ export default class Authentication extends React.Component {
 
   render() {
     return (
-      <div onClick={this.back}>
-        <div className="modal-overlay" style={{ zIndex: 1002, display: 'block', opacity: 0.5 }} />
-        <div
-          className="modal open"
-          style={{
-            zIndex: 1003,
-            display: 'block',
-            opacity: 1,
-            transform: 'scaleX(1)',
-            top: '10%',
-            maxHeight: '100% !important',
-        }}
-        >
+      <div onClick={this.back} id="modal-component">
+        <div className="modal-overlay" />
+        <div className="modal open">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="container">
               <div className="row">

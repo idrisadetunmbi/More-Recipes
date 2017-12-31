@@ -1,29 +1,27 @@
 import React, { PropTypes } from 'react';
-import './index.css';
 
-// TODO: add more props as might be required
 const DetailsView = (props) => {
 
   const { recipe, user } = props;
   return (
-    <div>
+    <div className="recipe-details-component">
       <div className="container-section container">
         <div className="row" id="recipe-info">
           {/* recipe images and action buttons start */}
           <div className="col s12 l4 images-section">
             <h5 className="title">{recipe.title}</h5>
-            <div className="divider" style={{}} />
+            <div className="divider" />
             {/* recipe author section */}
-            <div>
-              <i style={{ fontSize: '4rem', margin: '1rem', color: '#444' }} className="material-icons">account_circle</i>
-              <p style={{ display: 'inline-block', verticalAlign: 'top' }} >{recipe.author.username}</p>
+            <div id="recipe-author-section">
+              <i className="material-icons">account_circle</i>
+              <p>{recipe.author.username}</p>
             </div>
             <div>
               <div>
                 <div className="recipe-main-img">
-                  <img src={`${recipe.images[0]}`} alt={`${recipe.title} - main`} style={{ width: '100%', maxHeight: '250px' }} />
+                  <img src={`${recipe.images[0]}`} alt={`${recipe.title} - main`} />
                 </div>
-                <div style={{ marginTop: '3rem' }} className="thumbnails row">
+                <div id="thumbnails-row" className="row">
                   {
                     // TODO: replace image sources
                     (recipe.images.slice(1).map((image, index) =>
@@ -49,20 +47,20 @@ const DetailsView = (props) => {
                   </a>
                 </div>
 
-                <div id="favorites-icon" style={{ marginLeft: '0', marginTop: '2rem' }}>
-                  <p style={{ WebkitMarginAfter: '0', fontSize: '18px', marginLeft: '.2rem' }}>Rate and Review</p>
+                {/* <div id="favorites-icon" style={{ marginLeft: '0', marginTop: '2rem' }}>
+                  <p style={{ WebkitMarginAfter: '0' }}>Rate and Review</p>
                   <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
                   <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
                   <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
                   <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
                   <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
           {/* recipe images and action buttons end */}
 
-          <div style={{ marginLeft: '3rem', marginTop: '3rem' }} className="col s12 l7 description-section">
+          <div style={{ marginLeft: '3rem' }} className="col s12 l7 description-section">
             <div>
               <h5>Description</h5>
               <p>{recipe.description}</p>
@@ -72,7 +70,8 @@ const DetailsView = (props) => {
               <h5>Ingredients</h5>
               <ul>
                 {
-                  recipe.ingredients.split('\n').map((ingredient, i) => <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
+                  recipe.ingredients.split('\n').map((ingredient, i) =>
+                    <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
                 }
               </ul>
             </div>
@@ -93,7 +92,7 @@ const DetailsView = (props) => {
         <div className="divider" />
         <div id="review-section">
           <div className="row">
-            <h5 style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '2rem', fontFamily: 'Raleway', fontStyle: 'normal' }} >Reviews</h5>
+            <h5>Reviews</h5>
             {/* Reviews goes here */}
           </div>
         </div>

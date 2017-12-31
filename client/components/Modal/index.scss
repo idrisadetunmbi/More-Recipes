@@ -1,0 +1,19 @@
+#modal-component {
+  .modal-overlay {
+    z-index: 1002;
+    display: block;
+    opacity: 0.5;
+  };
+  .modal {
+    z-index: 1003;
+    display: block;
+    opacity: 1;
+    transform: scaleX(1);
+    top: 10%;
+    max-height: 100% !important;
+    @media (min-width: 996px) {
+      width: 40%;
+    }
+    // TODO: set more media queries for modal width
+  }
+}

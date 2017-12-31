@@ -2,47 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import RecipeList from '../RecipeList';
-import * as Styles from './styles';
+import './index.scss';
 
 
 const Catalog = props => (
-  <div>
-    <div
-      id="search-section"
-      className="row"
-      style={Styles.searchInputEnclosingDiv}
-    >
+  <div id="catalog-component">
+    <div id="search-section" className="row">
       <div className="col l3 m4 s12">
         <button className="btn-large">Categories</button>
       </div>
       <div className="col l8 m8 s12">
-        <input
-          placeholder="Search Recipe"
-          style={Styles.searchInput}
-          id="recipe-search"
-          type="text"
-        />
-        <a href="#" style={{ marginLeft: '.6em', position: 'absolute' }} className="btn-large">
-          <i className="material-icons medium" style={{ verticalAlign: 'middle', paddingTop: '0em' }}>search</i>
+        <input placeholder="Search Recipe" type="text" />
+        <a href="#" className="btn-large">
+          <i className="material-icons medium">search</i>
         </a>
       </div>
     </div>
 
-    <div
-      className="divider"
-      style={{
-        marginLeft: '3em', marginRight: '3em', marginTop: '0em', display: 'block',
-      }}
-    />
+    <div id="main-divider" className="divider" />
 
     <div className="row">
-      <div className="col l3" style={{ padding: '3em', marginTop: '1em' }} id="suggestion-section">
-        <h5 style={{
-          fontFamily: 'Raleway', fontStyle: 'italic', marginBottom: '.5em', marginTop: '1em', fontSize: '1.5rem',
-        }}
-        >Today{'\''}s Combo
-        </h5>
-        <div className="divider" style={{ marginBottom: '2em' }} />
+      <div className="col l3" id="suggestion-section">
+        <h5>Today{'\''}s Combo</h5>
+        <div className="divider" />
         <div className="recipe">
           <div className="card">
             <div className="card-image">
@@ -62,12 +44,8 @@ const Catalog = props => (
       </div>
 
       <div className="col l9 s12">
-        <h5 style={{
-          fontFamily: 'Raleway', fontStyle: 'italic', marginBottom: '1em', marginTop: '1em',
-        }}
-        >Featured Recipes
-        </h5>
-        <div className="divider" style={{ marginRight: '3em', marginTop: '2em', marginBottom: '1em' }} />
+        <h5>Featured Recipes</h5>
+        <div className="divider" id="gallery-before" />
         <RecipeList style={{ width: '97%', marginLeft: '-0.6em' }} gridStyle="l4" />
       </div>
     </div>

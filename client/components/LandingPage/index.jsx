@@ -5,10 +5,10 @@ import RecipeList from '../RecipeList';
 import BannerBackground from './banner_background.jpg';
 import DiscoverIcon from './discover.png';
 import ReviewIcon from './review_icon.png';
-import './index.css';
+import './index.scss';
 
 const LandingPage = () => (
-  <div>
+  <div id="landing-page-component">
     <div id="index-banner" className="parallax-container">
       <div className="section no-pad-bot">
         <div className="container">
@@ -47,7 +47,9 @@ const LandingPage = () => (
             <div className="icon-block">
               <h2 className="center"><i className="material-icons">share</i></h2>
               <h5 className="center">Share Your Combinations</h5>
-              <p className="light">You love discovering new tastes and exciting combinations - Share sensational discoveries with other taste lovers and get exciting reviews that drives you to do more</p>
+              <p className="light">
+                You love discovering new tastes and exciting combinations - Share sensational discoveries with other taste lovers and get exciting reviews that drives you to do more
+              </p>
             </div>
           </div>
 
@@ -66,7 +68,7 @@ const LandingPage = () => (
     {/* About Section End */}
 
     {/* Recipe gallery start */}
-    <div className="divider" style={{ marginLeft: '3em', marginRight: '3em' }} />
+    <div id="recipe-gallery-section" className="divider" style={{ marginLeft: '3em', marginRight: '3em' }} />
     <div className="section">
       <h5 style={{ fontFamily: 'Raleway', fontStyle: 'italic', textAlign: 'center' }}>Featured Recipes</h5>
     </div>
