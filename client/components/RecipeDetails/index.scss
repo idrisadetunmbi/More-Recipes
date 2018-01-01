@@ -39,10 +39,13 @@
     margin-top: 1rem;
   }
   
-  .vote-actions a {
+  .vote-actions .btn {
     padding: 0 1rem;
     margin-left: 1rem;
     background-color: #444;
+    &:hover {
+      background-color: #2bbbad;      
+    }
   }
   
   .vote-actions a i {

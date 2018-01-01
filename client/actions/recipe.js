@@ -26,58 +26,56 @@ export const errorRecipeAction = (error) => {
 
 /**
  *
- * @param {string} actionType - one of 'create', 'delete' or 'update'
- * @param {any} recipeData - an object or a string representing the recipe data
- * (case - 'create', 'update') or recipe Id
+ * @param {string} actionType - one of 'create', 'delete', 'update', or 'vote' actions
+ * @param {any} recipeData - an object or a string representing the recipe data or recipeId
  */
 export const recipeAction = (actionType, recipeData) => async (dispatch, getState) => {
-  dispatch(initiateRecipeActionRequest(actionType));
   const userToken = getState().user.data.token;
+  const axiosInstance = axios.create({ headers: { Authorization: `Bearer ${userToken}` } });
+  const BASEURL = '/api/v1/recipes/';
+  let resp;
 
+  dispatch(initiateRecipeActionRequest(actionType));
   switch (actionType) {
-    case 'create': {
-      let resp;
+    case 'create':
       try {
-        resp = await axios.post(
-          '/api/v1/recipes',
-          recipeData,
-          { headers: { Authorization: `Bearer ${userToken}` } },
-        );
-        const createdRecipeId = resp.data.data.id;
-        resp = await axios.get(`/api/v1/recipes/${createdRecipeId}`);
+        resp = await axiosInstance.post(BASEURL, recipeData);
+        resp = await axiosInstance.get(`${BASEURL}${resp.data.data.id}`);
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      dispatch(receiveRecipeActionResponse(resp.data.data));
-    }
-      break;
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
     case 'delete':
       try {
-        await axios.delete(
-          `/api/v1/recipes/${recipeData}`,
-          { headers: { Authorization: `Bearer ${userToken}` } },
-        );
+        await axiosInstance.delete(`${BASEURL}${recipeData}`);
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      dispatch(receiveRecipeActionResponse(recipeData));
-      break;
-    case 'update': {
-      let resp;
+      return dispatch(receiveRecipeActionResponse(recipeData));
+    case 'update':
       try {
-        resp = await axios.put(
-          `/api/v1/recipes/${recipeData.id}`,
-          recipeData,
-          { headers: { Authorization: `Bearer ${userToken}` } },
-        );
-        resp = await axios.get(`/api/v1/recipes/${recipeData.id}`);
+        await axiosInstance.put(`${BASEURL}${recipeData.id}`, recipeData);
+        resp = await axiosInstance.get(`${BASEURL}${recipeData.id}`);
       } catch (error) {
-        console.log('An error occured while updating recipe', error);
         return dispatch(errorRecipeAction(error.response.data));
       }
-      dispatch(receiveRecipeActionResponse(resp.data.data));
-    }
-      break;
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
+    case 'upvote':
+      try {
+        await axiosInstance.post(`${BASEURL}${recipeData}?action=upvote`);
+        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
+    case 'downvote':
+      try {
+        await axiosInstance.post(`${BASEURL}${recipeData}?action=downvote`);
+        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
     default:
       break;
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import RecipeList from '../RecipeList';
 import './index.scss';
@@ -51,14 +52,35 @@ const Catalog = props => (
     </div>
 
     <div className="fixed-action-btn">
-      <Link
-        to={{ pathname: '/recipes/create', state: { modal: true, previousLocation: props.location.pathname } }}
+      <a
         className="btn-floating btn-large"
+        onClick={() => {
+        if (!props.user.data.token) {
+          redirectToSignIn(props.history);
+          return;
+        }
+        props.history.push('/recipes/create', {
+          modal: true,
+          previousLocation: props.history.location.pathname,
+        });
+      }}
       >
         <i className="material-icons">add</i>
-      </Link>
+      </a>
     </div>
   </div>
 );
 
-export default Catalog;
+const redirectToSignIn = (history) => {
+  history.push('/signin', {
+    modal: true,
+    previousLocation: history.location.pathname,
+  });
+};
+
+const mapStateToProps = state =>
+  ({
+    user: state.user,
+  });
+
+export default connect(mapStateToProps)(Catalog);

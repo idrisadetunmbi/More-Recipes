@@ -14,7 +14,11 @@ class RecipeDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!deepEqual(nextProps.recipe, this.props.recipe)) {
+    // if recipe has been updated and view mode is in edit mode
+    if (
+      !deepEqual(nextProps.recipe, this.props.recipe) &&
+      !this.state.isDetailsMode
+    ) {
       this.toggleViewMode();
     }
   }
@@ -48,6 +52,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     deleteRecipe: recipeId => dispatch(recipeAction('delete', recipeId)),
     updateRecipe: recipeData => dispatch(recipeAction('update', recipeData)),
+    upvoteRecipe: recipeId => dispatch(recipeAction('upvote', recipeId)),
+    downvoteRecipe: recipeId => dispatch(recipeAction('downvote', recipeId)),
   };
 };
 

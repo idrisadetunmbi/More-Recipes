@@ -159,7 +159,7 @@ class EditView extends Component {
     const { recipe, user } = this.props;
     const { existingImages, newImages } = this.state;
     return (
-      <div>
+      <div className="recipe-details-component">
         <div className="container-section container">
           <div className="row" id="recipe-info">
             <div className="col s12 l4 images-section">
@@ -174,7 +174,7 @@ class EditView extends Component {
                 {
                   [...existingImages, ...newImages].map((image, index) =>
                    (
-                     <div className="col center s6 thumbnails">
+                     <div className="col center s6" id="thumbnails-row">
                        <img
                          src={typeof image === 'string' ? image : window.URL.createObjectURL(image)}
                          alt={`thumbnail - ${index}`}

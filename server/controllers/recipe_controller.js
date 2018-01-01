@@ -312,7 +312,7 @@ export default class RecipeController {
         });
         if (voteRecord.type === 'downvote') {
           await user.removeVotedRecipe(recipe);
-          recipe.decrement('downvote');
+          recipe.decrement('downvotes');
           return res.status(200).send({
             message: 'downvote has been removed on recipe',
           });

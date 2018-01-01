@@ -1,6 +1,35 @@
 import React, { PropTypes } from 'react';
+import { showToast } from '../../utils';
 
 const DetailsView = (props) => {
+
+  const voteRecipe = (type) => {
+    const {
+      user, recipe, upvoteRecipe, history, downvoteRecipe,
+    } = props;
+    // if user is not signed in, redirect user to sign in
+    if (!user.data.token) {
+      history.push('/signin', {
+        modal: true,
+        previousLocation: history.location.pathname,
+      });
+      return;
+    }
+    if (user.data.id === recipe.authorId) {
+      showToast(`You cannot ${type} a recipe you added`);
+      return;
+    }
+    switch (type) {
+      case 'upvote':
+        upvoteRecipe(recipe.id);
+        break;
+      case 'downvote':
+        downvoteRecipe(recipe.id);
+        break;
+      default:
+        break;
+    }
+  };
 
   const { recipe, user } = props;
   return (
@@ -33,15 +62,19 @@ const DetailsView = (props) => {
               {/* TODO: wire actions to onClicks of the action buttons */}
               <div>
                 <div className="vote-actions">
-                  <a style={{ marginLeft: '0' }} href="." className="btn waves-ripple">
+                  <a
+                    style={{ marginLeft: '0' }}
+                    className="btn waves-ripple"
+                    onClick={() => voteRecipe('upvote')}
+                  >
                     <i className="material-icons">thumb_up</i>
                     <span>{recipe.upvotes}</span>
                   </a>
-                  <a href="." className="btn waves-ripple">
+                  <a className="btn waves-ripple" onClick={() => voteRecipe('downvote')}>
                     <i className="material-icons">thumb_down</i>
                     <span>{recipe.downvotes}</span>
                   </a>
-                  <a href="." className="btn waves-ripple">
+                  <a href="#" className="btn waves-ripple">
                     <i className="material-icons">favorite</i>
                     <span>{recipe.favorites}</span>
                   </a>
