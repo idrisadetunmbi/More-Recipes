@@ -78,7 +78,19 @@ export default class RecipeController {
     let recipes;
     try {
       recipes = await RecipeModel.findAll({
-        include: [{ model: models.user, as: 'author', attributes: ['username'] }],
+        include: [
+          {
+            model: models.user, as: 'author', attributes: ['username'],
+          },
+          {
+            model: models.user,
+            as: 'userReviews',
+            attributes: ['username'],
+            through: {
+              attributes: ['rating', 'content', 'createdAt'],
+            },
+          },
+        ],
         order: req.query.sort === 'upvotes' ? ['upvotes'] : '',
       });
     } catch (error) {
@@ -100,7 +112,19 @@ export default class RecipeController {
     let recipe;
     try {
       recipe = await RecipeModel.findById(req.params.recipeId, {
-        include: [{ model: models.user, as: 'author', attributes: ['username'] }],
+        include: [
+          {
+            model: models.user, as: 'author', attributes: ['username'],
+          },
+          {
+            model: models.user,
+            as: 'userReviews',
+            attributes: ['username'],
+            through: {
+              attributes: ['rating', 'content', 'createdAt'],
+            },
+          },
+        ],
       });
     } catch (error) {
       return res.status(500).send({
@@ -174,11 +198,11 @@ export default class RecipeController {
     const recipe = await RecipeModel.findById(req.params.recipeId);
     const { user } = req;
     // disallow recipe author from adding a review
-    if (recipe.authorId === user.id) {
-      return res.status(403).send({
-        error: 'you cannot review a recipe you created',
-      });
-    }
+    // if (recipe.authorId === user.id) {
+    //   return res.status(403).send({
+    //     error: 'you cannot review a recipe you created',
+    //   });
+    // }
     user.review = req.body;
     await recipe.addUserReview(user);
     return res.status(201).json({

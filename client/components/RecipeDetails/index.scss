@@ -70,17 +70,33 @@
   ol {
     padding: 0;
   }
-  
-  .review-text {
-    display: block;
-    display: -webkit-box;
-    margin: 0 auto;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: 'Dosis';
-    font-size: 1.2rem;
+
+  .review {
+    margin-bottom: 3em;
+    .review-text {
+      margin: 0 auto;
+      font-family: 'Dosis';
+      font-size: 1.2rem;
+    };
+
+    .review-details {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 1rem;
+      .date {
+        margin-left: 1rem;
+        font-size: .9rem;
+        color: #6f6a6a;
+        vertical-align: text-bottom;
+      }
+    }
+
+    .reviewers-name {
+      display: inline-block;
+      vertical-align: bottom;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.2em;
+    };
   }
   
   #review-section {
@@ -90,31 +106,17 @@
       margin-bottom: 2rem;
       font-family: 'Raleway';
       font-style: 'normal';
-    }
-  }
-  
-  .reviewers-name {
-    display:inline-block;
-    vertical-align:bottom;
-    font-family: 'Open Sans', sans-serif
-  }
-  
-  .modal {
-    width: 40% !important;
-    max-height: 100% !important;
-    overflow-y: auto !important;
-  }
-  
-  #favorites-icon {
-    margin-left: 0;
-    margin-top: 2rem;
-    a {
-      color: #444;
     };
-    p {
-      font-size: 18px;
-      margin-left: 2rem;
+    textarea {
+      margin-bottom: .5em;
+    };
+    button {
+      border: 1px solid;
+      text-transform: unset;
+      background-color: #FFF;
+      color: #26a69a;
     }
+
   }
   
   .recipe-main-img {
@@ -124,9 +126,5 @@
       width: 100%;
       max-height: 250px;
     }
-  }
-  
-  textarea {
-    margin-bottom: '0'
   }
 }

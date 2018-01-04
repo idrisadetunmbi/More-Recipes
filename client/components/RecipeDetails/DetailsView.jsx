@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import { showToast } from '../../utils';
+import UserIcon from './avatar_img.png';
 
 const DetailsView = (props) => {
 
   const voteRecipe = (type) => {
     const {
-      user, recipe, upvoteRecipe, history, downvoteRecipe,
+      user, recipe, history, recipeAction
     } = props;
     // if user is not signed in, redirect user to sign in
     if (!user.data.token) {
@@ -21,10 +22,10 @@ const DetailsView = (props) => {
     }
     switch (type) {
       case 'upvote':
-        upvoteRecipe(recipe.id);
+        recipeAction('upvote', recipe.id);
         break;
       case 'downvote':
-        downvoteRecipe(recipe.id);
+        recipeAction('downvote', recipe.id);
         break;
       default:
         break;
@@ -79,15 +80,6 @@ const DetailsView = (props) => {
                     <span>{recipe.favorites}</span>
                   </a>
                 </div>
-
-                {/* <div id="favorites-icon" style={{ marginLeft: '0', marginTop: '2rem' }}>
-                  <p style={{ WebkitMarginAfter: '0' }}>Rate and Review</p>
-                  <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                  <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                  <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                  <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                  <a className="modal-trigger" href="#review-modal"><i className="material-icons">star</i></a>
-                </div> */}
               </div>
             </div>
           </div>
@@ -125,12 +117,30 @@ const DetailsView = (props) => {
         <div className="divider" />
         <div id="review-section">
           <div className="row">
-            <h5>Reviews</h5>
-            {/* Reviews goes here */}
+            <div className="col l4 offset-l4">
+              <h5>Reviews</h5>
+              <textarea
+                value={props.reviewText}
+                onChange={props.reviewOnChange}
+                className="materialize-textarea"
+                placeholder="Add a review"
+              />
+              <button onClick={props.reviewSubmit} className="btn btn-small">Submit</button>
+              {/* Reviews goes here */}
+              <div style={{ marginTop: '2em' }}>
+                {
+                  props.recipe.userReviews.length === 0 ?
+                    <p>This Recipe currently has no reviews</p> :
+                    props.recipe.userReviews.map(review => (
+                      <Review review={review} />
+                    ))
+                }
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
+
       {
         user.data.token && user.data.id === recipe.authorId &&
         (
@@ -139,12 +149,32 @@ const DetailsView = (props) => {
             <i className="large material-icons">menu</i>
           </a>
           <ul>
-            <li><a onClick={() => props.deleteRecipe(recipe.id)} className="btn-floating red"><i className="material-icons">delete</i></a></li>
+            <li><a onClick={() => props.recipeAction('delete', recipe.id)} className="btn-floating red"><i className="material-icons">delete</i></a></li>
             <li><a onClick={props.toggleViewMode} className="btn-floating yellow darken-1"><i className="material-icons">edit</i></a></li>
           </ul>
         </div>
         )
       }
+    </div>
+  );
+};
+
+const Review = (props) => {
+  const date = new Date(props.review.review.createdAt);
+  const month = date.toLocaleString('en-us', { month: 'short' });
+  const day = date.getDate();
+
+  return (
+    <div className="review">
+      <img className="circle" src={UserIcon} width="50px" alt="reviewers icon" />
+      <div className="review-details">
+        <span className="reviewers-name">{props.review.username}</span>
+        <span className="date">{`${month} ${day}`}</span>
+      </div>
+      <div className="divider" />
+      <p className="review-text">
+        {props.review.review.content}
+      </p>
     </div>
   );
 };

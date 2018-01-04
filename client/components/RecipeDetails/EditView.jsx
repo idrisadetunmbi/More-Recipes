@@ -121,7 +121,7 @@ class EditView extends Component {
       ...inputFields,
       images: [...existingImages, ...uploadedImageUrls],
     };
-    this.props.updateRecipe(updatedRecipeDetails);
+    this.props.recipeAction('update', updatedRecipeDetails);
   }
 
   confirmNoDataChanges = () => {
@@ -264,7 +264,7 @@ const TextArea = ({ name, defaultValue, value, onBlur, onFocus, fieldError }) =>
       name={name}
       value={value}
       style={{ marginBottom: '0' }}
-      className="title materialize-textarea"
+      className="materialize-textarea"
     />
     <span style={{ color: 'red' }}>{fieldError}</span>
   </div>

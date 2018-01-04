@@ -11,6 +11,7 @@ import EditView from './EditView';
 class RecipeDetails extends React.Component {
   state = {
     isDetailsMode: true,
+    reviewText: '',
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,6 +22,33 @@ class RecipeDetails extends React.Component {
     ) {
       this.toggleViewMode();
     }
+    if (this.props.recipeActionStatus.type === 'postReview' &&
+      !nextProps.recipeActionStatus.error) {
+      this.setState({
+        reviewText: '',
+      });
+    }
+  }
+
+  reviewOnChange = (event) => {
+    this.setState({
+      reviewText: event.target.value,
+    });
+  }
+
+  reviewSubmit = (event) => {
+    event.preventDefault();
+    const { reviewText } = this.state;
+    if (reviewText.length === 0) {
+      alert('review submit text is empty');
+      return;
+    }
+    const reviewPostData = {
+      content: reviewText,
+      rating: 5,
+      recipeId: this.props.recipe.id,
+    };
+    this.props.recipeAction('postReview', reviewPostData);
   }
 
   toggleViewMode = () => {
@@ -34,27 +62,29 @@ class RecipeDetails extends React.Component {
       return null;
     }
     return (this.state.isDetailsMode ?
-      <DetailsView {...this.props} toggleViewMode={this.toggleViewMode} /> :
+      <DetailsView
+        {...this.props}
+        toggleViewMode={this.toggleViewMode}
+        reviewText={this.state.reviewText}
+        reviewOnChange={this.reviewOnChange}
+        reviewSubmit={this.reviewSubmit}
+      /> :
       <EditView {...this.props} toggleViewMode={this.toggleViewMode} />
     );
   }
 }
 
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    recipe: state.recipes.recipes.filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
-    user: state.user,
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  recipe: state.recipes.recipes
+    .filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
+  user: state.user,
+  recipeActionStatus: state.recipes.recipeAction,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deleteRecipe: recipeId => dispatch(recipeAction('delete', recipeId)),
-    updateRecipe: recipeData => dispatch(recipeAction('update', recipeData)),
-    upvoteRecipe: recipeId => dispatch(recipeAction('upvote', recipeId)),
-    downvoteRecipe: recipeId => dispatch(recipeAction('downvote', recipeId)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  recipeAction: (actionType, recipeData) =>
+    dispatch(recipeAction(actionType, recipeData)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetails);

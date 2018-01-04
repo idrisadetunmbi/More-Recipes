@@ -39,6 +39,7 @@ const updateRecipes = (recipes, recipe, actionType) => {
     case 'update':
     case 'upvote':
     case 'downvote':
+    case 'postReview':
       updatedRecipes = recipes.map((recp) => {
         if (recp.id === recipe.id) {
           return recipe;
@@ -50,7 +51,6 @@ const updateRecipes = (recipes, recipe, actionType) => {
       updatedRecipes = recipes;
       break;
   }
-  console.log(updatedRecipes);
   return updatedRecipes;
 };
 

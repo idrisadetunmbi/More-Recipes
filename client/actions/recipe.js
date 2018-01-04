@@ -37,6 +37,14 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
 
   dispatch(initiateRecipeActionRequest(actionType));
   switch (actionType) {
+    case 'postReview':
+      try {
+        await axiosInstance.post(`${BASEURL}${recipeData.recipeId}/reviews`, recipeData);
+        resp = await axiosInstance.get(`${BASEURL}${recipeData.recipeId}`);
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
     case 'create':
       try {
         resp = await axiosInstance.post(BASEURL, recipeData);
