@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import RecipeList from '../RecipeList';
 import BannerBackground from './banner_background.jpg';
@@ -7,7 +8,7 @@ import DiscoverIcon from './discover.png';
 import ReviewIcon from './review_icon.png';
 import './index.scss';
 
-const LandingPage = () => (
+const LandingPage = props => (
   <div id="landing-page-component">
     <div id="index-banner" className="parallax-container">
       <div className="section no-pad-bot">
@@ -72,7 +73,13 @@ const LandingPage = () => (
     <div className="section">
       <h5 style={{ fontFamily: 'Raleway', fontStyle: 'italic', textAlign: 'center' }}>Featured Recipes</h5>
     </div>
-    <RecipeList style={{ width: '90%' }} gridStyle="l3" />
+    <RecipeList
+      recipes={props.recipes.recipes.slice(0, 8)}
+      isLoadingRecipes={props.recipes.isFetching}
+      error={props.recipes.error}
+      style={{ width: '90%' }}
+      gridStyle="l3"
+    />
     <div className="center" style={{ marginTop: '6em' }}>
       <Link to="/catalog" className="btn-large waves-effect waves-light grey darken-4 lighten-1">view entire catalog</Link>
     </div>
@@ -80,4 +87,8 @@ const LandingPage = () => (
   </div>
 );
 
-export default LandingPage;
+const mapStateToProps = state => ({
+  recipes: state.recipes,
+});
+
+export default connect(mapStateToProps)(LandingPage);

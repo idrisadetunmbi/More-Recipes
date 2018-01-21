@@ -40,7 +40,6 @@ class RecipeDetails extends React.Component {
     event.preventDefault();
     const { reviewText } = this.state;
     if (reviewText.length === 0) {
-      alert('review submit text is empty');
       return;
     }
     const reviewPostData = {

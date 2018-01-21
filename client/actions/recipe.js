@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { addToUserRecipes } from './user';
 
 export const INITIATE_RECIPE_ACTION_REQUEST = 'INITIATE_RECIPE_ACTION_REQUEST';
 export const initiateRecipeActionRequest = (actionType) => {
@@ -52,7 +53,9 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      return dispatch(receiveRecipeActionResponse(resp.data.data));
+      dispatch(receiveRecipeActionResponse(resp.data.data));
+      dispatch(addToUserRecipes(resp.data.data.id));
+      break;
     case 'delete':
       try {
         await axiosInstance.delete(`${BASEURL}${recipeData}`);

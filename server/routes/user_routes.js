@@ -17,9 +17,20 @@ router.post(
   userController.validateRequestData, userController.signInUser,
 );
 
+// update user profile - image only
+router.put(
+  '/', authenticateUser, userController.userImageUrlUpdateCheck,
+  userController.validateRequestData, userController.updateUserImageUrl,
+);
+
 router.get(
-  '/:userId/recipes', authenticateUser, userController.userGetRecipesValidationChecks,
-  userController.validateRequestData, userController.getUserFavoriteRecipes,
+  '/:userId/recipes', userController.userGetRecipesValidationChecks,
+  userController.validateRequestData, userController.getUserRecipes,
+);
+
+router.get(
+  '/:userId/recipes/favorites', userController.userGetRecipesValidationChecks,
+  userController.validateRequestData, userController.getUserFavorites,
 );
 
 

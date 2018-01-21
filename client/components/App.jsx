@@ -8,6 +8,7 @@ import RecipeDetails from './RecipeDetails';
 import NavBar from './NavBar';
 import Modal from './Modal';
 import Catalog from './Catalog';
+import UserProfile from './UserProfile';
 
 import { fetchRecipes } from '../actions/recipes';
 
@@ -53,6 +54,7 @@ class App extends Component {
           />
           <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
+          <Route path="/user" component={UserProfile} />
         </Switch>
         {isModal ? <Route component={Modal} /> : null }
       </div>

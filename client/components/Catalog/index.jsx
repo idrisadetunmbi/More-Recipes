@@ -47,7 +47,13 @@ const Catalog = props => (
       <div className="col l9 s12">
         <h5>Featured Recipes</h5>
         <div className="divider" id="gallery-before" />
-        <RecipeList style={{ width: '97%', marginLeft: '-0.6em' }} gridStyle="l4" />
+        <RecipeList
+          recipes={props.recipes.recipes}
+          isLoadingRecipes={props.recipes.isFetching}
+          error={props.recipes.error}
+          style={{ width: '97%', marginLeft: '-0.6em' }}
+          gridStyle="l4"
+        />
       </div>
     </div>
 
@@ -81,6 +87,7 @@ const redirectToSignIn = (history) => {
 const mapStateToProps = state =>
   ({
     user: state.user,
+    recipes: state.recipes,
   });
 
 export default connect(mapStateToProps)(Catalog);

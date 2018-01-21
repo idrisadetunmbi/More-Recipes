@@ -149,8 +149,22 @@ const DetailsView = (props) => {
             <i className="large material-icons">menu</i>
           </a>
           <ul>
-            <li><a onClick={() => props.recipeAction('delete', recipe.id)} className="btn-floating red"><i className="material-icons">delete</i></a></li>
-            <li><a onClick={props.toggleViewMode} className="btn-floating yellow darken-1"><i className="material-icons">edit</i></a></li>
+            <li>
+              <a
+                onClick={() => props.recipeAction('delete', recipe.id)}
+                className="btn-floating red"
+              >
+                <i className="material-icons">delete</i>
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={props.toggleViewMode}
+                className="btn-floating yellow darken-1"
+              >
+                <i className="material-icons">edit</i>
+              </a>
+            </li>
           </ul>
         </div>
         )

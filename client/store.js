@@ -5,16 +5,14 @@ import loggerMiddleware from 'redux-logger';
 import rootReducer from './reducers';
 
 // load initial user data from local storage if available
-const cachedUserData = JSON.parse(localStorage.getItem('user'))
-  || { data: {} };
+const cachedUserData = JSON.parse(localStorage.getItem('user'));
 
-console.log('initial user data', cachedUserData);
-
-const store = createStore(
+const store = cachedUserData ? createStore(
   rootReducer,
   { user: cachedUserData },
   applyMiddleware(thunkMiddleware, loggerMiddleware),
-);
+) :
+  createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 if (module.hot) {
   // Enable Webpack hot module replacement for reducers

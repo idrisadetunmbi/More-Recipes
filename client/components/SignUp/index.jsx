@@ -122,8 +122,6 @@ class SignUp extends React.Component {
       username: this.state.username,
       password: this.state.password,
       email: this.state.email,
-      firstName: 'firstname',
-      lastName: 'lastname',
     };
     this.props.userAuthRequest(userData, 'signup');
   }

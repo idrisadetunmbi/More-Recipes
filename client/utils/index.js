@@ -10,8 +10,8 @@ export const generateImageUploadURLS = (imageFiles) => {
   return imageUploadURLS;
 };
 
-export const sendImagesToCloudinary = (imageUploadURLS) => {
-  return new Promise((resolve, reject) => {
+export const sendImagesToCloudinary = imageUploadURLS =>
+  new Promise((resolve, reject) => {
     axios.all(imageUploadURLS).then(axios.spread((...responses) => {
       const uploadedImageUrls = responses.map(resp => resp.data.secure_url);
       resolve(uploadedImageUrls);
@@ -19,6 +19,12 @@ export const sendImagesToCloudinary = (imageUploadURLS) => {
       reject(error);
     });
   });
+
+export const sendImageToCloudinary = (imageFile) => {
+  const imageUploadData = new FormData();
+  imageUploadData.append('file', imageFile);
+  imageUploadData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET);
+  return axios.post(process.env.CLOUDINARY_UPLOAD_URL, imageUploadData);
 };
 
 export const showToast = message => Materialize.toast(message, 2000);

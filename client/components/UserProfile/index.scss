@@ -1,0 +1,28 @@
+#user-profile-component {
+  width: 90%;
+  margin-top: 3rem;
+  #user-info {
+    #user-image {
+      margin-top: 5.5rem;
+      #image-update-btn {
+        font-size: 1rem;
+        font-weight: 300;
+        color: white;
+        background: rgb(70, 69, 69);
+        cursor: pointer;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin-top: -0.38rem;
+      }
+    }
+    .title {
+      font-family: 'Raleway', sans-serif;
+    }
+  }
+  .tabs {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    .indicator {
+      background-color: #444;
+    }
+  }
+}

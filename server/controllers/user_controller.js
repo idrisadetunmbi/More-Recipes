@@ -26,6 +26,10 @@ export default class UserController {
       .custom(value => UserModel.findById(value)),
   ];
 
+  userImageUrlUpdateCheck = [
+    validate.body('imageUrl', 'please specify an image url in request body').isURL(),
+  ]
+
   getAllUsers = async (req, res) => {
     let users;
     try {
@@ -64,6 +68,28 @@ export default class UserController {
     });
   }
 
+  updateUserImageUrl = async (req, res) => {
+    // user is an instance of User Model (Sequelize model)
+    const { user } = req;
+    try {
+      await user.update({
+        imageUrl: req.body.imageUrl,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        message: 'an error occured while trying to perform this request',
+        error: error.message,
+      });
+    }
+
+    // remove password from user details to be returned
+    const { password, ...otherDetails } = user.get();
+    return res.status(200).send({
+      message: 'image url updated successfully',
+      data: otherDetails,
+    });
+  }
+
   signInUser = async (req, res) => {
     let user;
     try {
@@ -97,18 +123,14 @@ export default class UserController {
     });
   }
 
-  getUserFavoriteRecipes = async (req, res) => {
+  getUserRecipes = async (req, res) => {
     let user;
     try {
       user = await UserModel.findById(req.params.userId, {
-        attributes: ['id', 'username', 'firstName', 'lastName'],
+        attributes: ['id', 'username', 'email'],
         include: [{
           model: models.recipe,
-          as: 'favoriteRecipes',
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
-          through: {
-            attributes: [],
-          },
+          as: 'recipes',
         }],
       });
     } catch (error) {
@@ -117,8 +139,30 @@ export default class UserController {
       });
     }
     return res.status(200).send({
-      message: 'user favorites',
+      message: 'user\'s recipes',
       data: user,
+    });
+  }
+
+  getUserFavorites = async (req, res) => {
+    let userFavorites;
+    try {
+      userFavorites = await models.favorite.findAll({
+        where: {
+          userId: req.params.userId,
+        },
+        attributes: ['recipeId'],
+      });
+    } catch (error) {
+      return res.status(500).send({
+        error: error.message || error.errors[0].message,
+      });
+    }
+
+    const favorites = userFavorites.map(entry => entry.recipeId);
+    return res.status(200).send({
+      message: 'user\'s favorites',
+      data: favorites,
     });
   }
 
