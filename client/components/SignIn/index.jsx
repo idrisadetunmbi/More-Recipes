@@ -85,12 +85,12 @@ class SignIn extends React.Component {
 
   // eslint-disable-next-line
   componentWillReceiveProps(nextProps) {
-    const { authError, authRequestInitiated } = nextProps.user;
-    if (authRequestInitiated) {
+    const { userRequestInitiated, userRequestError } = nextProps.user;
+    if (userRequestInitiated) {
       return;
     }
-    if (authError) {
-      const { error } = authError;
+    if (userRequestError) {
+      const { error } = userRequestError;
       // eslint-disable-next-line
       this.setState({ authError: error });
     } else {

@@ -3,33 +3,21 @@ import { showToast } from '../../utils';
 import UserIcon from './avatar_img.png';
 
 const DetailsView = (props) => {
-
-  const voteRecipe = (type) => {
-    const {
-      user, recipe, history, recipeAction
-    } = props;
+  const userCanVoteRecipe = (type) => {
+    const { user, recipe, history } = props;
     // if user is not signed in, redirect user to sign in
     if (!user.data.token) {
       history.push('/signin', {
         modal: true,
         previousLocation: history.location.pathname,
       });
-      return;
+      return false;
     }
     if (user.data.id === recipe.authorId) {
       showToast(`You cannot ${type} a recipe you added`);
-      return;
+      return false;
     }
-    switch (type) {
-      case 'upvote':
-        recipeAction('upvote', recipe.id);
-        break;
-      case 'downvote':
-        recipeAction('downvote', recipe.id);
-        break;
-      default:
-        break;
-    }
+    return true;
   };
 
   const { recipe, user } = props;
@@ -43,19 +31,28 @@ const DetailsView = (props) => {
             <div className="divider" />
             {/* recipe author section */}
             <div id="recipe-author-section">
-              <i className="material-icons">account_circle</i>
-              <p>{recipe.author.username}</p>
+              {
+                recipe.author.imageUrl ?
+                  <img src={recipe.author.imageUrl} alt="" className="responsive-img circle" /> :
+                  <i className="material-icons">account_circle</i>
+              }
+              <div style={{ verticalAlign: 'bottom', display: 'inline-block' }}>
+                <span style={{ fontSize: '11px', opacity: '0.7' }}>Authored by</span>
+                <p style={{ fontSize: '1.2rem', marginTop: 0 }}>
+                  {user.data.id === recipe.authorId ? 'You' : recipe.author.username}
+                </p>
+              </div>
             </div>
             <div>
               <div>
                 <div className="recipe-main-img">
-                  <img src={`${recipe.images[0]}`} alt={`${recipe.title} - main`} />
+                  <img src={`${recipe.images[0]}`} alt="" />
                 </div>
                 <div id="thumbnails-row" className="row">
                   {
                     // TODO: replace image sources
-                    (recipe.images.slice(1).map((image, index) =>
-                      <img className="col s6 thumbnails" src={image} alt={`thumbnail - ${index}`} />))
+                    (recipe.images.slice(1).map(image =>
+                      <img className="col s6 thumbnails" src={image} alt="" />))
                   }
                 </div>
               </div>
@@ -66,16 +63,25 @@ const DetailsView = (props) => {
                   <a
                     style={{ marginLeft: '0' }}
                     className="btn waves-ripple"
-                    onClick={() => voteRecipe('upvote')}
+                    onClick={() => userCanVoteRecipe('upvote') &&
+                      props.recipeAction('upvote', recipe.id)}
                   >
                     <i className="material-icons">thumb_up</i>
                     <span>{recipe.upvotes}</span>
                   </a>
-                  <a className="btn waves-ripple" onClick={() => voteRecipe('downvote')}>
+                  <a
+                    className="btn waves-ripple"
+                    onClick={() => userCanVoteRecipe('downvote') &&
+                      props.recipeAction('downvote', recipe.id)}
+                  >
                     <i className="material-icons">thumb_down</i>
                     <span>{recipe.downvotes}</span>
                   </a>
-                  <a href="#" className="btn waves-ripple">
+                  <a
+                    className="btn waves-ripple"
+                    onClick={() => userCanVoteRecipe('favorite') &&
+                      props.recipeAction('favorite', recipe.id)}
+                  >
                     <i className="material-icons">favorite</i>
                     <span>{recipe.favorites}</span>
                   </a>
