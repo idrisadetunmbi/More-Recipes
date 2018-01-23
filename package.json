@@ -7,7 +7,7 @@
     "build": "npm run clean && mkdir ./production && babel ./server/ -d ./production --copy-files",
     "start": "npm run build && node ./production/bin/www.js",
     "devstart": "nodemon ./server/bin/www --exec babel-node",
-    "start:dev": "babel-node ./server/bin/www",
+    "start:client": "babel-node ./server/bin/www",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --require babel-register --timeout=40000",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },

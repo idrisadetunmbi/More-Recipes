@@ -4,14 +4,26 @@
   }
 
   #recipe-author-section {
+    div {
+      vertical-align: bottom;
+      display: inline-block;
+    }
+    img {
+      width: 16%;
+      margin: 1rem;
+    }
     i {
       font-size: 4rem;
       margin: 1rem;
       color: #444;
     };
     p {
-      display: inline-block;
-      vertical-align: top;
+      font-size: 1.2rem;
+      margin-top: 0;
+    }
+    span {
+      font-size: 11px;
+      opacity: 0.7;
     }
   }
   

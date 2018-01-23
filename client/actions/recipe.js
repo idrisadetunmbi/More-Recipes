@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { addToUserRecipes } from './user';
+import { addToUserRecipes, fetchUserFavorites } from './user';
 
 export const INITIATE_RECIPE_ACTION_REQUEST = 'INITIATE_RECIPE_ACTION_REQUEST';
 export const initiateRecipeActionRequest = (actionType) => {
@@ -86,6 +86,15 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
+      return dispatch(receiveRecipeActionResponse(resp.data.data));
+    case 'favorite':
+      try {
+        await axiosInstance.post(`${BASEURL}${recipeData}?action=favorite`);
+        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
+      } catch (error) {
+        return dispatch(errorRecipeAction(error.response.data));
+      }
+      dispatch(fetchUserFavorites(true));
       return dispatch(receiveRecipeActionResponse(resp.data.data));
     default:
       break;

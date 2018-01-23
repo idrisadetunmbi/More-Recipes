@@ -17,8 +17,6 @@ export default class UserController {
       .isLength({ min: 5, max: 15 }).isAlphanumeric().trim(),
     validate.body('password', 'include a password between 6 to 25 characters').isLength({ min: 5, max: 25 }).trim(),
     validate.body('email', 'invalid email').isEmail().normalizeEmail(),
-    validate.body('firstName', 'include a first name containing only letters').isLength({ min: 2, max: 21 }).isAlpha().trim(),
-    validate.body('lastName', 'include a last name containing only letters').isLength({ min: 2, max: 21 }).isAlpha().trim(),
   ];
 
   userGetRecipesValidationChecks = [

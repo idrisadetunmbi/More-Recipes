@@ -67,9 +67,9 @@ export const fetchUserRecipes = () => async (dispatch, getState) => {
   dispatch(receiveUserRequestResponse(recipeIds));
 };
 
-export const fetchUserFavorites = () => async (dispatch, getState) => {
+export const fetchUserFavorites = forceFetch => async (dispatch, getState) => {
   // if user's favorite recipes have already being fetched
-  if (getState().user.favoriteRecipes) {
+  if (getState().user.favoriteRecipes && !forceFetch) {
     return;
   }
   const userId = getState().user.data.id;

@@ -80,12 +80,12 @@ export default class RecipeController {
       recipes = await RecipeModel.findAll({
         include: [
           {
-            model: models.user, as: 'author', attributes: ['username'],
+            model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
           },
           {
             model: models.user,
             as: 'userReviews',
-            attributes: ['username'],
+            attributes: ['username', 'imageUrl'],
             through: {
               attributes: ['rating', 'content', 'createdAt'],
             },
@@ -114,12 +114,12 @@ export default class RecipeController {
       recipe = await RecipeModel.findById(req.params.recipeId, {
         include: [
           {
-            model: models.user, as: 'author', attributes: ['username'],
+            model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
           },
           {
             model: models.user,
             as: 'userReviews',
-            attributes: ['username'],
+            attributes: ['username', 'imageUrl'],
             through: {
               attributes: ['rating', 'content', 'createdAt'],
             },
