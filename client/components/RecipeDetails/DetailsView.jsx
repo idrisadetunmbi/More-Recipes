@@ -135,11 +135,14 @@ const DetailsView = (props) => {
               {/* Reviews goes here */}
               <div style={{ marginTop: '2em' }}>
                 {
-                  props.recipe.userReviews.length === 0 ?
-                    <p>This Recipe currently has no reviews</p> :
-                    props.recipe.userReviews.map(review => (
-                      <Review review={review} />
-                    ))
+                  // eslint-disable-next-line
+                  !props.reviews ?
+                    <p>Loading reviews... </p> :
+                      props.reviews.length === 0 ?
+                        <p>This Recipe currently has no reviews</p> :
+                        props.reviews.map(review => (
+                          <Review review={review} />
+                        ))
                 }
               </div>
             </div>
@@ -178,6 +181,10 @@ const DetailsView = (props) => {
     </div>
   );
 };
+
+const ReviewList = () => {
+
+}
 
 const Review = (props) => {
   const date = new Date(props.review.review.createdAt);

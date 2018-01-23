@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
 
 import { recipeAction } from '../../actions/recipe';
+import { fetchRecipeReviews } from '../../actions/reviews';
 import './index.scss';
 import DetailsView from './DetailsView';
 import EditView from './EditView';
@@ -12,6 +13,10 @@ class RecipeDetails extends React.Component {
   state = {
     isDetailsMode: true,
     reviewText: '',
+  }
+
+  componentWillMount() {
+    this.props.fetchRecipeReviews(this.props.recipe.id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,11 +84,13 @@ const mapStateToProps = (state, ownProps) => ({
     .filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
   user: state.user,
   recipeActionStatus: state.recipes.recipeAction,
+  reviews: state.reviews[ownProps.match.params.recipeId],
 });
 
 const mapDispatchToProps = dispatch => ({
   recipeAction: (actionType, recipeData) =>
     dispatch(recipeAction(actionType, recipeData)),
+  fetchRecipeReviews: recipeId => dispatch(fetchRecipeReviews(recipeId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetails);
