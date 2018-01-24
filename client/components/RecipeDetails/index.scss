@@ -1,4 +1,6 @@
 .recipe-details-component {
+  $boxShadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+  padding: .5rem;
   p {
     line-height: 2rem
   }
@@ -9,7 +11,7 @@
       display: inline-block;
     }
     img {
-      width: 16%;
+      width: 14%;
       margin: 1rem;
     }
     i {
@@ -41,9 +43,12 @@
   }
   
   #thumbnails-row img {
-    height: 121px;
+    height: 153px;
     margin-bottom: 1rem;
-    padding: .5rem;
+    padding: .2rem;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    width: 49%;
+
   }
   
   #thumbnails-row {
@@ -70,8 +75,6 @@
     margin-top: 3rem;
     h5 {
       font-family: 'Lato';
-      font-style: italic;
-      font-size: 1.5rem;
     }
   }
   
@@ -85,10 +88,12 @@
 
   .review {
     margin-bottom: 3em;
+    box-shadow: $boxShadow;
+    padding: 1rem;
     .review-text {
-      margin: 0 auto;
       font-family: 'Dosis';
       font-size: 1.2rem;
+      overflow-wrap: break-word;
     };
 
     .review-details {
@@ -112,6 +117,17 @@
   }
   
   #review-section {
+    #review-form {
+      margin-bottom: 3rem;
+      padding: 0;
+    }
+    #no-review-text {
+      padding: 0;
+      font-size: 1.1rem;
+      opacity: 0.7;
+      font-style: italic;
+      font-family: 'Open Sans'
+    }
     h5 {
       font-size: 2.5rem;
       text-align: center;
@@ -132,11 +148,11 @@
   }
   
   .recipe-main-img {
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-    padding: .5rem;
     img {
       width: 100%;
-      max-height: 250px;
+      // max-height: 250px;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+      padding: .2rem;
     }
   }
 }

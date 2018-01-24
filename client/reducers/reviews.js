@@ -1,13 +1,13 @@
-import { RECEIVE_FETCH_REVIEWS, ERROR_FETCH_REVIEWS } from '../actions/reviews';
+import { RECEIVE_REVIEWS, ERROR_REVIEWS } from '../actions/reviews';
 
 const reviews = (state = { error: null }, action) => {
   switch (action.type) {
-    case ERROR_FETCH_REVIEWS:
+    case ERROR_REVIEWS:
       return {
         ...state,
         error: action.error,
       };
-    case RECEIVE_FETCH_REVIEWS:
+    case RECEIVE_REVIEWS:
       return {
         error: null,
         ...state,

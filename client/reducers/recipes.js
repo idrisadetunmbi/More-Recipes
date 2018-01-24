@@ -39,7 +39,6 @@ const updateRecipes = (recipes, recipe, actionType) => {
     case 'update':
     case 'upvote':
     case 'downvote':
-    case 'postReview':
     case 'favorite':
       updatedRecipes = recipes.map((recp) => {
         if (recp.id === recipe.id) {

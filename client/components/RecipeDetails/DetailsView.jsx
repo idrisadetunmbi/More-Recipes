@@ -36,9 +36,9 @@ const DetailsView = (props) => {
                   <img src={recipe.author.imageUrl} alt="" className="responsive-img circle" /> :
                   <i className="material-icons">account_circle</i>
               }
-              <div style={{ verticalAlign: 'bottom', display: 'inline-block' }}>
-                <span style={{ fontSize: '11px', opacity: '0.7' }}>Authored by</span>
-                <p style={{ fontSize: '1.2rem', marginTop: 0 }}>
+              <div>
+                <span>Authored by</span>
+                <p>
                   {user.data.id === recipe.authorId ? 'You' : recipe.author.username}
                 </p>
               </div>
@@ -51,8 +51,14 @@ const DetailsView = (props) => {
                 <div id="thumbnails-row" className="row">
                   {
                     // TODO: replace image sources
-                    (recipe.images.slice(1).map(image =>
-                      <img className="col s6 thumbnails" src={image} alt="" />))
+                    (recipe.images.slice(1).map((image, i) =>
+                      (<img
+                        style={{ marginRight: `${!(i % 2) && '2%'}` }}
+                        className="col s6 thumbnails"
+                        src={image}
+                        alt=""
+                      />))
+                    )
                   }
                 </div>
               </div>
@@ -101,8 +107,16 @@ const DetailsView = (props) => {
               <h5>Ingredients</h5>
               <ul>
                 {
-                  recipe.ingredients.split('\n').map((ingredient, i) =>
-                    <li><i className="material-icons">chevron_right</i>{ingredient}</li>)
+                  recipe.ingredients.split('\n')
+                    .map((ingredient, i) =>
+                      (
+                        <li>
+                          <p>
+                            <i className="material-icons">chevron_right</i>
+                            {ingredient}
+                          </p>
+                        </li>
+                      ))
                 }
               </ul>
             </div>
@@ -122,9 +136,9 @@ const DetailsView = (props) => {
         {/* review section */}
         <div className="divider" />
         <div id="review-section">
+          <h5>Reviews</h5>
           <div className="row">
-            <div className="col l4 offset-l4">
-              <h5>Reviews</h5>
+            <div id="review-form" className="col offset-l3 l6">
               <textarea
                 value={props.reviewText}
                 onChange={props.reviewOnChange}
@@ -132,20 +146,23 @@ const DetailsView = (props) => {
                 placeholder="Add a review"
               />
               <button onClick={props.reviewSubmit} className="btn btn-small">Submit</button>
-              {/* Reviews goes here */}
-              <div style={{ marginTop: '2em' }}>
-                {
-                  // eslint-disable-next-line
-                  !props.reviews ?
-                    <p>Loading reviews... </p> :
-                      props.reviews.length === 0 ?
-                        <p>This Recipe currently has no reviews</p> :
-                        props.reviews.map(review => (
-                          <Review review={review} />
-                        ))
-                }
-              </div>
             </div>
+
+            {
+              // eslint-disable-next-line
+              !props.reviews ?
+                <p>Loading reviews... </p> :
+                  props.reviews.length === 0 ?
+                    <p
+                      id="no-review-text"
+                      className="col l6 offset-l3"
+                    >
+                      This Recipe currently has no reviews
+                    </p> :
+                    props.reviews.map(review => (
+                      <Review review={review} />
+                    ))
+            }
           </div>
         </div>
       </div>
@@ -192,7 +209,7 @@ const Review = (props) => {
   const day = date.getDate();
 
   return (
-    <div className="review">
+    <div className="review col offset-l3 l6">
       <img className="circle" src={UserIcon} width="50px" alt="reviewers icon" />
       <div className="review-details">
         <span className="reviewers-name">{props.review.username}</span>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
 
 import { recipeAction } from '../../actions/recipe';
-import { fetchRecipeReviews } from '../../actions/reviews';
+import { fetchRecipeReviews, postRecipeReview } from '../../actions/reviews';
 import './index.scss';
 import DetailsView from './DetailsView';
 import EditView from './EditView';
@@ -27,8 +27,7 @@ class RecipeDetails extends React.Component {
     ) {
       this.toggleViewMode();
     }
-    if (this.props.recipeActionStatus.type === 'postReview' &&
-      !nextProps.recipeActionStatus.error) {
+    if (!deepEqual(nextProps.reviews, this.props.reviews)) {
       this.setState({
         reviewText: '',
       });
@@ -47,12 +46,11 @@ class RecipeDetails extends React.Component {
     if (reviewText.length === 0) {
       return;
     }
-    const reviewPostData = {
+    const reviewData = {
       content: reviewText,
       rating: 5,
-      recipeId: this.props.recipe.id,
     };
-    this.props.recipeAction('postReview', reviewPostData);
+    this.props.postRecipeReview(this.props.recipe.id, reviewData);
   }
 
   toggleViewMode = () => {
@@ -83,14 +81,17 @@ const mapStateToProps = (state, ownProps) => ({
   recipe: state.recipes.recipes
     .filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
   user: state.user,
-  recipeActionStatus: state.recipes.recipeAction,
   reviews: state.reviews[ownProps.match.params.recipeId],
 });
 
 const mapDispatchToProps = dispatch => ({
   recipeAction: (actionType, recipeData) =>
     dispatch(recipeAction(actionType, recipeData)),
+
   fetchRecipeReviews: recipeId => dispatch(fetchRecipeReviews(recipeId)),
+
+  postRecipeReview: (recipeId, reviewData) =>
+    dispatch(postRecipeReview(recipeId, reviewData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetails);
