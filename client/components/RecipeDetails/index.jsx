@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
 
-import { recipeAction } from '../../actions/recipe';
+import { recipeAction, recipeVoteAction } from '../../actions/recipe';
 import { fetchRecipeReviews, postRecipeReview } from '../../actions/reviews';
 import './index.scss';
 import DetailsView from './DetailsView';
@@ -40,10 +40,17 @@ class RecipeDetails extends React.Component {
     });
   }
 
-  reviewSubmit = (event) => {
-    event.preventDefault();
+  reviewSubmit = () => {
     const { reviewText } = this.state;
+    const { user, history } = this.props;
     if (reviewText.length === 0) {
+      return;
+    }
+    if (!user.data.token) {
+      history.push('/signin', {
+        modal: true,
+        previousLocation: history.location.pathname,
+      });
       return;
     }
     const reviewData = {
@@ -92,6 +99,9 @@ const mapDispatchToProps = dispatch => ({
 
   postRecipeReview: (recipeId, reviewData) =>
     dispatch(postRecipeReview(recipeId, reviewData)),
+
+  recipeVoteAction: (actionType, recipeId) =>
+    dispatch(recipeVoteAction(actionType, recipeId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetails);

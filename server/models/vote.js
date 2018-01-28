@@ -1,28 +1,8 @@
 export default (sequelize, DataTypes) => {
-  const vote = sequelize.define('vote', {
+  const Vote = sequelize.define('vote', {
     type: {
       type: DataTypes.ENUM,
       values: ['upvote', 'downvote'],
-    },
-    userId: {
-      type: DataTypes.UUID,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      allowNull: false,
-    },
-    recipeId: {
-      type: DataTypes.UUID,
-      references: {
-        model: 'recipes',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      allowNull: false,
     },
   }, {
     classMethods: {
@@ -31,5 +11,5 @@ export default (sequelize, DataTypes) => {
       },
     },
   });
-  return vote;
+  return Vote;
 };

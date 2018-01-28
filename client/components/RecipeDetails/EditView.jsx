@@ -198,7 +198,7 @@ class EditView extends Component {
             </div>
             {/* recipe images and action buttons end */}
 
-            <div style={{ marginLeft: '3rem', marginTop: '3rem' }} className="col s12 l7 description-section">
+            <div style={{ marginTop: '3rem' }} className="col s12 offset-l1 l6 description-section">
               <TextArea
                 defaultValue={recipe.description}
                 onBlur={this.onBlur}

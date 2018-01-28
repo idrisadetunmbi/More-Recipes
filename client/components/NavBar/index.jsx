@@ -24,15 +24,20 @@ const NavBar = (props) => {
         <div id="logo-container">
           <Link to="/catalog" className="brand-logo">
             <img src={Logo} alt="navbar logo" />
+            <h5>MoreRecipes</h5>
           </Link>
         </div>
         <ul className="right">
           <li>
             <Link to={linkTo} className="dropdown-button" data-activates="dropdown">
-              <i style={{ fontSize: '3rem' }} className="large material-icons">
-                account_circle
-                <i style={{ marginLeft: '0px' }} className="material-icons right">arrow_drop_down</i>
-              </i>
+              {
+                props.user.data.imageUrl ?
+                  <img src={props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
+                  <i style={{ fontSize: '3rem' }} className="large material-icons">
+                    account_circle
+                  </i>
+               }
+              <i className="material-icons">arrow_drop_down</i>
             </Link>
           </li>
         </ul>

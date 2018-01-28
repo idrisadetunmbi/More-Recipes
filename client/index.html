@@ -19,17 +19,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script>
     $(document).ready(function() {
-      $('.dropdown-button').dropdown({
-        hover: true,
-        belowOrigin: true,
-        alignment: 'left',
-        constrainWidth: false,
-        // gutter: 20,
-        // stopPropagation: true,
-      });
-
       $('#btn-browse-catalog').on('click', function () {
-        console.log('Recipe gallery', $('#recipe-gallery'));
         $('html, body').animate({
           scrollTop: $("#recipe-gallery").offset().top-90
         }, 500);

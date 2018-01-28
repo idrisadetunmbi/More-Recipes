@@ -52,7 +52,7 @@ const Catalog = props => (
           isLoadingRecipes={props.recipes.isFetching}
           error={props.recipes.error}
           style={{ width: '97%', marginLeft: '-0.6em' }}
-          gridStyle="l4"
+          gridStyle="l4 s12 m6"
         />
       </div>
     </div>

@@ -78,7 +78,7 @@ const LandingPage = props => (
       isLoadingRecipes={props.recipes.isFetching}
       error={props.recipes.error}
       style={{ width: '90%' }}
-      gridStyle="l3"
+      gridStyle="l3 s12 m6"
     />
     <div className="center" style={{ marginTop: '6em' }}>
       <Link to="/catalog" className="btn-large waves-effect waves-light grey darken-4 lighten-1">view entire catalog</Link>

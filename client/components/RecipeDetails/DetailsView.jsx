@@ -70,7 +70,7 @@ const DetailsView = (props) => {
                     style={{ marginLeft: '0' }}
                     className="btn waves-ripple"
                     onClick={() => userCanVoteRecipe('upvote') &&
-                      props.recipeAction('upvote', recipe.id)}
+                      props.recipeVoteAction('upvote', recipe.id)}
                   >
                     <i className="material-icons">thumb_up</i>
                     <span>{recipe.upvotes}</span>
@@ -78,7 +78,7 @@ const DetailsView = (props) => {
                   <a
                     className="btn waves-ripple"
                     onClick={() => userCanVoteRecipe('downvote') &&
-                      props.recipeAction('downvote', recipe.id)}
+                      props.recipeVoteAction('downvote', recipe.id)}
                   >
                     <i className="material-icons">thumb_down</i>
                     <span>{recipe.downvotes}</span>
@@ -86,7 +86,7 @@ const DetailsView = (props) => {
                   <a
                     className="btn waves-ripple"
                     onClick={() => userCanVoteRecipe('favorite') &&
-                      props.recipeAction('favorite', recipe.id)}
+                      props.recipeVoteAction('favorite', recipe.id)}
                   >
                     <i className="material-icons">favorite</i>
                     <span>{recipe.favorites}</span>
@@ -97,7 +97,7 @@ const DetailsView = (props) => {
           </div>
           {/* recipe images and action buttons end */}
 
-          <div style={{ marginLeft: '3rem' }} className="col s12 l7 description-section">
+          <div className="col s12 offset-l1 l6 description-section">
             <div>
               <h5>Description</h5>
               <p>{recipe.description}</p>
@@ -138,7 +138,7 @@ const DetailsView = (props) => {
         <div id="review-section">
           <h5>Reviews</h5>
           <div className="row">
-            <div id="review-form" className="col offset-l3 l6">
+            <div id="review-form" className="col offset-m1 m10 s12 offset-l3 l6">
               <textarea
                 value={props.reviewText}
                 onChange={props.reviewOnChange}
@@ -209,7 +209,7 @@ const Review = (props) => {
   const day = date.getDate();
 
   return (
-    <div className="review col offset-l3 l6">
+    <div className="review col offset-m1 m10 s12 offset-l3 l6">
       <img className="circle" src={UserIcon} width="50px" alt="reviewers icon" />
       <div className="review-details">
         <span className="reviewers-name">{props.review.username}</span>

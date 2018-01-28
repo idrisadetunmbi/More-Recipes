@@ -27,7 +27,7 @@ export const errorRecipeAction = (error) => {
 
 /**
  *
- * @param {string} actionType - one of 'create', 'delete', 'update', or 'vote' actions
+ * @param {string} actionType - one of 'create', 'delete', 'update'
  * @param {any} recipeData - an object or a string representing the recipe data or recipeId
  */
 export const recipeAction = (actionType, recipeData) => async (dispatch, getState) => {
@@ -41,7 +41,6 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
     case 'create':
       try {
         resp = await axiosInstance.post(BASEURL, recipeData);
-        resp = await axiosInstance.get(`${BASEURL}${resp.data.data.id}`);
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
@@ -57,38 +56,30 @@ export const recipeAction = (actionType, recipeData) => async (dispatch, getStat
       return dispatch(receiveRecipeActionResponse(recipeData));
     case 'update':
       try {
-        await axiosInstance.put(`${BASEURL}${recipeData.id}`, recipeData);
-        resp = await axiosInstance.get(`${BASEURL}${recipeData.id}`);
+        resp = await axiosInstance.put(`${BASEURL}${recipeData.id}`, recipeData);
       } catch (error) {
         return dispatch(errorRecipeAction(error.response.data));
       }
-      return dispatch(receiveRecipeActionResponse(resp.data.data));
-    case 'upvote':
-      try {
-        await axiosInstance.post(`${BASEURL}${recipeData}?action=upvote`);
-        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
-      } catch (error) {
-        return dispatch(errorRecipeAction(error.response.data));
-      }
-      return dispatch(receiveRecipeActionResponse(resp.data.data));
-    case 'downvote':
-      try {
-        await axiosInstance.post(`${BASEURL}${recipeData}?action=downvote`);
-        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
-      } catch (error) {
-        return dispatch(errorRecipeAction(error.response.data));
-      }
-      return dispatch(receiveRecipeActionResponse(resp.data.data));
-    case 'favorite':
-      try {
-        await axiosInstance.post(`${BASEURL}${recipeData}?action=favorite`);
-        resp = await axios.get(`/api/v1/recipes/${recipeData}`);
-      } catch (error) {
-        return dispatch(errorRecipeAction(error.response.data));
-      }
-      dispatch(fetchUserFavorites(true));
       return dispatch(receiveRecipeActionResponse(resp.data.data));
     default:
       break;
   }
+};
+
+export const recipeVoteAction = (actionType, recipeId) => async (dispatch, getState) => {
+  const userToken = getState().user.data.token;
+  let resp;
+  dispatch(initiateRecipeActionRequest(actionType));
+  try {
+    resp = await axios.post(
+      `/api/v1/recipes/${recipeId}?action=${actionType}`,
+      {}, { headers: { Authorization: `Bearer ${userToken}` } },
+    );
+  } catch (error) {
+    return dispatch(errorRecipeAction(error.response.data));
+  }
+  if (actionType === 'favorite') {
+    dispatch(fetchUserFavorites(true));
+  }
+  return dispatch(receiveRecipeActionResponse(resp.data.data));
 };

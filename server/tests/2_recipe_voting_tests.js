@@ -140,7 +140,7 @@ describe('Recipe voting review actions', () => {
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
-          assert.equal(res.body.message, 'upvote on recipe has been removed');
+          assert.equal(res.body.message, 'upvote has been removed on recipe');
           done();
         });
     });
@@ -234,21 +234,6 @@ describe('Recipe voting review actions', () => {
         });
     });
 
-    it('disallows recipe owner from posting review on a recipe', (done) => {
-      chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}/reviews`)
-        .set('authorization', `Bearer ${testData.userAuthToken}`)
-        .type('form')
-        .send({
-          rating: 1,
-        })
-        .end((err, res) => {
-          assert.equal(res.statusCode, 403);
-          assert.exists(res.body.error);
-          done();
-        });
-    });
-
     it('returns an error without rating property on request body', (done) => {
       chai.request(server)
         .post(`/api/recipes/${testData.postedRecipeID}/reviews`)
@@ -312,7 +297,6 @@ describe('Recipe voting review actions', () => {
   });
 
   describe('GET /api/recipes/:recipeId/reviews', () => {
-
     it('returns an error with an invalid recipe id', (done) => {
       chai.request(server)
         .get('/api/recipes/invalidrecipeid/reviews')
@@ -330,7 +314,7 @@ describe('Recipe voting review actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
-          assert.isArray(res.body.data.userReviews);
+          assert.isArray(res.body.data);
           done();
         });
     });

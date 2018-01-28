@@ -3,3 +3,4 @@ production
 .nyc_output
 coverage
 .env
+.vscode

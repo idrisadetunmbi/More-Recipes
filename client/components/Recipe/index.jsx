@@ -25,7 +25,7 @@ export default class Recipe extends Component {
           <div className="card-action">
             <span><i className="material-icons">thumb_up</i>{recipe.upvotes}</span>
             <span><i className="material-icons">thumb_down</i>{recipe.downvotes}</span>
-            <span><i className="material-icons">star</i>{recipe.favorites}</span>
+            <span><i className="material-icons">favorite</i>{recipe.favorites}</span>
           </div>
         </div>
       </div>

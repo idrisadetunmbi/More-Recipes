@@ -20,6 +20,15 @@ class App extends Component {
     this.props.fetchRecipes();
   }
 
+  componentDidMount() {
+    $('.dropdown-button').dropdown({
+      hover: true,
+      belowOrigin: true,
+      alignment: 'left',
+      constrainWidth: false,
+    });
+  }
+
   componentWillUpdate(nextProps) {
     localStorage.setItem('user', JSON.stringify(nextProps.user));
     const { location } = this.props;

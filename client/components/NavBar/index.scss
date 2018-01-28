@@ -1,12 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster+Two:700i');
+
 #navbar-component {
   a, .brand-logo {
     color: #444;
+    h5 {
+      font-family: 'Lobster Two', cursive;
+      display: inline-block;
+    }
   };
 
   #logo-container {
     img {
       height: 56px;
       vertical-align: middle;
+    }
+  }
+
+  .dropdown-button {
+    height: 4.3rem;
+    i {
+      display: inline-block;
+      &:nth-child(2) {
+        vertical-align: top;
+      }
+    }
+    img {
+      margin-top: 1rem;
     }
   }
 }

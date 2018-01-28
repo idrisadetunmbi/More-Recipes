@@ -42,18 +42,21 @@
     width: 90%;
   }
   
-  #thumbnails-row img {
+  #thumbnails-row .thumbnails {
     height: 153px;
     margin-bottom: 1rem;
     padding: .2rem;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
     width: 49%;
-
   }
   
   #thumbnails-row {
     padding: 0 1rem;
     margin-top: 1rem;
+    img {
+      width: 100%;
+      height: 121px;
+    }
   }
   
   .vote-actions .btn {

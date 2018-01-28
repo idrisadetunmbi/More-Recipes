@@ -4,6 +4,12 @@ import models from '../models';
 const RecipeModel = models.recipe;
 const VoteModel = models.vote;
 
+/**
+ *
+ *
+ * @export
+ * @class RecipeController
+ */
 export default class RecipeController {
   /**
    * Array storing validations for a POST recipe request
@@ -48,6 +54,15 @@ export default class RecipeController {
       .isIn(['upvote', 'favorite', 'downvote']).trim(),
   ];
 
+  getRecipeFromDb = recipeId =>
+    RecipeModel.findById(recipeId, {
+      include: [
+        {
+          model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
+        },
+      ],
+    });
+
   /**
    * Adds a new recipe
    * @param()
@@ -62,9 +77,10 @@ export default class RecipeController {
         downvotes: 0,
         favorites: 0,
       });
+      recipe = await this.getRecipeFromDb(recipe.id);
     } catch (error) {
       return res.status(400).send({
-        message: 'user does not exist',
+        message: 'An error occured while performing this request',
         error: error.message || error.errors[0].message,
       });
     }
@@ -103,13 +119,7 @@ export default class RecipeController {
   getRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = await RecipeModel.findById(req.params.recipeId, {
-        include: [
-          {
-            model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
-          },
-        ],
-      });
+      recipe = await this.getRecipeFromDb(req.params.recipeId);
     } catch (error) {
       return res.status(500).send({
         message: 'unhandled server error',
@@ -129,14 +139,14 @@ export default class RecipeController {
     }
     let recipe;
     try {
-      recipe = await RecipeModel.findById(req.params.recipeId);
+      recipe = await this.getRecipeFromDb(req.params.recipeId);
       // disallow modification if recipe was not added by current user
       if (recipe.authorId !== req.user.id) {
         return res.status(403).send({
           error: 'this recipe was added by another user',
         });
       }
-      recipe = await recipe.update({
+      await recipe.update({
         ...req.body,
         authorId: recipe.authorId,
         upvotes: recipe.upvotes,
@@ -219,126 +229,60 @@ export default class RecipeController {
       message: `reviews for recipe with id ${req.params.recipeId}`,
       data: recipe.userReviews,
     });
-    // return recipe.userReviews.length > 0 ?
-    //   res.status(200).json({
-    //     message: `reviews for recipe with id ${recipe.id}`,
-    //     data: recipe,
-    //   }) :
-    //   res.status(200).json({
-    //     message: 'this recipe currently has no reviews',
-    //   });
   }
 
   voteRecipe = async (req, res) => {
     const { user } = req;
-    const recipe = await RecipeModel.findById(req.params.recipeId);
+    const recipe = await this.getRecipeFromDb(req.params.recipeId);
     if (user.id === recipe.authorId) {
       return res.status(403).send({
-        error: 'you cannot favorite or upvote a recipe you created',
+        error: `you cannot ${req.query.action} a recipe you created`,
       });
     }
 
-    let recipeIsUsersFavorite;
-    switch (req.query.action) {
-      case 'favorite':
-        recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
-        if (recipeIsUsersFavorite) {
-          await user.removeFavoriteRecipe(recipe);
-          recipe.update({
-            favorites: recipe.favorites - 1,
-          });
-          return res.status(200).send({
-            message: 'recipe has been removed as favorite',
-          });
-        }
-        await user.addFavoriteRecipe(recipe);
-        recipe.update({
-          favorites: recipe.favorites + 1,
-        });
+    if (req.query.action === 'favorite') {
+      const recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
+      if (recipeIsUsersFavorite) {
+        user.removeFavoriteRecipe(recipe);
+        await recipe.decrement('favorites');
         return res.status(200).send({
-          message: 'recipe has been added as favorite',
+          message: 'recipe has been removed as favorite',
+          data: recipe,
         });
-      case 'upvote': {
-        const userHasVotedRecipe = await user
-          .hasVotedRecipe(recipe);
-        if (!userHasVotedRecipe) {
-          VoteModel.create({
-            userId: user.id,
-            recipeId: recipe.id,
-            type: 'upvote',
-          });
-          recipe.increment('upvotes');
-          return res.status(200).send({
-            message: 'recipe has been upvoted successfully',
-          });
-        }
-        const voteRecord = await VoteModel.findOne({
-          where: {
-            recipeId: recipe.id,
-            userId: user.id,
-          },
-        });
-        if (voteRecord.type === 'upvote') {
-          await user.removeVotedRecipe(recipe);
-          recipe.decrement('upvotes');
-          return res.status(200).send({
-            message: 'upvote has been removed on recipe',
-          });
-        }
-        if (voteRecord.type === 'downvote') {
-          await voteRecord.update({
-            type: 'upvote',
-          });
-          recipe.increment('upvotes');
-          recipe.decrement('downvotes');
-          return res.status(200).send({
-            message: 'recipe has been upvoted successfully',
-          });
-        }
       }
-        break;
-      case 'downvote': {
-        const userHasVotedRecipe = await user
-          .hasVotedRecipe(recipe);
-        if (!userHasVotedRecipe) {
-          VoteModel.create({
-            userId: user.id,
-            recipeId: recipe.id,
-            type: 'downvote',
-          });
-          recipe.increment('downvotes');
-          return res.status(200).send({
-            message: 'recipe has been downvoted successfully',
-          });
-        }
-        const voteRecord = await VoteModel.findOne({
-          where: {
-            recipeId: recipe.id,
-            userId: user.id,
-          },
-        });
-        if (voteRecord.type === 'downvote') {
-          await user.removeVotedRecipe(recipe);
-          recipe.decrement('downvotes');
-          return res.status(200).send({
-            message: 'downvote has been removed on recipe',
-          });
-        }
-        if (voteRecord.type === 'upvote') {
-          await voteRecord.update({
-            type: 'downvote',
-          });
-          recipe.decrement('upvotes');
-          recipe.increment('downvotes');
-          return res.status(200).send({
-            message: 'recipe has been downvoted successfully',
-          });
-        }
-      }
-        break;
-      default:
-        break;
+      user.addFavoriteRecipe(recipe);
+      await recipe.increment('favorites');
+      return res.status(200).send({
+        message: 'recipe has been added as favorite',
+        data: recipe,
+      });
     }
+    // action is either upvote or downvote
+    const { action } = req.query;
+    const vote = await recipe.getVoters({
+      attributes: [],
+      where: { id: user.id },
+      joinTableAttributes: ['type'],
+    });
+
+    const currentVoteType = vote.length && vote[0].vote.type;
+    if (!currentVoteType || currentVoteType !== action) {
+      recipe.addVoter(user, { through: { type: action } });
+      await recipe.increment(`${action}s`);
+      if (currentVoteType && currentVoteType !== action) {
+        await recipe.decrement(`${currentVoteType}s`);
+      }
+      return res.status(200).send({
+        message: `recipe has been ${action}d`,
+        recipe,
+      });
+    }
+    recipe.removeVoter(user);
+    await recipe.decrement(`${action}s`);
+    return res.status(200).send({
+      message: `${action} has been removed on recipe`,
+      recipe,
+    });
   }
 
   validateRequestData = (req, res, next) => {
