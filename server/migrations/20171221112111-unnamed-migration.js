@@ -12,7 +12,6 @@ module.exports = {
     return queryInterface.addColumn('recipes', 'downvotes', {
       type: Sequelize.INTEGER,
       defaultValue: 0,
-      allowNull: false,
     });
   },
 

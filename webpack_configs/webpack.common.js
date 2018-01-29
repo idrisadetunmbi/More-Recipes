@@ -15,7 +15,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../client', 'index.html'),
     }),
-    new Dotenv(),
+    new Dotenv({
+      // enable loading of variables exposed by the environment
+      systemvars: true,
+    }),
     extractSass,
   ],
   output: {
