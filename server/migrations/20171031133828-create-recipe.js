@@ -36,10 +36,6 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      upvotes: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
       favorites: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
