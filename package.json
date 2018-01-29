@@ -1,6 +1,6 @@
 {
   "name": "More-Recipes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "More Recipes; A Recipe management and social app",
   "scripts": {
     "clean": "rm -rf ./production",
