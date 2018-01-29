@@ -3,6 +3,8 @@ import express from 'express';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import path from 'path';
+
 import api from './routes/api';
 
 dotenv.config({ path: `${__dirname}/../.env` });
@@ -14,11 +16,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-if (process.env.NODE_ENV !== 'production') {
-  require('../webpack_devserver_config')(app);
+app.use('/api', api);
+
+// if process.env is development, use webpack-dev-middleware and configs
+// for serving client side contents
+if (!process.env.NODE_ENV) {
+  require('../webpack_configs/webpack_devserver_config')(app);
 }
 
-app.use('/api', api);
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html')));
+}
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');

@@ -4,8 +4,10 @@
   "description": "More Recipes; A Recipe management and social app",
   "scripts": {
     "clean": "rm -rf ./production",
-    "build": "npm run clean && mkdir ./production && babel ./server/ -d ./production --copy-files",
-    "start": "npm run build && node ./production/bin/www.js",
+    "build:server": "mkdir ./production && babel ./server/ -d ./production --copy-files",
+    "build:client": "NODE_ENV=production webpack --config ./webpack_configs/webpack.prod.js --progress",
+    "build": "npm run clean && npm run build:server && npm run build:client",
+    "start": "npm run build && NODE_ENV=production node ./production/bin/www.js",
     "devstart": "nodemon ./server/bin/www --exec babel-node",
     "start:client": "babel-node ./server/bin/www",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --require babel-register --timeout=40000",
@@ -87,8 +89,10 @@
     "sass-loader": "^6.0.6",
     "sequelize-cli": "^3.0.0",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^1.12.0",
-    "webpack-hot-middleware": "^2.20.0"
+    "webpack-hot-middleware": "^2.20.0",
+    "webpack-merge": "^4.1.1"
   }
 }
