@@ -7,17 +7,6 @@ import { signOutUser } from '../../actions/user';
 import './index.scss';
 
 const NavBar = (props) => {
-  const linkTo = props.user.data.token ?
-    '/user' :
-    {
-      pathname: '/signin',
-      state: {
-        modal: true,
-        previousLocation: props.location.pathname,
-      },
-    };
-
-
   return (
     <nav className="white" id="navbar-component">
       <ul className="nav-wrapper container">
@@ -28,43 +17,43 @@ const NavBar = (props) => {
           </Link>
         </div>
         <ul className="right">
-          <li>
-            <Link to={linkTo} className="dropdown-button" data-activates="dropdown">
-              {
-                props.user.data.imageUrl ?
-                  <img src={props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
-                  <i style={{ fontSize: '3rem' }} className="large material-icons">
-                    account_circle
-                  </i>
-               }
-              <i className="material-icons">arrow_drop_down</i>
-            </Link>
-          </li>
-        </ul>
-
-        {
-          props.user.data.token ?
-            <ul id="dropdown" className="dropdown-content">
+          {
+            props.user.data.token ?
               <li>
-                <Link to="/user">My Profile</Link>
-                <a onClick={props.signOutUser}>Sign Out</a>
-              </li>
-            </ul> :
-            <ul id="dropdown" className="dropdown-content">
+                <a className="dropdown-button" data-beloworigin="true" data-activates="dropdown">
+                  {
+                    props.user.data.imageUrl ?
+                      <img src={props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
+                      <i style={{ fontSize: '3rem' }} className="large material-icons">
+                        account_circle
+                      </i>
+                  }
+                  <span className="black-text">{props.user.data.username}</span>
+                  <i className="material-icons">arrow_drop_down</i>
+                </a>
+              </li> :
               <li>
-                <Link to={{
-                  pathname: '/signin',
-                  state: {
-                    modal: true,
-                    previousLocation: props.location.pathname,
-                  },
-                }}
-                >Sign In
+                <Link
+                  to={{
+                    pathname: '/signin',
+                    state: {
+                      modal: true,
+                      previousLocation: props.location.pathname,
+                    },
+                  }}
+                >
+                  Sign In
                 </Link>
               </li>
-            </ul>
-        }
+          }
+        </ul>
 
+        <ul id="dropdown" className="dropdown-content">
+          <li>
+            <Link to="/user">My Profile</Link>
+            <a onClick={props.signOutUser}>Sign Out</a>
+          </li>
+        </ul>
       </ul>
     </nav>
   );

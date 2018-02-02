@@ -14,12 +14,32 @@ const convertActionType = (action) => {
   }
 };
 
-const user = (state = {
+const receiveUserRequestResponse = (state, action) => {
+  switch (action.requestType) {
+    case UserActions.FETCH_RECIPE_VOTE_STATUS: {
+      const { recipeId, ...voteStatuses } = action.data;
+      return {
+        recipesVoteStatuses: {
+          ...state.recipesVoteStatuses,
+          [recipeId]: voteStatuses,
+        },
+      };
+    }
+    default:
+      return {
+        [convertActionType(action.requestType)]: action.data,
+      };
+  }
+};
+
+const initialState = JSON.parse(localStorage.getItem('user'));
+const user = (state = initialState || {
   userRequestInitiated: false,
   userRequestError: null,
   data: {},
   recipes: null,
   favoriteRecipes: null,
+  recipesVoteStatuses: {},
 }, action) => {
   switch (action.type) {
     case UserActions.INITIATE_USER_REQUEST:
@@ -41,7 +61,7 @@ const user = (state = {
         requestType: undefined,
         userRequestError: null,
         userRequestInitiated: false,
-        [convertActionType(state.requestType)]: action.data,
+        ...receiveUserRequestResponse(state, action),
       };
     case UserActions.RESET_USER_DATA:
       return {
@@ -50,6 +70,7 @@ const user = (state = {
         data: {},
         recipes: null,
         favoriteRecipes: null,
+        recipesVoteStatuses: {},
       };
     case UserActions.ADD_TO_USER_RECIPES:
       return {

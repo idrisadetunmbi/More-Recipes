@@ -20,9 +20,13 @@
     height: 4.3rem;
     i {
       display: inline-block;
-      &:nth-child(2) {
+      &:nth-child(3) {
         vertical-align: top;
       }
+    }
+    span {
+      vertical-align: top;
+      margin-left: .4rem;
     }
     img {
       margin-top: 1rem;

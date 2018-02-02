@@ -1,20 +1,21 @@
-import React, { PropTypes } from 'react';
-import { showToast } from '../../utils';
+import React from 'react';
+import PropTypes from 'prop-types';
 import UserIcon from './avatar_img.png';
 
 const DetailsView = (props) => {
-  const userCanVoteRecipe = (type) => {
-    const { user, recipe, history } = props;
+  const { userVoteStatuses } = props;
+  const userUpvoted = userVoteStatuses && userVoteStatuses.upvoted;
+  const userDownvoted = userVoteStatuses && userVoteStatuses.downvoted;
+  const userFavorited = userVoteStatuses && userVoteStatuses.favorited;
+
+  const userIsSignedIn = () => {
+    const { user, history } = props;
     // if user is not signed in, redirect user to sign in
-    if (!user.data.token) {
+    if (!user.token) {
       history.push('/signin', {
         modal: true,
         previousLocation: history.location.pathname,
       });
-      return false;
-    }
-    if (user.data.id === recipe.authorId) {
-      showToast(`You cannot ${type} a recipe you added`);
       return false;
     }
     return true;
@@ -33,13 +34,17 @@ const DetailsView = (props) => {
             <div id="recipe-author-section">
               {
                 recipe.author.imageUrl ?
-                  <img src={recipe.author.imageUrl} alt="" className="responsive-img circle" /> :
+                  <img
+                    src={recipe.author.imageUrl}
+                    alt=""
+                    className="responsive-img circle"
+                  /> :
                   <i className="material-icons">account_circle</i>
               }
               <div>
                 <span>Authored by</span>
                 <p>
-                  {user.data.id === recipe.authorId ? 'You' : recipe.author.username}
+                  {props.userOwnsRecipe() ? 'You' : recipe.author.username}
                 </p>
               </div>
             </div>
@@ -68,24 +73,27 @@ const DetailsView = (props) => {
                 <div className="vote-actions">
                   <a
                     style={{ marginLeft: '0' }}
-                    className="btn waves-ripple"
-                    onClick={() => userCanVoteRecipe('upvote') &&
+                    className={`btn waves-ripple ${userUpvoted && 'checked'}`}
+                    disabled={props.userOwnsRecipe()}
+                    onClick={() => userIsSignedIn() &&
                       props.recipeVoteAction('upvote', recipe.id)}
                   >
                     <i className="material-icons">thumb_up</i>
                     <span>{recipe.upvotes}</span>
                   </a>
                   <a
-                    className="btn waves-ripple"
-                    onClick={() => userCanVoteRecipe('downvote') &&
+                    className={`btn waves-ripple ${userDownvoted && 'checked'}`}
+                    disabled={props.userOwnsRecipe()}
+                    onClick={() => userIsSignedIn() &&
                       props.recipeVoteAction('downvote', recipe.id)}
                   >
                     <i className="material-icons">thumb_down</i>
                     <span>{recipe.downvotes}</span>
                   </a>
                   <a
-                    className="btn waves-ripple"
-                    onClick={() => userCanVoteRecipe('favorite') &&
+                    className={`btn waves-ripple ${userFavorited && 'checked'}`}
+                    disabled={props.userOwnsRecipe()}
+                    onClick={() => userIsSignedIn() &&
                       props.recipeVoteAction('favorite', recipe.id)}
                   >
                     <i className="material-icons">favorite</i>
@@ -125,7 +133,8 @@ const DetailsView = (props) => {
               <h5>Directions</h5>
               <ol>
                 {
-                  recipe.directions.split('\n').map((direction, i) => <li><p>{direction}</p></li>)
+                  recipe.directions.split('\n').map(direction =>
+                    <li><p>{direction}</p></li>)
                 }
               </ol>
             </div>
@@ -168,7 +177,7 @@ const DetailsView = (props) => {
       </div>
 
       {
-        user.data.token && user.data.id === recipe.authorId &&
+        user.token && props.userOwnsRecipe() &&
         (
         <div className="fixed-action-btn">
           <a className="btn-floating btn-large">
@@ -199,28 +208,47 @@ const DetailsView = (props) => {
   );
 };
 
-const ReviewList = () => {
-
-}
-
 const Review = (props) => {
-  const date = new Date(props.review.review.createdAt);
+  const reviewer = props.review.user;
+  const date = new Date(props.review.createdAt);
   const month = date.toLocaleString('en-us', { month: 'short' });
   const day = date.getDate();
 
   return (
     <div className="review col offset-m1 m10 s12 offset-l3 l6">
-      <img className="circle" src={UserIcon} width="50px" alt="reviewers icon" />
+      <img
+        className="circle"
+        src={reviewer.imageUrl || UserIcon}
+        width="35"
+        height="35"
+        alt="reviewers icon"
+      />
       <div className="review-details">
-        <span className="reviewers-name">{props.review.username}</span>
+        <span className="reviewers-name">{reviewer.username}</span>
         <span className="date">{`${month} ${day}`}</span>
       </div>
       <div className="divider" />
       <p className="review-text">
-        {props.review.review.content}
+        {props.review.content}
       </p>
     </div>
   );
+};
+
+DetailsView.propTypes = {
+  recipe: PropTypes.shape().isRequired,
+  user: PropTypes.shape().isRequired,
+  recipeAction: PropTypes.func.isRequired,
+  recipeVoteAction: PropTypes.func.isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  reviewText: PropTypes.string.isRequired,
+  reviewOnChange: PropTypes.func.isRequired,
+  reviewSubmit: PropTypes.func.isRequired,
+  toggleViewMode: PropTypes.func.isRequired,
+};
+
+Review.propTypes = {
+  review: PropTypes.shape().isRequired,
 };
 
 export default DetailsView;

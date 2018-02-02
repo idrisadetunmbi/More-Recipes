@@ -12,6 +12,12 @@ import UserProfile from './UserProfile';
 
 import { fetchRecipes } from '../actions/recipes';
 
+/**
+ *
+ *
+ * @class App
+ * @extends {Component}
+ */
 class App extends Component {
   // eslint-disable-next-line
   previousLocation = this.props.location
@@ -22,7 +28,6 @@ class App extends Component {
 
   componentDidMount() {
     $('.dropdown-button').dropdown({
-      hover: true,
       belowOrigin: true,
       alignment: 'left',
       constrainWidth: false,

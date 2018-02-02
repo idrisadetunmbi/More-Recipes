@@ -53,14 +53,15 @@ describe('Recipe voting review actions', () => {
         assert.equal(res.statusCode, 201);
         assert.exists(res.body.data.id);
         testData.postedRecipeID = res.body.data.id;
+        testData.postedRecipe = res.body.data;
         done();
       });
   });
 
-  describe('POST /api/recipes/:recipeId', () => {
+  describe('POST /api/recipes/:recipeId/upvote - upvote a recipe', () => {
     it('returns an error without a user token', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}`)
+        .post(`/api/recipes/${testData.postedRecipeID}/upvote`)
         .end((err, res) => {
           assert.equal(res.statusCode, 401);
           assert.include(res.body.error, 'please include user token');
@@ -70,7 +71,7 @@ describe('Recipe voting review actions', () => {
 
     it('returns an error with an invalid recipe id', (done) => {
       chai.request(server)
-        .post('/api/recipes/invalidrecipeid')
+        .post('/api/recipes/invalidrecipeid/upvote')
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
@@ -79,31 +80,9 @@ describe('Recipe voting review actions', () => {
         });
     });
 
-    it('returns an error without a specified action', (done) => {
+    it('disallows recipe owner from upvoting a recipe', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}`)
-        .set('authorization', `Bearer ${testData.userAuthToken}`)
-        .end((err, res) => {
-          assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
-          done();
-        });
-    });
-
-    it('returns an error with an unknown specified action', (done) => {
-      chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=unknownaction`)
-        .set('authorization', `Bearer ${testData.userAuthToken}`)
-        .end((err, res) => {
-          assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
-          done();
-        });
-    });
-
-    it('disallows recipe owner from voting or favoriting a recipe', (done) => {
-      chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=upvote`)
+        .post(`/api/recipes/${testData.postedRecipeID}/upvote`)
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 403);
@@ -112,90 +91,142 @@ describe('Recipe voting review actions', () => {
         });
     });
 
-    it('allows a user to upvote a recipe', (done) => {
+    it('allows a user to upvote a recipe and increases the recipe upvote count', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=upvote`)
+        .post(`/api/recipes/${testData.postedRecipeID}/upvote`)
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
           assert.equal(res.body.message, 'recipe has been upvoted');
-          done();
-        });
-    });
-
-    it('increases the upvotes property of a recipe after an upvote', (done) => {
-      chai.request(server)
-        .get(`/api/recipes/${testData.postedRecipeID}`)
-        .set('authorization', `Bearer ${testData.altUserToken}`)
-        .end((err, res) => {
-          assert.equal(res.statusCode, 200);
-          assert.equal(res.body.data.upvotes, 1);
+          assert.equal(res.body.data.upvotes - testData.postedRecipe.upvotes, 1);
           done();
         });
     });
 
     it('removes the upvote if user tries to upvote recipe again', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=upvote`)
+        .post(`/api/recipes/${testData.postedRecipeID}/upvote`)
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
           assert.equal(res.body.message, 'upvote has been removed on recipe');
+          assert.equal(res.body.data.upvotes, testData.postedRecipe.upvotes);
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/recipes/:recipeId/downvote - downvoting a recipe', () => {
+    it('returns an error without a user token', (done) => {
+      chai.request(server)
+        .post(`/api/recipes/${testData.postedRecipeID}/downvote`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 401);
+          assert.include(res.body.error, 'please include user token');
           done();
         });
     });
 
-    it('decreases the upvote property of a recipe after removing the upvote', (done) => {
+    it('returns an error with an invalid recipe id', (done) => {
       chai.request(server)
-        .get(`/api/recipes/${testData.postedRecipeID}`)
-        .set('authorization', `Bearer ${testData.altUserToken}`)
+        .post('/api/recipes/invalidrecipeid/downvote')
+        .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
-          assert.equal(res.statusCode, 200);
-          assert.equal(res.body.data.upvotes, 0);
+          assert.equal(res.statusCode, 400);
+          assert.exists(res.body.errors);
           done();
         });
     });
 
-    it('allows a user to favorite a recipe', (done) => {
+    it('disallows recipe owner from downvoting a recipe', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=favorite`)
-        .set('authorization', `Bearer ${testData.altUserToken}`)
+        .post(`/api/recipes/${testData.postedRecipeID}/downvote`)
+        .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
-          assert.equal(res.statusCode, 200);
-          assert.equal(res.body.message, 'recipe has been added as favorite');
+          assert.equal(res.statusCode, 403);
+          assert.exists(res.body.error);
           done();
         });
     });
 
-    it('increases the favorites property of a recipe after a favorite action', (done) => {
+    it('allows a user to downvote a recipe and increases the recipe downvote count', (done) => {
       chai.request(server)
-        .get(`/api/recipes/${testData.postedRecipeID}`)
+        .post(`/api/recipes/${testData.postedRecipeID}/downvote`)
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
-          assert.equal(res.body.data.favorites, 1);
+          assert.equal(res.body.message, 'recipe has been downvoted');
+          assert.equal(res.body.data.downvotes - testData.postedRecipe.downvotes, 1);
           done();
         });
     });
 
-    it('unfavourites a recipe if user tries to favorite recipe again', (done) => {
+    it('removes the downvote if user tries to downvote recipe again', (done) => {
       chai.request(server)
-        .post(`/api/recipes/${testData.postedRecipeID}?action=favorite`)
+        .post(`/api/recipes/${testData.postedRecipeID}/downvote`)
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
-          assert.equal(res.body.message, 'recipe has been removed as favorite');
+          assert.equal(res.body.message, 'downvote has been removed on recipe');
+          assert.equal(res.body.data.upvotes, testData.postedRecipe.upvotes);
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/recipes/:recipeId/favorite - favoriting a recipe', () => {
+    it('returns an error without a user token', (done) => {
+      chai.request(server)
+        .post(`/api/recipes/${testData.postedRecipeID}/favorite`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 401);
+          assert.include(res.body.error, 'please include user token');
           done();
         });
     });
 
-    it('decreases the favorites property of a recipe after the favorites has been removed', (done) => {
+    it('returns an error with an invalid recipe id', (done) => {
       chai.request(server)
-        .get(`/api/recipes/${testData.postedRecipeID}`)
+        .post('/api/recipes/invalidrecipeid/favorite')
+        .set('authorization', `Bearer ${testData.userAuthToken}`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 400);
+          assert.exists(res.body.errors);
+          done();
+        });
+    });
+
+    it('disallows recipe owner from favoriting a recipe', (done) => {
+      chai.request(server)
+        .post(`/api/recipes/${testData.postedRecipeID}/favorite`)
+        .set('authorization', `Bearer ${testData.userAuthToken}`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 403);
+          assert.exists(res.body.error);
+          done();
+        });
+    });
+
+    it('allows a user to favorite a recipe and increases the recipe favorites count', (done) => {
+      chai.request(server)
+        .post(`/api/recipes/${testData.postedRecipeID}/favorite`)
+        .set('authorization', `Bearer ${testData.altUserToken}`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 201);
+          assert.equal(res.body.message, 'recipe has been added as a favorite');
+          assert.equal(res.body.data.favorites - testData.postedRecipe.favorites, 1);
+          done();
+        });
+    });
+
+    it('removes the favorite if user tries to favorite recipe again', (done) => {
+      chai.request(server)
+        .post(`/api/recipes/${testData.postedRecipeID}/favorite`)
         .set('authorization', `Bearer ${testData.altUserToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 200);
-          assert.equal(res.body.data.favorites, 0);
+          assert.equal(res.body.message, 'recipe has been removed from favorites');
+          assert.equal(res.body.data.upvotes, testData.postedRecipe.upvotes);
           done();
         });
     });
