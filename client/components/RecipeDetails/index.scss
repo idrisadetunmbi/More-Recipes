@@ -11,7 +11,8 @@
       display: inline-block;
     }
     img {
-      width: 14%;
+      width: 3rem;
+      height: 3rem;
       margin: 1rem;
     }
     i {
@@ -63,9 +64,14 @@
     padding: 0 1rem;
     margin-left: 1rem;
     background-color: #444;
-    &:hover {
-      background-color: #2bbbad;      
+    &[disabled] {
+      background-color: #444 !important;
+      color: #FFF !important;
     }
+  }
+
+  .checked {
+    background-color: #2bbbad !important;      
   }
   
   .vote-actions a i {
@@ -102,7 +108,7 @@
     .review-details {
       display: inline-block;
       vertical-align: top;
-      margin-top: 1rem;
+      margin-top: .3rem;
       .date {
         margin-left: 1rem;
         font-size: .9rem;
@@ -116,6 +122,7 @@
       vertical-align: bottom;
       font-family: 'Open Sans', sans-serif;
       font-size: 1.2em;
+      margin-left: .5rem
     };
   }
   

@@ -1,20 +1,22 @@
 import axios from 'axios';
 
+// deals with thunk actions
 export const INITIATE_USER_REQUEST = 'INITIATE_USER_REQUEST';
 export const ERROR_USER_REQUEST = 'ERROR_USER_REQUEST';
-export const RESET_USER_DATA = 'RESET_USER_DATA';
 export const RECEIVE_USER_REQUEST_RESPONSE = 'RECEIVE_USER_REQUEST_RESPONSE';
+
+export const RESET_USER_DATA = 'RESET_USER_DATA';
 export const ADD_TO_USER_RECIPES = 'ADD_TO_USER_RECIPES';
 
-// User request types
+// these constants denotes the user request actions to the server
 export const FETCH_RECIPES = 'FETCH_RECIPES';
 export const AUTHENTICATION = 'AUTHENTICATION';
 export const FETCH_FAVORITES = 'FETCH_FAVORITES';
 export const UPDATE_PROFILE_PHOTO = 'UPDATE_PROFILE_PHOTO';
+export const FETCH_RECIPE_VOTE_STATUS = 'FETCH_RECIPE_VOTE_STATUS';
 
-export const initiateUserRequest = requestType => ({
+export const initiateUserRequest = () => ({
   type: INITIATE_USER_REQUEST,
-  requestType,
 });
 
 export const errorUserRequest = error => ({
@@ -22,8 +24,9 @@ export const errorUserRequest = error => ({
   error,
 });
 
-export const receiveUserRequestResponse = data => ({
+export const receiveUserRequestResponse = (requestType, data) => ({
   type: RECEIVE_USER_REQUEST_RESPONSE,
+  requestType,
   data,
 });
 
@@ -38,7 +41,7 @@ export const addToUserRecipes = recipeId => ({
 
 
 export const userAuthRequest = (userData, authType) => async (dispatch) => {
-  dispatch(initiateUserRequest(AUTHENTICATION));
+  dispatch(initiateUserRequest());
   let response;
   try {
     response = await axios.post(`/api/v1/users/${authType}`, userData);
@@ -46,8 +49,11 @@ export const userAuthRequest = (userData, authType) => async (dispatch) => {
     dispatch(errorUserRequest(error.response.data));
     return;
   }
-  dispatch(receiveUserRequestResponse(response.data.data));
+  dispatch(receiveUserRequestResponse(AUTHENTICATION, response.data.data));
 };
+
+// TODO: check the fetched recipes and see if the main catalog of recipes
+// contains all the retrieved recipes. If not, add the recipes to the catalog.
 
 export const fetchUserRecipes = () => async (dispatch, getState) => {
   // if user's recipes have already being fetched
@@ -56,7 +62,7 @@ export const fetchUserRecipes = () => async (dispatch, getState) => {
   }
   const userId = getState().user.data.id;
   let response;
-  dispatch(initiateUserRequest(FETCH_RECIPES));
+  dispatch(initiateUserRequest());
   try {
     response = await axios.get(`/api/v1/users/${userId}/recipes`);
   } catch (error) {
@@ -64,7 +70,7 @@ export const fetchUserRecipes = () => async (dispatch, getState) => {
     return;
   }
   const recipeIds = response.data.data.recipes.map(recipe => recipe.id);
-  dispatch(receiveUserRequestResponse(recipeIds));
+  dispatch(receiveUserRequestResponse(FETCH_RECIPES, recipeIds));
 };
 
 export const fetchUserFavorites = forceFetch => async (dispatch, getState) => {
@@ -74,19 +80,19 @@ export const fetchUserFavorites = forceFetch => async (dispatch, getState) => {
   }
   const userId = getState().user.data.id;
   let response;
-  dispatch(initiateUserRequest(FETCH_FAVORITES));
+  dispatch(initiateUserRequest());
   try {
     response = await axios.get(`/api/v1/users/${userId}/recipes/favorites`);
   } catch (error) {
     dispatch(errorUserRequest(error.response.data));
     return;
   }
-  dispatch(receiveUserRequestResponse(response.data.data));
+  dispatch(receiveUserRequestResponse(FETCH_FAVORITES, response.data.data));
 };
 
 export const updateUserProfilePhoto = imageUrl => async (dispatch, getState) => {
   const userToken = getState().user.data.token;
-  dispatch(initiateUserRequest(UPDATE_PROFILE_PHOTO));
+  dispatch(initiateUserRequest());
   let response;
   try {
     response = await axios.put(
@@ -98,7 +104,31 @@ export const updateUserProfilePhoto = imageUrl => async (dispatch, getState) => 
     dispatch(errorUserRequest(error.response.data));
     return;
   }
-  dispatch(receiveUserRequestResponse({
+  dispatch(receiveUserRequestResponse(UPDATE_PROFILE_PHOTO, {
     ...response.data.data, token: userToken,
   }));
 };
+
+export const fetchRecipeVoteStatuses = (recipeId, forceFetch) =>
+  async (dispatch, getState) => {
+    // do not fetch again if this recipe's vote statuses have been fetched already
+    if (getState().user.recipesVoteStatuses[recipeId] && !forceFetch) {
+      return;
+    }
+    const userToken = getState().user.data.token;
+    let response;
+    dispatch(initiateUserRequest());
+    try {
+      response = await axios.get(
+        `/api/v1/users/${recipeId}/vote-statuses`,
+        { headers: { Authorization: `Bearer ${userToken}` } },
+      );
+    } catch (error) {
+      dispatch(errorUserRequest(error.response.data));
+      return;
+    }
+    dispatch(receiveUserRequestResponse(
+      FETCH_RECIPE_VOTE_STATUS,
+      { recipeId, ...response.data.data },
+    ));
+  };

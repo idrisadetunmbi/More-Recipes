@@ -13,12 +13,20 @@ const receiveReviews = (data, recipeId) => ({
   data,
 });
 
+export const ADD_RECIPE_REVIEW = 'ADD_RECIPE_REVIEW';
+const addRecipeReview = (recipeId, data) => ({
+  type: ADD_RECIPE_REVIEW,
+  recipeId,
+  data,
+});
+
 /**
  *
  *
- * @param {String} recipeId id of recipe to fetch reviews for
- * @param {Boolean} forceFetch whether to bypass check of recipe reviews
+ * @param {String} recipeId - id of recipe to fetch reviews for
+ * @param {Boolean} forceFetch - whether to bypass check of recipe reviews
  * availability in the store
+ * @returns {Promise} none
  */
 export const fetchRecipeReviews = (recipeId, forceFetch) =>
   async (dispatch, getState) => {
@@ -40,8 +48,9 @@ export const fetchRecipeReviews = (recipeId, forceFetch) =>
 export const postRecipeReview = (recipeId, reviewData) =>
   async (dispatch, getState) => {
     const userToken = getState().user.data.token;
+    let response;
     try {
-      await axios.post(
+      response = await axios.post(
         `/api/v1/recipes/${recipeId}/reviews`,
         reviewData,
         { headers: { Authorization: `Bearer ${userToken}` } },
@@ -49,6 +58,6 @@ export const postRecipeReview = (recipeId, reviewData) =>
     } catch (error) {
       return dispatch(errorReviews(error.response.data));
     }
-    return dispatch(fetchRecipeReviews(recipeId, true));
+    return dispatch(addRecipeReview(recipeId, response.data.data));
   };
 

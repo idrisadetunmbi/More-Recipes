@@ -1,4 +1,4 @@
-import { RECEIVE_REVIEWS, ERROR_REVIEWS } from '../actions/reviews';
+import { RECEIVE_REVIEWS, ERROR_REVIEWS, ADD_RECIPE_REVIEW } from '../actions/reviews';
 
 const reviews = (state = { error: null }, action) => {
   switch (action.type) {
@@ -12,6 +12,11 @@ const reviews = (state = { error: null }, action) => {
         error: null,
         ...state,
         [action.recipeId]: action.data,
+      };
+    case ADD_RECIPE_REVIEW:
+      return {
+        ...state,
+        [action.recipeId]: [action.data, ...state[action.recipeId]],
       };
     default:
       return state;

@@ -5,7 +5,12 @@ import deepEqual from 'deep-equal';
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { generateImageUploadURLS, sendImagesToCloudinary } from '../../utils';
 
-// TODO: add more props as might be required
+/**
+ *
+ *
+ * @class EditView
+ * @extends {Component}
+ */
 class EditView extends Component {
   state = {
     isUploadingImages: false,
@@ -15,6 +20,11 @@ class EditView extends Component {
     inputFields: {},
   }
 
+  /**
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
   componentWillMount() {
     const {
       title, description, directions, ingredients, images
@@ -25,6 +35,10 @@ class EditView extends Component {
     this.setState({ inputFields: existingData });
   }
 
+  /**
+   * @returns {void}
+   * @memberOf EditView
+   */
   componentDidMount() {
     const elems = document.getElementsByTagName('textarea');
     for (let i = 0; i < elems.length; i += 1) {
@@ -32,11 +46,17 @@ class EditView extends Component {
     }
   }
 
-  onChange = (e) => {
-    const inputFieldName = e.target.name;
+  /**
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
+  onChange = (event) => {
+    const inputFieldName = event.target.name;
     if (inputFieldName === 'add more images') {
       this.setState({ fieldErrors: { ...this.state.fieldErrors, images: null } });
-      const fileArray = Array.from(e.target.files);
+      const fileArray = Array.from(event.target.files);
       const selectedImagesNames = this.state.newImages.map(image => image.name);
       // remove duplicate images
       const newImages = fileArray.filter(file => !selectedImagesNames.includes(file.name));
@@ -44,9 +64,15 @@ class EditView extends Component {
     }
   }
 
-  onBlur = (e) => {
-    const inputFieldName = e.target.name;
-    const inputFieldValue = e.target.value.trim().replace(/\n\n/g, '\n');
+  /**
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
+  onBlur = (event) => {
+    const inputFieldName = event.target.name;
+    const inputFieldValue = event.target.value.trim().replace(/\n\n/g, '\n');
     if (!validator.isLength(inputFieldValue, { min: 5 })) {
       this.setState({
         fieldErrors: {
@@ -63,15 +89,27 @@ class EditView extends Component {
     });
   }
 
-  onFocus = (e) => {
+  /**
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
+  onFocus = (event) => {
     this.setState({
       fieldErrors: {
         ...this.state.fieldErrors,
-        [e.target.name]: null,
+        [event.target.name]: null,
       },
     });
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
   onSubmit = async () => {
     const {
       newImages, existingImages, fieldErrors, inputFields,
@@ -124,6 +162,12 @@ class EditView extends Component {
     this.props.recipeAction('update', updatedRecipeDetails);
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
   confirmNoDataChanges = () => {
     const { newImages, existingImages, inputFields } = this.state;
     const imagesCombined = [...newImages, ...existingImages];
@@ -142,6 +186,13 @@ class EditView extends Component {
     return noDataChanges;
   }
 
+  /**
+   * @param {Object|String} image - name of image to remove or object
+   * representing image
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
   removeImage = (image) => {
     if (this.state.isUploadingImages) return;
 
@@ -155,6 +206,12 @@ class EditView extends Component {
       });
   }
 
+  /**
+   *
+   *
+   * @returns {void}
+   * @memberOf EditView
+   */
   render() {
     const { recipe, user } = this.props;
     const { existingImages, newImages } = this.state;
@@ -225,7 +282,7 @@ class EditView extends Component {
         </div>
         
         {
-          user.data.id === recipe.authorId &&
+          user.id === recipe.authorId &&
           (
           <div>
             <div className="fixed-action-btn" style={{ marginBottom: '3em' }} >

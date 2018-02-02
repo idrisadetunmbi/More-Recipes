@@ -1,8 +1,4 @@
-import validate, { validationResult } from 'express-validator/check';
-import models from '../models';
-
-const RecipeModel = models.recipe;
-const VoteModel = models.vote;
+import dbModels from '../models';
 
 /**
  *
@@ -11,54 +7,11 @@ const VoteModel = models.vote;
  * @class RecipeController
  */
 export default class RecipeController {
-  /**
-   * Array storing validations for a POST recipe request
-   */
-  recipePostValidationChecks = [
-    validate.body('title', 'title must be between 5 to 50 characters')
-      .isLength({ min: 5, max: 50 }).not().isInt()
-      .trim(),
-    validate.body('description', 'you must add a description with at least 5 characters').isLength({ min: 5 }).trim().escape(),
-    validate.body('ingredients', 'ingredients must be included with at least 5 characters').isLength({ min: 5 }).trim().escape(),
-    validate.body('directions', 'directions are required for a recipe with at least 5 characters').isLength({ min: 5 }).trim().escape(),
-  ];
-
-  /**
-   * Stores validation for a GET request
-   */
-  recipeGetValidationChecks = [
-    validate.param('recipeId', 'recipe id is invalid or stated recipe does not exist').isUUID()
-      .custom(value => RecipeModel.findById(value)),
-  ];
-
-  recipePutValidationChecks = [
-    validate.body('title', 'title must be between 5 to 50 characters')
-      .isLength({ min: 5, max: 50 }).not().isInt()
-      .optional()
-      .trim(),
-    validate.body('description', 'you must add a description').isLength({ min: 5 }).optional().trim()
-      .escape(),
-    validate.body('ingredients', 'ingredients must be included').isLength({ min: 5 }).optional().trim()
-      .escape(),
-    validate.body('directions', 'directions are required for a recipe').isLength({ min: 5 }).optional().trim()
-      .escape(),
-  ];
-
-  reviewPostValidationChecks = [
-    validate.body('content', 'you must add a review with at least 5 characters').optional().isLength({ min: 5 }),
-    validate.body('rating', 'recipe can only be rated between 1 to 5').isInt({ min: 1, max: 5 }).trim(),
-  ];
-
-  voteRecipeValidationCheck = [
-    validate.query('action', 'please specify an action (one of "upvote", "downvote" or "favorite") for this method')
-      .isIn(['upvote', 'favorite', 'downvote']).trim(),
-  ];
-
   getRecipeFromDb = recipeId =>
-    RecipeModel.findById(recipeId, {
+    dbModels.recipe.findById(recipeId, {
       include: [
         {
-          model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
+          model: dbModels.user, as: 'author', attributes: ['username', 'imageUrl'],
         },
       ],
     });
@@ -70,7 +23,7 @@ export default class RecipeController {
   createRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = await RecipeModel.create({
+      recipe = await dbModels.recipe.create({
         ...req.body,
         authorId: req.user.id,
         upvotes: 0,
@@ -93,10 +46,10 @@ export default class RecipeController {
   getAllRecipes = async (req, res) => {
     let recipes;
     try {
-      recipes = await RecipeModel.findAll({
+      recipes = await dbModels.recipe.findAll({
         include: [
           {
-            model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
+            model: dbModels.user, as: 'author', attributes: ['username', 'imageUrl'],
           },
         ],
         order: req.query.sort === 'upvotes' ? ['upvotes'] : '',
@@ -150,6 +103,7 @@ export default class RecipeController {
         ...req.body,
         authorId: recipe.authorId,
         upvotes: recipe.upvotes,
+        downvotes: recipe.downvotes,
         favorites: recipe.favorites,
       });
     } catch (error) {
@@ -170,7 +124,7 @@ export default class RecipeController {
   deleteRecipe = async (req, res) => {
     let recipe;
     try {
-      recipe = await RecipeModel.findById(req.params.recipeId);
+      recipe = await dbModels.recipe.findById(req.params.recipeId);
       // disallow deletion if recipe was not added by current user
       if (recipe.authorId !== req.user.id) {
         return res.status(403).send({
@@ -189,35 +143,39 @@ export default class RecipeController {
   }
 
   postRecipeReview = async (req, res) => {
-    const recipe = await RecipeModel.findById(req.params.recipeId);
-    const { user } = req;
-
-    user.review = req.body;
-    await recipe.addUserReview(user);
-    return res.status(201).json({
-      message: 'review added successfully',
-      data: {
+    let review;
+    try {
+      review = await dbModels.review.create({
         ...req.body,
-        content: req.body.content || null,
-        userId: user.id,
-        recipeId: recipe.id,
-      },
+        userId: req.user.id,
+        recipeId: req.params.recipeId,
+      });
+      review = await dbModels.review.findById(review.id, {
+        attributes: { exclude: ['updatedAt', 'rating'] },
+        include: [{
+          model: dbModels.user, attributes: ['username', 'imageUrl'],
+        }],
+      });
+    } catch (error) {
+      return res.status(500).send({
+        message: 'an error occurred while performing this request',
+        error: error.message,
+      });
+    }
+    return res.status(201).send({
+      message: 'review added successfully',
+      data: review,
     });
   }
 
   getRecipeReviews = async (req, res) => {
-    let recipe;
+    let reviews;
     try {
-      recipe = await RecipeModel.findById(req.params.recipeId, {
-        attributes: [],
-        include: [{
-          model: models.user,
-          as: 'userReviews',
-          attributes: ['username'],
-          through: {
-            attributes: ['content', 'rating', 'createdAt'],
-          },
-        }],
+      reviews = await dbModels.review.findAll({
+        where: {
+          recipeId: req.params.recipeId,
+        },
+        include: [{ model: dbModels.user, attributes: ['username', 'imageUrl'] }],
       });
     } catch (error) {
       return res.status(500).send({
@@ -227,38 +185,48 @@ export default class RecipeController {
     }
     return res.status(200).send({
       message: `reviews for recipe with id ${req.params.recipeId}`,
-      data: recipe.userReviews,
+      data: reviews,
     });
   }
 
-  voteRecipe = async (req, res) => {
+  favoriteRecipe = async (req, res) => {
     const { user } = req;
     const recipe = await this.getRecipeFromDb(req.params.recipeId);
     if (user.id === recipe.authorId) {
       return res.status(403).send({
-        error: `you cannot ${req.query.action} a recipe you created`,
+        error: 'you cannot favorite a recipe you created',
       });
     }
 
-    if (req.query.action === 'favorite') {
-      const recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
-      if (recipeIsUsersFavorite) {
-        user.removeFavoriteRecipe(recipe);
-        await recipe.decrement('favorites');
-        return res.status(200).send({
-          message: 'recipe has been removed as favorite',
-          data: recipe,
-        });
-      }
-      user.addFavoriteRecipe(recipe);
-      await recipe.increment('favorites');
+    const recipeIsUsersFavorite = await user.hasFavoriteRecipe(recipe);
+    if (recipeIsUsersFavorite) {
+      user.removeFavoriteRecipe(recipe);
+      await recipe.decrement('favorites');
       return res.status(200).send({
-        message: 'recipe has been added as favorite',
+        message: 'recipe has been removed from favorites',
         data: recipe,
       });
     }
-    // action is either upvote or downvote
-    const { action } = req.query;
+    user.addFavoriteRecipe(recipe);
+    await recipe.increment('favorites');
+    return res.status(201).send({
+      message: 'recipe has been added as a favorite',
+      data: recipe,
+    });
+  }
+
+  voteRecipe = async (req, res) => {
+    // get vote type from url since same controller handles upvotes and
+    // downvotes
+    const action = req.path.includes('upvote') ? 'upvote' : 'downvote';
+    const { user } = req;
+    const recipe = await this.getRecipeFromDb(req.params.recipeId);
+    if (user.id === recipe.authorId) {
+      return res.status(403).send({
+        error: `you cannot ${action} a recipe you created`,
+      });
+    }
+
     const vote = await recipe.getVoters({
       attributes: [],
       where: { id: user.id },
@@ -269,30 +237,20 @@ export default class RecipeController {
     if (!currentVoteType || currentVoteType !== action) {
       recipe.addVoter(user, { through: { type: action } });
       await recipe.increment(`${action}s`);
-      if (currentVoteType && currentVoteType !== action) {
+      if (currentVoteType) {
         await recipe.decrement(`${currentVoteType}s`);
       }
       return res.status(200).send({
         message: `recipe has been ${action}d`,
-        recipe,
+        data: recipe,
       });
     }
     recipe.removeVoter(user);
     await recipe.decrement(`${action}s`);
     return res.status(200).send({
       message: `${action} has been removed on recipe`,
-      recipe,
+      data: recipe,
     });
-  }
-
-  validateRequestData = (req, res, next) => {
-    const results = validationResult(req);
-    return results.isEmpty() ?
-      next() :
-      res.status(400).json({
-        message: 'one or more of the required request data is not included or is invalid',
-        errors: results.array(),
-      });
   }
 }
 

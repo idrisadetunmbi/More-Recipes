@@ -1,37 +1,30 @@
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import validate, { validationResult } from 'express-validator/check';
 
 import models from '../models';
 
 dotenv.config({ path: `${__dirname}/../../.env` });
-const UserModel = models.user;
 
+/**
+ *
+ *
+ * @export
+ * @class UserController
+ */
 export default class UserController {
   /**
-   * Array storing validations for a POST recipe request
+   * Gets all the users from the database
+   * @memberOf UserController
+   * @param {Object} req
+   * @param {Object} res
+   *
+   * @returns {Promise} returns an object
    */
-  userSignUpValidationChecks = [
-    validate.body('username', 'username must be between 5 to 15 alphanumeric characters')
-      .isLength({ min: 5, max: 15 }).isAlphanumeric().trim(),
-    validate.body('password', 'include a password between 6 to 25 characters').isLength({ min: 5, max: 25 }).trim(),
-    validate.body('email', 'invalid email').isEmail().normalizeEmail(),
-  ];
-
-  userGetRecipesValidationChecks = [
-    validate.param('userId', 'user id is invalid or specified user does not exist').isUUID()
-      .custom(value => UserModel.findById(value)),
-  ];
-
-  userImageUrlUpdateCheck = [
-    validate.body('imageUrl', 'please specify an image url in request body').isURL(),
-  ]
-
   getAllUsers = async (req, res) => {
     let users;
     try {
-      users = await UserModel.all();
+      users = await models.user.all();
     } catch (error) {
       return res.status(500).send({
         message: 'unhandled internal error',
@@ -44,10 +37,17 @@ export default class UserController {
     });
   }
 
+  /**
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} express response object
+   * @memberOf UserController
+   */
   createUser = async (req, res) => {
     let user;
     try {
-      user = await UserModel.create(req.body);
+      user = await models.user.create(req.body);
     } catch (error) {
       return res.status(400).send({
         message: 'username or email already exist',
@@ -66,6 +66,13 @@ export default class UserController {
     });
   }
 
+  /**
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} express response object
+   * @memberOf UserController
+   */
   updateUserImageUrl = async (req, res) => {
     // user is an instance of User Model (Sequelize model)
     const { user } = req;
@@ -88,10 +95,17 @@ export default class UserController {
     });
   }
 
+  /**
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} express response object
+   * @memberOf UserController
+   */
   signInUser = async (req, res) => {
     let user;
     try {
-      user = await UserModel.findOne({ where: { username: req.body.username } });
+      user = await models.user.findOne({ where: { username: req.body.username } });
     } catch (error) {
       return res.status(400).send({
         message: 'an error occured while trying to complete the request',
@@ -121,10 +135,18 @@ export default class UserController {
     });
   }
 
+  /**
+   * Gets the recipes authored by a user
+   * @memberOf UserController
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} return object from res.send
+   */
   getUserRecipes = async (req, res) => {
     let user;
     try {
-      user = await UserModel.findById(req.params.userId, {
+      user = await models.user.findById(req.params.userId, {
         attributes: ['id', 'username', 'email'],
         include: [{
           model: models.recipe,
@@ -142,6 +164,14 @@ export default class UserController {
     });
   }
 
+  /**
+   * Gets the favorite recipes of a user
+   * @memberOf UserController
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} return object from res.send
+   */
   getUserFavorites = async (req, res) => {
     let userFavorites;
     try {
@@ -164,14 +194,33 @@ export default class UserController {
     });
   }
 
-  validateRequestData = (req, res, next) => {
-    const results = validationResult(req);
-    return results.isEmpty() ?
-      next() :
-      res.status(400).json({
-        message: 'one or more of the required request data is not included or is invalid',
-        errors: results.array(),
+  /**
+   * Gets the authenticated user's vote statuses/favorite status on a recipe
+   * @memberOf UserController
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Promise} express res object
+   */
+  getRecipeVoteStatuses = async (req, res) => {
+    const { params: { recipeId }, user } = req;
+    const voteStatuses = {};
+    try {
+      voteStatuses.upvoted = await user
+        .hasVotedRecipe(recipeId, { through: { where: { type: 'upvote' } } });
+      voteStatuses.downvoted = await user
+        .hasVotedRecipe(recipeId, { through: { where: { type: 'downvote' } } });
+      voteStatuses.favorited = await user
+        .hasFavoriteRecipe(recipeId);
+    } catch (error) {
+      return res.status(500).send({
+        message: 'Internal server error',
+        error: error.message,
       });
+    }
+    return res.status(200).send({
+      data: voteStatuses,
+    });
   }
 }
 
