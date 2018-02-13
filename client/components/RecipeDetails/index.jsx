@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
 
-import { recipeAction, recipeVoteAction } from '../../actions/recipe';
+import { recipeAction, recipeVoteAction } from '../../actions/recipes';
 import { fetchRecipeReviews, postRecipeReview } from '../../actions/reviews';
 import { fetchRecipeVoteStatuses } from '../../actions/user';
 import './index.scss';
@@ -35,7 +35,7 @@ class RecipeDetails extends React.Component {
       fetchRecipeReviews(recipe.id);
       // if user is signed in and does not own recipe
       if (user.token && !this.userOwnsRecipe()) {
-        fetchRecipeVoteStatuses(recipe.id);
+        fetchUserVoteStatuses(recipe.id);
       }
     }
   }
@@ -47,7 +47,6 @@ class RecipeDetails extends React.Component {
    * @memberOf RecipeDetails
    */
   componentWillReceiveProps(nextProps) {
-    console.log('component will receive props', nextProps);
     // if recipe has been updated and view mode is in edit mode
     if (
       !deepEqual(nextProps.recipe, this.props.recipe) &&

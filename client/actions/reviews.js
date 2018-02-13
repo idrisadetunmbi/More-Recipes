@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 export const ERROR_REVIEWS = 'ERROR_REVIEWS';
-const errorReviews = error => ({
+export const errorReviews = error => ({
   type: ERROR_REVIEWS,
   error,
 });
 
 export const RECEIVE_REVIEWS = 'RECEIVE_REVIEWS';
-const receiveReviews = (data, recipeId) => ({
+export const receiveReviews = (data, recipeId) => ({
   type: RECEIVE_REVIEWS,
   recipeId,
   data,
 });
 
 export const ADD_RECIPE_REVIEW = 'ADD_RECIPE_REVIEW';
-const addRecipeReview = (recipeId, data) => ({
+export const addRecipeReview = (recipeId, data) => ({
   type: ADD_RECIPE_REVIEW,
   recipeId,
   data,

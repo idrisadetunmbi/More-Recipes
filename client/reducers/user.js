@@ -1,4 +1,5 @@
 import * as UserActions from '../actions/user';
+import { hydrateUserData } from '../utils';
 
 const convertActionType = (action) => {
   switch (action) {
@@ -32,8 +33,7 @@ const receiveUserRequestResponse = (state, action) => {
   }
 };
 
-const initialState = JSON.parse(localStorage.getItem('user'));
-const user = (state = initialState || {
+const user = (state = hydrateUserData() || {
   userRequestInitiated: false,
   userRequestError: null,
   data: {},
@@ -47,7 +47,6 @@ const user = (state = initialState || {
         ...state,
         userRequestInitiated: true,
         userRequestError: null,
-        requestType: action.requestType,
       };
     case UserActions.ERROR_USER_REQUEST:
       return {
@@ -58,7 +57,6 @@ const user = (state = initialState || {
     case UserActions.RECEIVE_USER_REQUEST_RESPONSE:
       return {
         ...state,
-        requestType: undefined,
         userRequestError: null,
         userRequestInitiated: false,
         ...receiveUserRequestResponse(state, action),

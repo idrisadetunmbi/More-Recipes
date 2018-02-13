@@ -48,9 +48,7 @@ const LandingPage = props => (
             <div className="icon-block">
               <h2 className="center"><i className="material-icons">share</i></h2>
               <h5 className="center">Share Your Combinations</h5>
-              <p className="light">
-                You love discovering new tastes and exciting combinations - Share sensational discoveries with other taste lovers and get exciting reviews that drives you to do more
-              </p>
+              <p className="light">You love discovering new tastes and exciting combinations - Share sensational discoveries with other taste lovers and get exciting reviews that drives you to do more</p>
             </div>
           </div>
 
@@ -75,8 +73,8 @@ const LandingPage = props => (
     </div>
     <RecipeList
       recipes={props.recipes.recipes.slice(0, 8)}
-      isLoadingRecipes={props.recipes.isFetching}
-      error={props.recipes.error}
+      isLoadingRecipes={props.recipes.requestInitiated}
+      error={props.recipes.requestError}
       style={{ width: '90%' }}
       gridStyle="l3 s12 m6"
     />

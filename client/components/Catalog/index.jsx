@@ -49,8 +49,8 @@ const Catalog = props => (
         <div className="divider" id="gallery-before" />
         <RecipeList
           recipes={props.recipes.recipes}
-          isLoadingRecipes={props.recipes.isFetching}
-          error={props.recipes.error}
+          isLoadingRecipes={props.recipes.requestInitiated}
+          error={props.recipes.requestError}
           style={{ width: '97%', marginLeft: '-0.6em' }}
           gridStyle="l4 s12 m6"
         />

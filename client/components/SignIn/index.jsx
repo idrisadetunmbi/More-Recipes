@@ -122,7 +122,7 @@ class SignIn extends React.Component {
 
         {authError && <span style={{ color: 'red' }}>{authError}</span>}
         <button id="download-button" className="btn-large waves-effect waves-light" style={{ textTransform: 'none', display: 'block', backgroundColor: '#444', width: '100%' }}>Sign In</button>
-        {this.props.user.authRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
+        {this.props.user.userRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
         <p style={{ textAlign: 'center' }}>Dont Have an Account? <Link to={{pathname: '/signup', state: this.props.location.state }}>Sign Up</Link> </p>
       </form>
     );

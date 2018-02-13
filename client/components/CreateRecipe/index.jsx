@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import validator from 'validator';
 
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
-import { recipeAction } from '../../actions/recipe';
-import { showToast } from '../../utils';
+import { recipeAction } from '../../actions/recipes';
+import {
+  showToast, generateImageUploadURLS, sendImagesToCloudinary,
+} from '../../utils';
 import './index.scss';
 
 
-class CreateRecipe extends React.Component {
+/**
+ *
+ *
+ * @class CreateRecipe
+ * @extends {Component}
+ */
+class CreateRecipe extends Component {
   state = {
     title: '',
     description: '',
     ingredients: '',
     directions: '',
     imagesSelected: [],
-    uploadedImageUrls: [],
+    uploadedImagesUrls: [],
     isUploadingImages: false,
     fieldErrors: {
       title: '',
@@ -27,43 +34,52 @@ class CreateRecipe extends React.Component {
     },
   }
 
-  // eslint-disable-next-line
-  onChange = (e) => {
-    const inputFieldName = e.target.name;
-    this.setState({
-      fieldErrors: {
-        ...this.state.fieldErrors,
-        images: '',
-      },
-    });
-    // refers to first image upload, i.e. clicking the 'add images' input field
-    if (inputFieldName === 'images upload') {
-      const fileArray = Array.from(e.target.files);
-      this.setState({ imagesSelected: fileArray });
+  /**
+   * @param {any} nextProps
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
+  componentWillReceiveProps(nextProps) {
+    const { recipeActionInitiated, recipeActionErrored } = nextProps;
+    if (recipeActionInitiated) {
       return;
     }
-    if (inputFieldName === 'add more images') {
-      const fileArray = Array.from(e.target.files);
-      const selectedImagesNames = this.state.imagesSelected.map(image => image.name);
-      const newImages = fileArray.filter(file => !selectedImagesNames.includes(file.name));
-      this.setState({ imagesSelected: [...this.state.imagesSelected, ...newImages] });
+    if (recipeActionErrored) {
+      showToast(`error creating recipe - ${recipeActionErrored.message}`);
+      return;
     }
+    this.props.history.goBack();
   }
 
-  onFocus = (e) => {
+  /**
+   * onFocus event handler for text input elements - used for validations
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
+  onFocus = (event) => {
     this.setState({
       fieldErrors: {
         ...this.state.fieldErrors,
-        [e.target.name]: '',
+        [event.target.name]: '',
       },
     });
   }
 
-  onBlur = (e) => {
-    const inputFieldName = e.target.name;
+  /**
+   * onBlur event handler for text input elements - used for validations
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
+  onBlur = (event) => {
+    const inputFieldName = event.target.name;
     switch (inputFieldName) {
       case 'title': {
-        const inputFieldValue = e.target.value.trim();
+        const inputFieldValue = event.target.value.trim();
         if (
           !validator.isLength(inputFieldValue, { min: 5, max: 50 }) ||
           validator.isInt(inputFieldValue)
@@ -86,7 +102,7 @@ class CreateRecipe extends React.Component {
         break;
       }
       default: {
-        const inputFieldValue = e.target.value.trim();
+        const inputFieldValue = event.target.value.trim();
         if (
           !validator.isLength(inputFieldValue, { min: 5 })
         ) {
@@ -110,8 +126,48 @@ class CreateRecipe extends React.Component {
     }
   }
 
-  onSubmit = async (e) => {
-    e.preventDefault();
+  /**
+   * onchange event handler for image input element
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
+  onChange = (event) => {
+    const inputFieldName = event.target.name;
+    this.setState({
+      fieldErrors: {
+        ...this.state.fieldErrors,
+        images: '',
+      },
+    });
+    // refers to first image upload, i.e. clicking the 'add images' input field
+    if (inputFieldName === 'images upload') {
+      const fileArray = Array.from(event.target.files);
+      this.setState({ imagesSelected: fileArray });
+      return;
+    }
+    if (inputFieldName === 'add more images') {
+      const fileArray = Array.from(event.target.files);
+      const selectedImagesNames = this.state.imagesSelected
+        .map(image => image.name);
+      const newImages = fileArray.filter(file => !selectedImagesNames
+        .includes(file.name));
+      this.setState({
+        imagesSelected: [...this.state.imagesSelected, ...newImages],
+      });
+    }
+  }
+
+  /**
+   * form element onSubmit event handler
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
+  onSubmit = async (event) => {
+    event.preventDefault();
     if (this.state.imagesSelected.length < 1) {
       this.setState({
         fieldErrors: {
@@ -121,76 +177,61 @@ class CreateRecipe extends React.Component {
       });
       return;
     }
+
     // if any of the input field errors has not been corrected
     if (
       !(Object.values(this.state.fieldErrors).every(val => val.length === 0))
     ) {
       return;
     }
+
     // upload images if only they had not been previously uploaded
     // this can only occur if there was error from the server the
     // first time the user tried to create the recipe
-    if (this.state.uploadedImageUrls.length === 0) {
-      const imageUploadURLS = this.generateImageUploadURLS(this.state.imagesSelected);
-      await this.sendImagesToCloudinary(imageUploadURLS);
+    if (this.state.uploadedImagesUrls.length === 0) {
+      this.setState({ isUploadingImages: true });
+      const imgsUploadUrls = generateImageUploadURLS(this.state.imagesSelected);
+      let uploadedImagesUrls;
+      try {
+        uploadedImagesUrls = await sendImagesToCloudinary(imgsUploadUrls);
+      } catch (error) {
+        showToast('There was an error performing this request');
+        return;
+      }
+      this.setState({
+        uploadedImagesUrls,
+        isUploadingImages: false,
+      });
     } else {
       // TODO: Check if new images have been added to this.state.imagesSelected
       // compare already uploaded images to new images
     }
     const {
-      title, description, ingredients, directions, uploadedImageUrls,
+      title, description, ingredients, directions, uploadedImagesUrls,
     } = this.state;
     const recipeData = {
-      title, description, ingredients, directions, images: uploadedImageUrls,
+      title, description, ingredients, directions, images: uploadedImagesUrls,
     };
     this.props.createRecipe(recipeData);
   }
 
+  /**
+   * remove one image from the user selected images
+   * @param {Object} imageName - name of image to remove
+   *
+   * @returns {void}
+   * @memberOf CreateRecipe
+   */
   removeImage = (imageName) => {
-    const otherImages = this.state.imagesSelected.filter(file => file.name !== imageName);
+    const otherImages = this.state.imagesSelected
+      .filter(file => file.name !== imageName);
     this.setState({ imagesSelected: otherImages });
   }
 
-  generateImageUploadURLS = (imageFiles) => {
-    const imageUploadURLS = imageFiles.map((imageFile) => {
-      const imageUploadData = new FormData();
-      imageUploadData.append('file', imageFile);
-      imageUploadData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET);
-      return axios.post(process.env.CLOUDINARY_UPLOAD_URL, imageUploadData);
-    });
-    return imageUploadURLS;
-  }
-
-  sendImagesToCloudinary = (imageUploadURLS) => {
-    this.setState({ isUploadingImages: true });
-    return new Promise((resolve, reject) => {
-      axios.all(imageUploadURLS).then(axios.spread((...responses) => {
-        console.log('cloudinary response', responses);
-        const uploadedImageUrls = responses.map(resp => resp.data.secure_url);
-        this.setState({
-          uploadedImageUrls,
-          isUploadingImages: false,
-        });
-        resolve(uploadedImageUrls);
-      })).catch((error) => {
-        reject(error);
-      });
-    });
-  }
-
-  // eslint-disable-next-line
-  componentWillReceiveProps(nextProps) {
-    const { initiated, error } = nextProps.recipeAction;
-    if (initiated) {
-      return;
-    }
-    if (error) {
-      showToast(`error creating recipe - ${error}`);
-      return;
-    }
-    this.props.history.goBack();
-  }
-
+  /**
+   * @returns {Object} create recipe form element
+   * @memberOf CreateRecipe
+   */
   render() {
     const {
       imagesSelected, fieldErrors,
@@ -204,7 +245,13 @@ class CreateRecipe extends React.Component {
 
         <div className="input-field">
           <label htmlFor="title">Title</label>
-          <input required name="title" type="text" onBlur={this.onBlur} onFocus={this.onFocus} />
+          <input
+            required
+            name="title"
+            type="text"
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+          />
           {fieldErrors.title.length > 0 && <span>{fieldErrors.title}</span>}
         </div>
 
@@ -217,9 +264,10 @@ class CreateRecipe extends React.Component {
             name="description"
             onBlur={this.onBlur}
           />
-          {fieldErrors.description.length > 0 && <span>{fieldErrors.description}</span>}
+          {fieldErrors.description.length > 0
+            && <span>{fieldErrors.description}</span>}
         </div>
-      
+
         <div className="input-field">
           <label className="active" htmlFor="ingredients">Ingredients</label>
           <textarea
@@ -230,7 +278,8 @@ class CreateRecipe extends React.Component {
             name="ingredients"
             onBlur={this.onBlur}
           />
-          {fieldErrors.ingredients.length > 0 && <span>{fieldErrors.ingredients}</span>}
+          {fieldErrors.ingredients.length > 0 &&
+            <span>{fieldErrors.ingredients}</span>}
         </div>
 
         <div className="input-field">
@@ -243,17 +292,28 @@ class CreateRecipe extends React.Component {
             name="directions"
             onBlur={this.onBlur}
           />
-          {fieldErrors.directions.length > 0 && <span>{fieldErrors.directions}</span>}
+          {fieldErrors.directions.length > 0 &&
+            <span>{fieldErrors.directions}</span>}
         </div>
 
         {
           imagesSelected.length === 0 ?
           (
-            <div id="add-image-section" className="col s12 file-field input-field center">
+            <div
+              id="add-image-section"
+              className="col s12 file-field input-field center"
+            >
               <img alt="add recipe" src={IconAddRecipe} />
-              <input type="file" accept=".jpg, .jpeg, .png" name="images upload" multiple onChange={this.onChange} />
+              <input
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                name="images upload"
+                multiple
+                onChange={this.onChange}
+              />
               <p>Add images</p>
-              {fieldErrors.images.length > 0 && <span>{fieldErrors.images}</span>}
+              {fieldErrors.images.length > 0 &&
+                <span>{fieldErrors.images}</span>}
             </div>
           ) :
           (
@@ -276,7 +336,10 @@ class CreateRecipe extends React.Component {
                   })
                 }
               </div>
-              <div id="add-more-images" className="col s12 file-field input-field center">
+              <div
+                id="add-more-images"
+                className="col s12 file-field input-field center"
+              >
                 <img alt="add recipe" src={IconAddRecipe} />
                 <input
                   disabled={this.state.isUploadingImages}
@@ -292,8 +355,13 @@ class CreateRecipe extends React.Component {
           )
         }
         <div>
-          <button disabled={this.state.isUploadingImages} className="btn-large waves-effect waves-light">SUBMIT</button>
-          {this.props.recipeAction.initiated && <div className="progress"><div className="indeterminate" /></div>}
+          <button
+            disabled={this.state.isUploadingImages}
+            className="btn-large waves-effect waves-light"
+          >SUBMIT
+          </button>
+          {this.props.recipeActionInitiated &&
+            <div className="progress"><div className="indeterminate" /></div>}
         </div>
       </form>
     );
@@ -318,16 +386,13 @@ const UploadingOverlay = () => (
   </div>
 );
 
-const mapStateToProps = (state) => {
-  return {
-    recipeAction: state.recipes.recipeAction,
-  };
-};
+const mapStateToProps = state => ({
+  recipeActionInitiated: state.recipes.requestInitiated,
+  recipeActionErrored: state.recipes.requestError,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createRecipe: recipeData => dispatch(recipeAction('create', recipeData)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  createRecipe: recipeData => dispatch(recipeAction('create', recipeData)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateRecipe);
