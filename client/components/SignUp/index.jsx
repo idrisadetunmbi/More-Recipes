@@ -1,34 +1,70 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import validator from 'validator';
+import PropTypes from 'prop-types';
+import { InputField } from '../reusables';
 
 import { userAuthRequest } from '../../actions/user';
 import { showToast } from '../../utils';
 import './index.scss';
 
-class SignUp extends React.Component {
+/**
+ *
+ *
+ * @class SignUp
+ * @extends {Component}
+ */
+class SignUp extends Component {
   state = {
     username: '',
     email: '',
     password: '',
     passwordConfirm: '',
     fieldError: {
-      username: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
+      username: null,
+      email: null,
+      password: null,
+      passwordConfirm: null,
     },
   }
 
-  // eslint-disable-next-line
-  onChange = (e) => {
-    const inputFieldName = e.target.name;
+  /**
+   * @param {Object} nextProps
+   *
+   * @returns {void}
+   * @memberOf SignUp
+   */
+  componentWillReceiveProps(nextProps) {
+    const { userRequestInitiated, userRequestError } = nextProps.user;
+    if (userRequestInitiated) {
+      return;
+    }
+    if (userRequestError) {
+      const { error } = userRequestError;
+      // eslint-disable-next-line
+      error.includes('username') ?
+        this.setState({ fieldError: { ...this.state.fieldError, username: 'username has been taken' } }) :
+        this.setState({ fieldError: { ...this.state.fieldError, email: 'this email is already registered' } });
+    } else {
+      showToast('You have signed up successfully!!!');
+      this.props.history.replace(this.props.location.state.previousLocation);
+    }
+  }
+
+  /**
+   * @param {Object} event
+   *
+   * @returns {void}
+   * @memberOf SignUp
+   */
+  onChange = (event) => {
+    const inputFieldName = event.target.name;
     let inputFieldValue;
 
     switch (inputFieldName) {
       case 'username':
-        inputFieldValue = e.target.value.trim().toLowerCase();
+        inputFieldValue = event.target.value.trim().toLowerCase();
         this.setState({ [inputFieldName]: inputFieldValue });
         if (
           !validator.isLength(inputFieldValue, { min: 5, max: 15 }) ||
@@ -50,7 +86,7 @@ class SignUp extends React.Component {
         }
         break;
       case 'password':
-        inputFieldValue = e.target.value;
+        inputFieldValue = event.target.value;
         this.setState({ [inputFieldName]: inputFieldValue });
         if (!validator.isLength(inputFieldValue, { min: 6, max: 25 })) {
           this.setState({
@@ -69,7 +105,7 @@ class SignUp extends React.Component {
         }
         break;
       case 'email':
-        inputFieldValue = e.target.value;
+        inputFieldValue = event.target.value;
         this.setState({ [inputFieldName]: inputFieldValue });
         if (!validator.isEmail(inputFieldValue)) {
           this.setState({
@@ -88,7 +124,7 @@ class SignUp extends React.Component {
         }
         break;
       case 'passwordConfirm':
-        inputFieldValue = e.target.value;
+        inputFieldValue = event.target.value;
         this.setState({ [inputFieldName]: inputFieldValue });
         if (inputFieldValue !== this.state.password) {
           this.setState({
@@ -111,8 +147,14 @@ class SignUp extends React.Component {
     }
   }
 
-  onSubmit = (e) => {
-    e.preventDefault();
+  /**
+   * @param {Object} event
+   *
+   * @returns {void}
+   * @memberOf SignUp
+   */
+  onSubmit = (event) => {
+    event.preventDefault();
     if (
       !(Object.values(this.state.fieldError).every(val => val.length === 0))
     ) {
@@ -123,82 +165,90 @@ class SignUp extends React.Component {
       password: this.state.password,
       email: this.state.email,
     };
-    this.props.userAuthRequest(userData, 'signup');
+    this.props.signUpUser(userData);
   }
 
-  // eslint-disable-next-line
-  componentWillReceiveProps(nextProps) {
-    const { userRequestInitiated, userRequestError } = nextProps.user;
-    if (userRequestInitiated) {
-      return;
-    }
-    if (userRequestError) {
-      const { error } = userRequestError;
-      // eslint-disable-next-line
-      error.includes('username') ? 
-        this.setState({ fieldError: { ...this.state.fieldError, username: 'username has been taken' } }) :
-        this.setState({ fieldError: { ...this.state.fieldError, email: 'this email is already registered' } })
-    } else {
-      showToast('You have signed up successfully!!!');
-      this.props.history.replace(this.props.location.state.previousLocation);
-    }
-  }
-
+  /**
+   *
+   * @returns {Object} sign up form element
+   * @memberOf SignUp
+   */
   render() {
     const {
       username, email, password, passwordConfirm, fieldError,
     } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit} id="signup-component">
+      <form onSubmit={this.onSubmit} className="auth-component">
         <div style={{ marginTop: '3rem', marginBottom: '1rem' }}>
-          <h5 style={{ fontFamily: 'Raleway' }}>Create an account</h5>
+          <h5>Create an account</h5>
         </div>
 
-        <div className="input-field">
-          <label htmlFor="username">Username</label>
-          <input value={username} required name="username" id="username" type="text" onChange={this.onChange} />
-          {fieldError.username.length > 0 && <span>{fieldError.username}</span>}
-        </div>
+        <InputField
+          label="username"
+          value={username}
+          type="text"
+          onChange={this.onChange}
+          required
+          fieldError={fieldError.username}
+        />
 
-        <div className="input-field">
-          <label htmlFor="email">Email</label>
-          <input value={email} required name="email" id="email" type="email" onChange={this.onChange} />
-          {fieldError.email.length > 0 && <span>{fieldError.email}</span>}
-        </div>
-      
-        <div className="input-field">
-          <label htmlFor="password">Password</label>
-          <input value={password} required name="password" id="password" type="password" onChange={this.onChange} />
-          {fieldError.password.length > 0 && <span>{fieldError.password}</span>}
-        </div>
+        <InputField
+          label="email"
+          value={email}
+          required
+          type="email"
+          onChange={this.onChange}
+          fieldError={fieldError.email}
+        />
 
-        <div className="input-field">
-          <label htmlFor="passwordConfirm">Confirm Password</label>
-          <input value={passwordConfirm} required name="passwordConfirm" id="passwordConfirm" onChange={this.onChange} type="password" />
-          {fieldError.passwordConfirm.length > 0 && <span>{fieldError.passwordConfirm}</span>}
-        </div>
+        <InputField
+          label="password"
+          value={password}
+          required
+          type="password"
+          onChange={this.onChange}
+          fieldError={fieldError.password}
+        />
 
-        <button id="download-button" className="btn-large waves-effect waves-light">
+        <InputField
+          label="passwordConfirm"
+          value={passwordConfirm}
+          required
+          type="password"
+          onChange={this.onChange}
+          fieldError={fieldError.passwordConfirm}
+        />
+
+        <button id="form-submit" className="btn-large waves-effect waves-light">
           Sign Up
         </button>
-        {this.props.user.authRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
+        {this.props.user.userRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
         <p>Already Have an Account? <Link to={{ pathname: '/signin', state: this.props.location.state }}>Sign In</Link> </p>
       </form>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userAuthRequest: (authData, authType) => dispatch(userAuthRequest(authData, authType)),
-  };
+const mapDispatchToProps = dispatch => ({
+  signUpUser: userData =>
+    dispatch(userAuthRequest(userData, 'signup')),
+});
+
+SignUp.propTypes = {
+  user: PropTypes.shape({
+    userRequestInitiated: PropTypes.bool,
+    userRequestError: PropTypes.object,
+  }).isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func,
+  }).isRequired,
+  location: PropTypes.shape().isRequired,
+  signUpUser: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

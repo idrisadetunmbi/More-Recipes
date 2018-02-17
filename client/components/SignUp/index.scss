@@ -1,4 +1,8 @@
-#signup-component {
+.auth-component {
+  h5 {
+    font-family: 'Raleway'
+  }
+
   .input-field {
     margin-bottom: 20px;
     input {
@@ -9,7 +13,7 @@
     }
   }
 
-  #download-button {
+  #form-submit {
     text-transform: none;
     display: block;
     background-color: #444;

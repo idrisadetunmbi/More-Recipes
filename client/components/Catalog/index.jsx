@@ -1,12 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import RecipeList from '../RecipeList';
 import './index.scss';
 
 
-const Catalog = props => (
+/**
+ * @param {any} props
+ *
+ * @returns {Object} Catalog DOM Node
+ */
+export const Catalog = props => (
   <div id="catalog-component">
     <div id="search-section" className="row">
       <div className="col l3 m4 s12">
@@ -33,8 +38,9 @@ const Catalog = props => (
             </div>
             <div className="card-content">
               <span className="card-title">Farrow with vinegar, glazed sweet potato and apples</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.
+              <p>I am a very simple card. I am good at containing small&nbsp;
+                bits of information. I am convenient because I require&nbsp;
+                little markup to use effectively.
               </p>
             </div>
             <div className="card-action">
@@ -61,13 +67,17 @@ const Catalog = props => (
       <a
         className="btn-floating btn-large"
         onClick={() => {
+        const { history } = props;
         if (!props.user.data.token) {
-          redirectToSignIn(props.history);
+          history.push('/signin', {
+            modal: true,
+            previousLocation: history.location.pathname,
+          });
           return;
         }
-        props.history.push('/recipes/create', {
+        history.push('/recipes/create', {
           modal: true,
-          previousLocation: props.history.location.pathname,
+          previousLocation: history.location.pathname,
         });
       }}
       >
@@ -77,17 +87,30 @@ const Catalog = props => (
   </div>
 );
 
-const redirectToSignIn = (history) => {
-  history.push('/signin', {
-    modal: true,
-    previousLocation: history.location.pathname,
-  });
-};
-
 const mapStateToProps = state =>
   ({
     user: state.user,
     recipes: state.recipes,
   });
+
+Catalog.propTypes = {
+  recipes: PropTypes.shape({
+    recipes: PropTypes.array,
+    requestInitiated: PropTypes.bool,
+    requestError: PropTypes.object,
+  }).isRequired,
+
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
+
+  user: PropTypes.shape({
+    data: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }).isRequired,
+};
 
 export default connect(mapStateToProps)(Catalog);

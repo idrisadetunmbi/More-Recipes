@@ -5,7 +5,12 @@ import validator from 'validator';
 
 import { userAuthRequest } from '../../actions/user';
 import { showToast } from '../../utils';
+import { InputField } from '../reusables';
 
+/**
+ * @class SignIn
+ * @extends {React.Component}
+ */
 class SignIn extends React.Component {
   state = {
     username: '',
@@ -16,15 +21,40 @@ class SignIn extends React.Component {
     },
   }
 
-  // eslint-disable-next-line
-  onChange = (e) => {
+  /**
+   * @param {any} nextProps
+   *
+   * @returns {void}
+   * @memberOf SignIn
+   */
+  componentWillReceiveProps(nextProps) {
+    const { userRequestInitiated, userRequestError } = nextProps.user;
+    if (userRequestInitiated) {
+      return;
+    }
+    if (userRequestError) {
+      const { error } = userRequestError;
+      this.setState({ authError: error });
+    } else {
+      showToast('You are now signed in!!!');
+      this.props.history.replace(this.props.location.state.previousLocation);
+    }
+  }
+
+  /**
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf SignIn
+   */
+  onChange = (event) => {
     this.setState({ authError: null });
-    const inputFieldName = e.target.name;
+    const inputFieldName = event.target.name;
     let inputFieldValue;
 
     switch (inputFieldName) {
       case 'username':
-        inputFieldValue = e.target.value.trim().toLowerCase();
+        inputFieldValue = event.target.value.trim().toLowerCase();
         this.setState({ [inputFieldName]: inputFieldValue });
         if (
           !validator.isLength(inputFieldValue, { min: 5, max: 15 }) ||
@@ -46,7 +76,7 @@ class SignIn extends React.Component {
         }
         break;
       case 'password':
-        inputFieldValue = e.target.value;
+        inputFieldValue = event.target.value;
         this.setState({ [inputFieldName]: inputFieldValue });
         if (!validator.isLength(inputFieldValue, { min: 6, max: 25 })) {
           this.setState({
@@ -69,8 +99,14 @@ class SignIn extends React.Component {
     }
   }
 
-  onSubmit = (e) => {
-    e.preventDefault();
+  /**
+   * @param {Object} event - DOM event
+   *
+   * @returns {void}
+   * @memberOf SignIn
+   */
+  onSubmit = (event) => {
+    event.preventDefault();
     if (
       !(Object.values(this.state.fieldError).every(val => val.length === 0))
     ) {
@@ -80,65 +116,63 @@ class SignIn extends React.Component {
       username: this.state.username,
       password: this.state.password,
     };
-    this.props.userAuthRequest(userData, 'signin');
+    this.props.signInUser(userData);
   }
 
-  // eslint-disable-next-line
-  componentWillReceiveProps(nextProps) {
-    const { userRequestInitiated, userRequestError } = nextProps.user;
-    if (userRequestInitiated) {
-      return;
-    }
-    if (userRequestError) {
-      const { error } = userRequestError;
-      // eslint-disable-next-line
-      this.setState({ authError: error });
-    } else {
-      showToast('You are now signed in!!!');
-      this.props.history.replace(this.props.location.state.previousLocation);
-    }
-  }
-
+  /**
+   * @returns {Object} Signup form NODE
+   *
+   * @memberOf SignIn
+   */
   render() {
-    const { username, password, fieldError, authError } = this.state;
+    const {
+      username, password, fieldError, authError,
+    } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <div style={{ marginTop: '3rem', marginBottom: '1rem' }}>
-          <h5 style={{ fontFamily: 'Raleway' }}>Sign In To Your Account</h5>
+      <form onSubmit={this.onSubmit} className="auth-component">
+        <div>
+          <h5>Sign In To Your Account</h5>
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
-          <label htmlFor="username">Username</label>
-          <input value={username} required style={{ marginBottom: '0' }} name="username" id="username" type="text" onChange={this.onChange} />
-          {fieldError.username.length > 0 && <span style={{ color: 'red' }}>{fieldError.username}</span>}
-        </div>
-      
-        <div className="input-field" style={{ marginBottom: '20px' }}>
-          <label htmlFor="password">Password</label>
-          <input value={password} required style={{ marginBottom: '0' }} name="password" id="password" type="password" onChange={this.onChange} />
-          {fieldError.password.length > 0 && <span style={{ color: 'red' }}>{fieldError.password}</span>}
-        </div>
+        <InputField
+          label="username"
+          value={username}
+          required
+          onChange={this.onChange}
+          type="text"
+          fieldError={fieldError.username}
+        />
+
+        <InputField
+          label="password"
+          value={password}
+          type="password"
+          onChange={this.onChange}
+          required
+          fieldError={fieldError.password}
+        />
 
         {authError && <span style={{ color: 'red' }}>{authError}</span>}
-        <button id="download-button" className="btn-large waves-effect waves-light" style={{ textTransform: 'none', display: 'block', backgroundColor: '#444', width: '100%' }}>Sign In</button>
+        <button id="form-submit" className="btn-large waves-effect waves-light">Sign In</button>
         {this.props.user.userRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
-        <p style={{ textAlign: 'center' }}>Dont Have an Account? <Link to={{pathname: '/signup', state: this.props.location.state }}>Sign Up</Link> </p>
+        <p>Dont Have an Account?&nbsp;
+          <Link to={{ pathname: '/signup', state: this.props.location.state }}>
+            Sign Up
+          </Link>
+        </p>
       </form>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userAuthRequest: (authData, authType) => dispatch(userAuthRequest(authData, authType)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  signInUser: authData =>
+    dispatch(userAuthRequest(authData, 'signin')),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Recipe from '../Recipe';
 
-const RecipeList = (props) => {
+export const RecipeList = (props) => {
   const { recipes, isLoadingRecipes, error } = props;
   const { style, gridStyle } = props;
   return (
