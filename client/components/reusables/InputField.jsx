@@ -29,7 +29,7 @@ InputField.propTypes = {
 
 InputField.defaultProps = {
   required: false,
-  fieldError: '',
+  fieldError: null,
 };
 
 export default InputField;

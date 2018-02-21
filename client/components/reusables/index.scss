@@ -1,0 +1,8 @@
+.preloader {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  .spinner-layer {
+    border-color: #444;
+  }
+}

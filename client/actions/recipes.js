@@ -3,17 +3,20 @@ import {
   addToUserRecipes, fetchUserFavorites, fetchRecipeVoteStatuses,
 } from './user';
 
-// these deals with thunk actions
+// deal with thunk actions
 export const INITIATE_RECIPE_ACTION_REQUEST = 'INITIATE_RECIPE_ACTION_REQUEST';
 export const RECEIVE_RECIPE_ACTION_RESPONSE = 'RECEIVE_RECIPE_ACTION_RESPONSE';
 export const ERROR_RECIPE_ACTION_REQUEST = 'ERROR_RECIPE_ACTION_REQUEST';
 
-// these are the request types that can be made to the server for a recipe or
+// request types that can be made to the server for a recipe or
 // for the whole recipes
 export const FETCH_RECIPES = 'FETCH_RECIPES';
 export const CREATE_RECIPE = 'CREATE_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
+
+// synchronous actions
+export const FETCHED_ALL_RECIPES = 'FETCHED_ALL_RECIPES';
 
 export const initiateRecipeActionRequest = () => ({
   type: INITIATE_RECIPE_ACTION_REQUEST,
@@ -30,13 +33,29 @@ export const errorRecipeAction = error => ({
   error,
 });
 
-export const fetchRecipes = () => async (dispatch) => {
+export const fetchedAllRecipes = () => ({
+  type: FETCHED_ALL_RECIPES,
+});
+
+
+/**
+ * @param {number} [limit=8]
+ *
+ * @returns {Function} thunk function
+ */
+export const fetchRecipes = (limit = 8) => async (dispatch, getState) => {
+  const allRecipesUrl = `/api/v1/recipes?sort=upvotes&limit=${limit}\
+&offset=${getState().recipes.recipes.length}`;
+
   let response;
   dispatch(initiateRecipeActionRequest());
   try {
-    response = await axios.get('/api/v1/recipes/');
+    response = await axios.get(allRecipesUrl);
   } catch (error) {
     return dispatch(errorRecipeAction(error.response.data));
+  }
+  if (response.data.data.length < limit) {
+    dispatch(fetchedAllRecipes());
   }
   return dispatch(receiveRecipeActionResponse(
     FETCH_RECIPES,
@@ -45,11 +64,11 @@ export const fetchRecipes = () => async (dispatch) => {
 };
 
 /**
- *
  * @param {string} actionType - one of 'create', 'delete', 'update'
  * @param {Object|string} recipeData - an object or a string representing the
  * recipe data or recipeId
- * @returns {Promise} none
+ *
+ * @returns {Object} thunk callback function
  */
 export const recipeAction = (actionType, recipeData) =>
   async (dispatch, getState) => {
@@ -94,8 +113,15 @@ export const recipeAction = (actionType, recipeData) =>
       default:
         break;
     }
+    return null;
   };
 
+/**
+ * @param {any} actionType
+ * @param {any} recipeId
+ *
+ * @returns {Function} thunk function
+ */
 export const recipeVoteAction = (actionType, recipeId) =>
   async (dispatch, getState) => {
     const userToken = getState().user.data.token;

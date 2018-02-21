@@ -27,6 +27,7 @@ const recipes = (state = {
   requestInitiated: false,
   requestError: null,
   recipes: [],
+  fetchedAll: false,
 }, action) => {
   switch (action.type) {
     case RecipeActions.INITIATE_RECIPE_ACTION_REQUEST:
@@ -43,9 +44,15 @@ const recipes = (state = {
       };
     case RecipeActions.RECEIVE_RECIPE_ACTION_RESPONSE:
       return {
+        ...state,
         requestInitiated: false,
         requestError: null,
         recipes: updateRecipes(state.recipes, action),
+      };
+    case RecipeActions.FETCHED_ALL_RECIPES:
+      return {
+        ...state,
+        fetchedAll: true,
       };
     default:
       return state;
