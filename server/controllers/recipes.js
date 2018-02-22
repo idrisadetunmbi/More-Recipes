@@ -7,6 +7,14 @@ import dbModels from '../models';
  * @class RecipeController
  */
 export default class RecipeController {
+  /**
+   * Retrieves a single recipe from the database
+   * @param {string} recipeId - id of recipe to get from the database
+   *
+   * @returns {Promise} promise object holding the single recipe from
+   * the database
+   * @memberOf RecipeController
+   */
   getRecipeFromDb = recipeId =>
     dbModels.recipe.findById(recipeId, {
       include: [
@@ -17,8 +25,11 @@ export default class RecipeController {
     });
 
   /**
-   * Adds a new recipe
-   * @param()
+   * Adds a new recipe to the database
+   * @param {object} req - express request object
+   * @param {object} res - express response object
+   *
+   * @returns {void}
    */
   createRecipe = async (req, res) => {
     let recipe;
@@ -43,7 +54,18 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * @param {Object} req - express request object
+   * @param {Object} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   getAllRecipes = async (req, res) => {
+    const { limit, sort, offset } = req.query;
+    const acceptableSortKeys = ['upvotes', 'downvotes', 'createdAt', 'favorites'];
+    const sortKey = acceptableSortKeys.includes(sort) ? sort : 'createdAt';
+
     let recipes;
     try {
       recipes = await dbModels.recipe.findAll({
@@ -52,7 +74,9 @@ export default class RecipeController {
             model: dbModels.user, as: 'author', attributes: ['username', 'imageUrl'],
           },
         ],
-        order: req.query.sort === 'upvotes' ? ['upvotes'] : '',
+        order: [[sortKey, 'DESC']],
+        limit,
+        offset,
       });
     } catch (error) {
       return res.status(500).send({
@@ -67,7 +91,12 @@ export default class RecipeController {
   }
 
   /**
-   * Gets a single recipe from the database
+   * Retrieves a single recipe from the database and sends it to the client
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
    */
   getRecipe = async (req, res) => {
     let recipe;
@@ -84,6 +113,13 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   modifyRecipe = async (req, res) => {
     if (!(Object.keys(req.body).length)) {
       return res.status(400).send({
@@ -119,7 +155,11 @@ export default class RecipeController {
   }
 
   /**
-   * Removes a recipe from the database
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
    */
   deleteRecipe = async (req, res) => {
     let recipe;
@@ -142,6 +182,14 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * Retrieves a single recipe from the database and sends it to the client
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   postRecipeReview = async (req, res) => {
     let review;
     try {
@@ -168,6 +216,14 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * Retrieves a single recipe from the database and sends it to the client
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   getRecipeReviews = async (req, res) => {
     let reviews;
     try {
@@ -189,6 +245,14 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * Retrieves a single recipe from the database and sends it to the client
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   favoriteRecipe = async (req, res) => {
     const { user } = req;
     const recipe = await this.getRecipeFromDb(req.params.recipeId);
@@ -215,6 +279,14 @@ export default class RecipeController {
     });
   }
 
+  /**
+   * Retrieves a single recipe from the database and sends it to the client
+   * @param {string} req - express request object
+   * @param {string} res - express response object
+   *
+   * @returns {Object} express ServerResponse object
+   * @memberOf RecipeController
+   */
   voteRecipe = async (req, res) => {
     // get vote type from url since same controller handles upvotes and
     // downvotes

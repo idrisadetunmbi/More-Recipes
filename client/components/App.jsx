@@ -22,11 +22,21 @@ class App extends Component {
   // eslint-disable-next-line
   previousLocation = this.props.location
 
+  /**
+   * @returns {void}
+   * @memberOf App
+   */
   componentWillMount() {
     this.props.fetchRecipes();
   }
 
+  /**
+   *
+   * @returns {void}
+   * @memberOf App
+   */
   componentDidMount() {
+    // for navbar dropdown menu
     $('.dropdown-button').dropdown({
       belowOrigin: true,
       alignment: 'left',
@@ -34,6 +44,12 @@ class App extends Component {
     });
   }
 
+  /**
+   * @param {any} nextProps
+   *
+   * @returns {void}
+   * @memberOf App
+   */
   componentWillUpdate(nextProps) {
     localStorage.setItem('user', JSON.stringify(nextProps.user));
     const { location } = this.props;
@@ -45,6 +61,11 @@ class App extends Component {
     }
   }
 
+  /**
+   * @returns {void}
+   *
+   * @memberOf App
+   */
   render() {
     const { location } = this.props;
     const isModal = !!(
@@ -52,7 +73,7 @@ class App extends Component {
       location.state.modal &&
       this.previousLocation !== location
     );
-    
+
     return (
       <div>
         <Route component={NavBar} />
@@ -76,16 +97,19 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
+App.propTypes = {
+  fetchRecipes: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    data: PropTypes.object,
+  }).isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchRecipes: () => dispatch(fetchRecipes()),
-  };
-};
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchRecipes: () => dispatch(fetchRecipes()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
