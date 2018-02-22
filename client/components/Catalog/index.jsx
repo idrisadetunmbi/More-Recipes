@@ -16,6 +16,16 @@ import { fetchRecipes } from '../../actions/recipes';
  * @returns {Object} Catalog DOM Node
  */
 export class Catalog extends Component {
+  /**
+   * @returns {void}
+   * @memberOf Catalog
+   */
+  componentWillUnmount() {
+    // scroll to top of the page incase infinite scroll 'scrollTop button'
+    // gets clicked
+    window.scrollTo(0, 0);
+  }
+
   addRecipeOnClick = () => {
     const { history } = this.props;
     if (!this.props.user.data.token) {
@@ -99,22 +109,38 @@ export class Catalog extends Component {
     </div>
   )
 
-  renderCatalogWithInfiniteScroll = () => (
-    <LoaderWithComponent
-      showLoader={this.props.recipes.requestInitiated}
-      component={
-        <InfiniteScroll
-          next={this.props.fetchRecipes}
-          hasMore={!this.props.recipes.fetchedAll}
-          loader={this.renderLoader()}
-          scrollThreshold={0.8}
-          endMessage={<h5 className="infinite-scroll">This is the end! Hold your breadth and count to ten</h5>}
-          style={{ position: 'relative' }}
-        >
-          {this.renderRecipes()}
-        </InfiniteScroll>}
-    />
-  )
+  renderCatalogWithInfiniteScroll = () => {
+    const scrollEndOnClick = (event) => {
+      event.preventDefault();
+      $('html, body').animate({
+        scrollTop: $('#catalog-component').offset().top,
+      }, 500);
+    };
+    const endMessage = () => (
+      <h5 className="infinite-scroll">
+        There are no more recipes.
+        <a onClick={scrollEndOnClick}> Go to Top</a>
+      </h5>
+    );
+
+    const { recipes } = this.props;
+    return (
+      <LoaderWithComponent
+        showLoader={recipes.requestInitiated && !recipes.recipes.length}
+        component={
+          <InfiniteScroll
+            next={this.props.fetchRecipes}
+            hasMore={!this.props.recipes.fetchedAll}
+            loader={this.renderLoader()}
+            scrollThreshold={0.8}
+            endMessage={endMessage()}
+            style={{ position: 'relative' }}
+          >
+            {this.renderRecipes()}
+          </InfiniteScroll>}
+      />
+    );
+  }
 
   /**
    * @returns {JSX.Element} JSX element representing the whole catalog page

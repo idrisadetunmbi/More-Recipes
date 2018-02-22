@@ -9,6 +9,7 @@ import { fetchRecipeVoteStatuses } from '../../actions/user';
 import './index.scss';
 import DetailsView from './DetailsView';
 import EditView from './EditView';
+import { showToast  } from '../../utils';
 
 
 /**
@@ -54,6 +55,7 @@ class RecipeDetails extends React.Component {
       !deepEqual(nextProps.recipe, this.props.recipe) &&
       !this.state.isDetailsMode
     ) {
+      showToast('Recipe has been successfully updated');
       this.toggleViewMode();
     }
     // reset review text input box when a new review is posted

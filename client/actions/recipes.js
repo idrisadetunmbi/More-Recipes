@@ -40,11 +40,11 @@ export const fetchedAllRecipes = () => ({
 
 
 /**
- * @param {number} [limit=8]
+ * @param {number} [limit=6]
  *
  * @returns {Function} thunk function
  */
-export const fetchRecipes = (limit = 8) => async (dispatch, getState) => {
+export const fetchRecipes = (limit = 6) => async (dispatch, getState) => {
   const allRecipesUrl = `/api/v1/recipes?sort=upvotes&limit=${limit}\
 &offset=${getState().recipes.recipes.length}`;
 
