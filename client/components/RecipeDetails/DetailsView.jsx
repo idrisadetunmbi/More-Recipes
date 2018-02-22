@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserIcon from './avatar_img.png';
+import { LoaderWithComponent } from '../reusables';
 
 const DetailsView = (props) => {
   const { userVoteStatuses } = props;
@@ -158,19 +159,17 @@ const DetailsView = (props) => {
             </div>
 
             {
-              // eslint-disable-next-line
-              !props.reviews ?
-                <p>Loading reviews... </p> :
-                  props.reviews.length === 0 ?
-                    <p
-                      id="no-review-text"
-                      className="col l6 offset-l3"
-                    >
-                      This Recipe currently has no reviews
-                    </p> :
+              <LoaderWithComponent
+                showLoader={!props.reviews}
+                component={
+                  props.reviews && props.reviews.length ?
                     props.reviews.map(review => (
-                      <Review review={review} />
-                    ))
+                      <Review review={review} key={review.id} />)) :
+                    <p id="no-review-text" className="col l6 offset-l3">
+                      This Recipe currently has no reviews
+                    </p>
+                }
+              />
             }
           </div>
         </div>
@@ -179,29 +178,29 @@ const DetailsView = (props) => {
       {
         user.token && props.userOwnsRecipe() &&
         (
-        <div className="fixed-action-btn">
-          <a className="btn-floating btn-large">
-            <i className="large material-icons">menu</i>
-          </a>
-          <ul>
-            <li>
-              <a
-                onClick={() => props.recipeAction('delete', recipe.id)}
-                className="btn-floating red"
-              >
-                <i className="material-icons">delete</i>
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={props.toggleViewMode}
-                className="btn-floating yellow darken-1"
-              >
-                <i className="material-icons">edit</i>
-              </a>
-            </li>
-          </ul>
-        </div>
+          <div className="fixed-action-btn">
+            <a className="btn-floating btn-large">
+              <i className="large material-icons">menu</i>
+            </a>
+            <ul>
+              <li>
+                <a
+                  onClick={() => props.recipeAction('delete', recipe.id)}
+                  className="btn-floating red"
+                >
+                  <i className="material-icons">delete</i>
+                </a>
+              </li>
+              <li>
+                <a
+                  onClick={props.toggleViewMode}
+                  className="btn-floating yellow darken-1"
+                >
+                  <i className="material-icons">edit</i>
+                </a>
+              </li>
+            </ul>
+          </div>
         )
       }
     </div>
@@ -240,11 +239,18 @@ DetailsView.propTypes = {
   user: PropTypes.shape().isRequired,
   recipeAction: PropTypes.func.isRequired,
   recipeVoteAction: PropTypes.func.isRequired,
-  reviews: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.object),
   reviewText: PropTypes.string.isRequired,
   reviewOnChange: PropTypes.func.isRequired,
   reviewSubmit: PropTypes.func.isRequired,
   toggleViewMode: PropTypes.func.isRequired,
+  userVoteStatuses: PropTypes.shape(),
+  userOwnsRecipe: PropTypes.func.isRequired,
+};
+
+DetailsView.defaultProps = {
+  reviews: undefined,
+  userVoteStatuses: undefined,
 };
 
 Review.propTypes = {

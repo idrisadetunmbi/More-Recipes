@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 
 export const generateImageUploadURLS = (imageFiles) => {
   const imageUploadURLS = imageFiles.map((imageFile) => {
@@ -38,16 +37,4 @@ export const showToast = message => Materialize.toast(message, 2000);
  * @returns {Object} - an object representing the user's data from local
  * storage or null
  */
-export const hydrateUserData = () => {
-  const usersStoredData = JSON.parse(localStorage.getItem('user'));
-  // user's token must still be valid before user data can be hydrated
-  // into the app
-  if (usersStoredData) {
-    try {
-      jwt.verify(usersStoredData.data.token, process.env.JWT_AUTH_SECRET);
-    } catch (error) {
-      return null;
-    }
-  }
-  return usersStoredData;
-};
+export const hydrateUserData = () => JSON.parse(localStorage.getItem('user'));

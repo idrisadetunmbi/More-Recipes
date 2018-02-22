@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import deepEqual from 'deep-equal';
+import PropTypes from 'prop-types';
 
-import { recipeAction, recipeVoteAction } from '../../actions/recipes';
+import { recipeAction, recipeVoteAction, fetchRecipe } from '../../actions/recipes';
 import { fetchRecipeReviews, postRecipeReview } from '../../actions/reviews';
 import { fetchRecipeVoteStatuses } from '../../actions/user';
 import './index.scss';
@@ -20,6 +21,7 @@ class RecipeDetails extends React.Component {
   state = {
     isDetailsMode: true,
     reviewText: '',
+    recipeNotFound: false,
   }
 
   /**
@@ -28,15 +30,15 @@ class RecipeDetails extends React.Component {
    * @memberOf RecipeDetails
    */
   componentDidMount() {
-    const {
-      user, recipe, fetchRecipeReviews, fetchUserVoteStatuses
-    } = this.props;
-    if (recipe) {
-      fetchRecipeReviews(recipe.id);
-      // if user is signed in and does not own recipe
-      if (user.token && !this.userOwnsRecipe()) {
-        fetchUserVoteStatuses(recipe.id);
-      }
+    const { user, recipe } = this.props;
+    if (!recipe) {
+      fetchRecipe(this.props.match.params.recipeId);
+      return;
+    }
+    this.props.fetchRecipeReviews(recipe.id);
+    // if user is signed in and does not own recipe
+    if (user.token && !this.userOwnsRecipe()) {
+      this.props.fetchUserVoteStatuses(recipe.id);
     }
   }
 
@@ -59,6 +61,9 @@ class RecipeDetails extends React.Component {
       this.setState({
         reviewText: '',
       });
+    }
+    if (nextProps.recipeNotFound) {
+      this.setState({ recipeNotFound: true });
     }
     // if recipe has been loaded but reviews have not been loaded, load reviews
     if (!nextProps.reviews && nextProps.recipe) {
@@ -126,6 +131,9 @@ class RecipeDetails extends React.Component {
    * @memberOf RecipeDetails
    */
   render() {
+    if (this.state.recipeNotFound) {
+      return (<p>Recipe Does Not Exist</p>);
+    }
     if (!this.props.recipe) {
       return (<p>Loading recipe...</p>);
     }
@@ -154,6 +162,8 @@ const mapStateToProps = (state, ownProps) => ({
 
   userVoteStatuses: state.user
     .recipesVoteStatuses[ownProps.match.params.recipeId],
+
+  recipeNotFound: state.recipes.requestError,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -170,6 +180,26 @@ const mapDispatchToProps = dispatch => ({
 
   fetchUserVoteStatuses: recipeId =>
     dispatch(fetchRecipeVoteStatuses(recipeId)),
+
+  fetchRecipe: recipeId => dispatch(fetchRecipe(recipeId)),
 });
+
+RecipeDetails.propTypes = {
+  user: PropTypes.shape().isRequired,
+  recipe: PropTypes.shape(),
+  fetchRecipeReviews: PropTypes.func.isRequired,
+  postRecipeReview: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.object),
+  recipeNotFound: PropTypes.bool,
+  fetchUserVoteStatuses: PropTypes.func.isRequired,
+  match: PropTypes.shape().isRequired,
+};
+
+RecipeDetails.defaultProps = {
+  recipe: undefined,
+  reviews: undefined,
+  recipeNotFound: null,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeDetails);

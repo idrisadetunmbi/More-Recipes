@@ -33,10 +33,10 @@ const receiveUserRequestResponse = (state, action) => {
   }
 };
 
-const user = (state = hydrateUserData() || {
+const user = (state = {
   userRequestInitiated: false,
   userRequestError: null,
-  data: {},
+  data: hydrateUserData() || {},
   recipes: null,
   favoriteRecipes: null,
   recipesVoteStatuses: {},

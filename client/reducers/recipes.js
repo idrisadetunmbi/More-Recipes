@@ -1,9 +1,29 @@
 import * as RecipeActions from '../actions/recipes';
 
+const removeDuplicates = (recipes) => {
+  const pushedRecipeIds = [];
+  const pushedRecipes = [];
+  recipes.forEach((recipe) => {
+    if (!pushedRecipeIds.includes(recipe.id)) {
+      pushedRecipeIds.push(recipe.id);
+      pushedRecipes.push(recipe);
+    }
+  });
+  return pushedRecipes;
+};
+
+const sortRecipes = (recipes, recipe) => {
+  const allRecipes = [...recipes, recipe];
+  allRecipes.sort((a, b) => a.upvotes < b.upvotes);
+  return removeDuplicates(allRecipes);
+};
+
 const updateRecipes = (recipes = [], { requestType, data }) => {
   switch (requestType) {
     case RecipeActions.FETCH_RECIPES:
       return [...recipes, ...data];
+    case RecipeActions.FETCH_RECIPE:
+      return sortRecipes(recipes, data);
     case RecipeActions.CREATE_RECIPE:
       return [data, ...recipes];
     case RecipeActions.DELETE_RECIPE: {

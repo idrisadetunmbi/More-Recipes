@@ -25,4 +25,19 @@
       background-color: #444;
     }
   }
+
+  .recipes-count {
+    margin-left: .3rem;
+    i {
+      vertical-align: middle;
+    }
+  }
+
+  #recipes-count {
+    margin-bottom: .5rem;
+    img {
+      width: 1.3rem;
+      vertical-align: middle;
+    }
+  }
 }

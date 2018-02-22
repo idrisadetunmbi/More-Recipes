@@ -20,7 +20,7 @@ describe('Recipes routes and actions', () => {
         testData.userAuthToken = res.body.data.token;
         testData.userId = res.body.data.userId;
       });
-    
+
     // sign up alternative user required to test that routes/controllers
     // disallow non-author of a recipe to update, delete or modify a recipe
     chai.request(server)
@@ -161,7 +161,7 @@ describe('Recipes routes and actions', () => {
           done();
         });
     });
-    
+
     it('should return 200 for a valid and existing id', (done) => {
       chai.request(server)
         .get(`/api/recipes/${testData.postedRecipeID}/`)
@@ -171,7 +171,7 @@ describe('Recipes routes and actions', () => {
           done();
         });
     });
-    
+
     it('returns a response with a data property on the body', (done) => {
       chai.request(server)
         .get(`/api/recipes/${testData.postedRecipeID}/`)

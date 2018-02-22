@@ -32,4 +32,10 @@
       margin-top: 1rem;
     }
   }
+
+  .brand-logo {
+    @media only screen and (max-width: 990px) {
+      left: 30%
+    }
+  }
 }

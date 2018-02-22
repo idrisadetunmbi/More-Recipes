@@ -14,6 +14,7 @@ export const FETCH_RECIPES = 'FETCH_RECIPES';
 export const CREATE_RECIPE = 'CREATE_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
+export const FETCH_RECIPE = 'FETCH_RECIPE';
 
 // synchronous actions
 export const FETCHED_ALL_RECIPES = 'FETCHED_ALL_RECIPES';
@@ -61,6 +62,18 @@ export const fetchRecipes = (limit = 8) => async (dispatch, getState) => {
     FETCH_RECIPES,
     response.data.data,
   ));
+};
+
+export const fetchRecipe = recipeId => async (dispatch) => {
+  dispatch(initiateRecipeActionRequest());
+  let response;
+  try {
+    response = await axios.get(`/api/v1/recipes/${recipeId}`);
+  } catch (error) {
+    dispatch(errorRecipeAction(error.response.data));
+    return;
+  }
+  dispatch(receiveRecipeActionResponse(FETCH_RECIPE, response.data.data));
 };
 
 /**

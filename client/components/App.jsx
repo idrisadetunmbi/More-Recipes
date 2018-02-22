@@ -40,7 +40,6 @@ class App extends Component {
     $('.dropdown-button').dropdown({
       belowOrigin: true,
       alignment: 'left',
-      constrainWidth: false,
     });
   }
 
@@ -51,7 +50,7 @@ class App extends Component {
    * @memberOf App
    */
   componentWillUpdate(nextProps) {
-    localStorage.setItem('user', JSON.stringify(nextProps.user));
+    localStorage.setItem('user', JSON.stringify(nextProps.userData));
     const { location } = this.props;
     if (
       nextProps.history.action !== 'POP' &&
@@ -82,7 +81,7 @@ class App extends Component {
             exact
             path="/"
             render={() => (
-              this.props.user.data.token ? (
+              this.props.userData.token ? (
                 <Redirect to="/catalog" />) :
                 (<LandingPage />)
             )}
@@ -99,13 +98,13 @@ class App extends Component {
 
 App.propTypes = {
   fetchRecipes: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    data: PropTypes.object,
+  userData: PropTypes.shape({
+    token: PropTypes.string,
   }).isRequired,
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
+  userData: state.user.data,
 });
 
 const mapDispatchToProps = dispatch => ({
