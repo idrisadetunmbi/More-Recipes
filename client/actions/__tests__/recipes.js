@@ -80,7 +80,7 @@ describe('Recipe actions', () => {
     beforeEach(() => {
       moxios.install();
       store = mockStore({
-        recipes: [],
+        recipes: { recipes: [] },
         user: { data: { token: '' }, recipesVoteStatuses: {} },
       });
     });
@@ -97,7 +97,7 @@ describe('Recipe actions', () => {
           actions.receiveRecipeActionResponse(actions.FETCH_RECIPES, []),
         ];
         return store.dispatch(actions.fetchRecipes()).then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          expect(store.getActions()).toContainEqual(...expectedActions);
         });
       });
 

@@ -10,6 +10,7 @@ const mocks = {
 describe('Recipe reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
+      fetchedAll: false,
       requestInitiated: false,
       requestError: null,
       recipes: [],
@@ -19,6 +20,7 @@ describe('Recipe reducer', () => {
   it('should handle INITIATE_RECIPE_ACTION_REQUEST', () => {
     expect(reducer(undefined, actions.initiateRecipeActionRequest()))
       .toEqual({
+        fetchedAll: false,
         requestInitiated: true,
         requestError: null,
         recipes: [],
@@ -29,6 +31,7 @@ describe('Recipe reducer', () => {
     const mockError = { error: '' };
     expect(reducer(undefined, actions.errorRecipeAction(mockError)))
       .toEqual({
+        fetchedAll: false,
         requestInitiated: false,
         requestError: mockError,
         recipes: [],
@@ -47,7 +50,10 @@ describe('Recipe reducer', () => {
 
   it('should handle RECEIVE_RECIPE_ACTION_RESPONSE for FETCH_RECIPES request', () => {
     expect(reducer(mocks.state, actions
-      .receiveRecipeActionResponse(actions.FETCH_RECIPES, mocks.fetchedRecipes)))
+      .receiveRecipeActionResponse(
+        actions.FETCH_RECIPES,
+        mocks.fetchedRecipes,
+      )))
       .toEqual({
         requestInitiated: false,
         requestError: null,
@@ -57,7 +63,10 @@ describe('Recipe reducer', () => {
 
   it('should handle RECEIVE_RECIPE_ACTION_RESPONSE for DELETE_RECIPE request', () => {
     expect(reducer(mocks.state, actions
-      .receiveRecipeActionResponse(actions.DELETE_RECIPE, mocks.state.recipes[0].id)))
+      .receiveRecipeActionResponse(
+        actions.DELETE_RECIPE,
+        mocks.state.recipes[0].id,
+      )))
       .toEqual({
         requestInitiated: false,
         requestError: null,

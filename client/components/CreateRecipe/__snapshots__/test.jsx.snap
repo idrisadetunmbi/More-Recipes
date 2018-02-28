@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateRecipe /> matches snapshot 1`] = `
+<form
+  id="create-recipe-component"
+  onSubmit={[Function]}
+>
+  <div
+    id="title"
+  >
+    <h5>
+      Add a New Recipe
+    </h5>
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="title"
+    >
+      Title
+    </label>
+    <input
+      name="title"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      required={true}
+      type="text"
+    />
+  </div>
+  <div
+    className="input-field"
+    style={
+      Object {
+        "marginBottom": "20px",
+      }
+    }
+  >
+    <label
+      htmlFor="description"
+    >
+      Description
+    </label>
+    <textarea
+      className="materialize-textarea"
+      name="description"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      required={true}
+    />
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      className="active"
+      htmlFor="ingredients"
+    >
+      Ingredients
+    </label>
+    <textarea
+      className="materialize-textarea"
+      name="ingredients"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      placeholder="Each ingredient should go on a new line"
+      required={true}
+    />
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      className="active"
+      htmlFor="directions"
+    >
+      Directions
+    </label>
+    <textarea
+      className="materialize-textarea"
+      name="directions"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      placeholder="new direction should go on a new line"
+      required={true}
+    />
+  </div>
+  <div
+    className="col s12 file-field input-field center"
+    id="add-image-section"
+  >
+    <img
+      alt="add recipe"
+      src="test-file-stub"
+    />
+    <input
+      accept=".jpg, .jpeg, .png"
+      multiple={true}
+      name="images upload"
+      onChange={[Function]}
+      type="file"
+    />
+    <p>
+      Add images
+    </p>
+  </div>
+  <div>
+    <button
+      className="btn-large waves-effect waves-light"
+      disabled={false}
+    >
+      SUBMIT
+    </button>
+  </div>
+</form>
+`;

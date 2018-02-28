@@ -18,22 +18,12 @@ exports[`<Catalog /> matches snapshot 1`] = `
       </button>
     </div>
     <div
-      className="col l8 m8 s12"
+      className="col l9 m8 s12"
     >
       <input
         placeholder="Search Recipe"
         type="text"
       />
-      <a
-        className="btn-large"
-        href="#"
-      >
-        <i
-          className="material-icons medium"
-        >
-          search
-        </i>
-      </a>
     </div>
   </div>
   <div
@@ -104,18 +94,53 @@ exports[`<Catalog /> matches snapshot 1`] = `
         id="gallery-before"
       />
       <div
-        className="row"
-        id="recipe-gallery"
-        style={
-          Object {
-            "marginLeft": "-0.6em",
-            "width": "97%",
-          }
-        }
+        style={Object {}}
       >
-        <p>
-          There are no recipes in this category
-        </p>
+        <div
+          className="infinite-scroll-component"
+          style={
+            Object {
+              "WebkitOverflowScrolling": "touch",
+              "height": "auto",
+              "overflow": "auto",
+              "position": "relative",
+            }
+          }
+        >
+          <div
+            className="infinite-scroll"
+          >
+            <div
+              className="preloader-wrapper small active"
+            >
+              <div
+                className="spinner-layer spinner-green-only"
+              >
+                <div
+                  className="circle-clipper left"
+                >
+                  <div
+                    className="circle"
+                  />
+                </div>
+                <div
+                  className="gap-patch"
+                >
+                  <div
+                    className="circle"
+                  />
+                </div>
+                <div
+                  className="circle-clipper right"
+                >
+                  <div
+                    className="circle"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

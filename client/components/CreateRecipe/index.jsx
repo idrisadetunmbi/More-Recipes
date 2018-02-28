@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import validator from 'validator';
+import PropTypes from 'prop-types';
 
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { recipeAction } from '../../actions/recipes';
@@ -16,7 +17,7 @@ import './index.scss';
  * @class CreateRecipe
  * @extends {Component}
  */
-class CreateRecipe extends Component {
+export class CreateRecipe extends Component {
   state = {
     title: '',
     description: '',
@@ -394,5 +395,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   createRecipe: recipeData => dispatch(recipeAction('create', recipeData)),
 });
+
+CreateRecipe.propTypes = {
+  recipeActionInitiated: PropTypes.bool.isRequired,
+  recipeActionErrored: PropTypes.shape().isRequired,
+  history: PropTypes.shape().isRequired,
+  createRecipe: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateRecipe);
