@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 import dbModels from '../models';
 
 /**
@@ -62,19 +63,36 @@ export default class RecipeController {
    * @memberOf RecipeController
    */
   getAllRecipes = async (req, res) => {
-    const { limit, sort, offset } = req.query;
+    const {
+      limit, sort, offset, query, order,
+    } = req.query;
     const acceptableSortKeys = ['upvotes', 'downvotes', 'createdAt', 'favorites'];
     const sortKey = acceptableSortKeys.includes(sort) ? sort : 'createdAt';
 
     let recipes;
     try {
       recipes = await dbModels.recipe.findAll({
+        // findAll where title contains query or where ingredients contain query
+        [query && 'where']: {
+          [Sequelize.Op.or]: [
+            {
+              title: {
+                [Sequelize.Op.iLike]: `%${query}%`,
+              },
+            },
+            {
+              ingredients: {
+                [Sequelize.Op.iLike]: `%${query}%`,
+              },
+            },
+          ],
+        },
         include: [
           {
             model: dbModels.user, as: 'author', attributes: ['username', 'imageUrl'],
           },
         ],
-        order: [[sortKey, 'DESC']],
+        order: [[sortKey, order && order.toLowerCase().includes('asc') ? 'ASC' : 'DESC']],
         limit,
         offset,
       });

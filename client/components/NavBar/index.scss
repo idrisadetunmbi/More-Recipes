@@ -9,13 +9,6 @@
     }
   };
 
-  #logo-container {
-    img {
-      height: 56px;
-      vertical-align: middle;
-    }
-  }
-
   .dropdown-button {
     height: 4.3rem;
     i {
@@ -34,6 +27,10 @@
   }
 
   .brand-logo {
+    img {
+      height: 56px;
+      vertical-align: middle;
+    }
     @media only screen and (max-width: 990px) {
       left: 30%
     }

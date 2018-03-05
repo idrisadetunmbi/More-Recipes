@@ -10,6 +10,7 @@ import './index.scss';
 import DetailsView from './DetailsView';
 import EditView from './EditView';
 import { showToast  } from '../../utils';
+import NoMatch from '../404';
 
 
 /**
@@ -33,7 +34,7 @@ class RecipeDetails extends React.Component {
   componentDidMount() {
     const { user, recipe } = this.props;
     if (!recipe) {
-      fetchRecipe(this.props.match.params.recipeId);
+      this.props.fetchRecipe(this.props.match.params.recipeId);
       return;
     }
     this.props.fetchRecipeReviews(recipe.id);
@@ -64,7 +65,7 @@ class RecipeDetails extends React.Component {
         reviewText: '',
       });
     }
-    if (nextProps.recipeNotFound) {
+    if (nextProps.recipeNotFound || !nextProps.recipe) {
       this.setState({ recipeNotFound: true });
     }
     // if recipe has been loaded but reviews have not been loaded, load reviews
@@ -134,7 +135,9 @@ class RecipeDetails extends React.Component {
    */
   render() {
     if (this.state.recipeNotFound) {
-      return (<p>Recipe Does Not Exist</p>);
+      return (
+        <NoMatch />
+      );
     }
     if (!this.props.recipe) {
       return (<p>Loading recipe...</p>);

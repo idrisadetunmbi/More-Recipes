@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Catalog /> matches snapshot 1`] = `
+exports[`Catalog component matches snapshot 1`] = `
 <div
   id="catalog-component"
 >
@@ -9,21 +9,22 @@ exports[`<Catalog /> matches snapshot 1`] = `
     id="search-section"
   >
     <div
-      className="col l3 m4 s12"
-    >
-      <button
-        className="btn-large"
-      >
-        Categories
-      </button>
-    </div>
-    <div
-      className="col l9 m8 s12"
+      className="col offset-l3 l9 m12 s12"
     >
       <input
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
         placeholder="Search Recipe"
-        type="text"
+        type="search"
       />
+      <i
+        className="material-icons"
+        id="clear-search"
+        onClick={[Function]}
+      >
+        cancel
+      </i>
     </div>
   </div>
   <div
@@ -148,7 +149,7 @@ exports[`<Catalog /> matches snapshot 1`] = `
     className="fixed-action-btn"
   >
     <a
-      className="btn-floating btn-large"
+      className="btn-floating btn-large pulse"
       onClick={[Function]}
     >
       <i

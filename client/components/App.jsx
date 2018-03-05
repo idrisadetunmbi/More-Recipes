@@ -9,6 +9,7 @@ import NavBar from './NavBar';
 import Modal from './Modal';
 import Catalog from './Catalog';
 import UserProfile from './UserProfile';
+import NoMatch from './404';
 
 import { fetchRecipes } from '../actions/recipes';
 
@@ -28,19 +29,6 @@ class App extends Component {
    */
   componentWillMount() {
     this.props.fetchRecipes();
-  }
-
-  /**
-   *
-   * @returns {void}
-   * @memberOf App
-   */
-  componentDidMount() {
-    // for navbar dropdown menu
-    $('.dropdown-button').dropdown({
-      belowOrigin: true,
-      alignment: 'left',
-    });
   }
 
   /**
@@ -89,6 +77,7 @@ class App extends Component {
           <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
           <Route path="/user" component={UserProfile} />
+          <Route component={NoMatch} />
         </Switch>
         {isModal ? <Route component={Modal} /> : null }
       </div>

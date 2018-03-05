@@ -7,15 +7,19 @@ import { Link } from 'react-router-dom';
 import Recipe from '../Recipe';
 import { LoaderWithComponent } from '../reusables';
 import './index.scss';
-import { fetchRecipes } from '../../actions/recipes';
-
+import { fetchRecipes, searchRecipes } from '../../actions/recipes';
 
 /**
- * @param {any} props
- *
- * @returns {Object} Catalog DOM Node
+ * @export
+ * @class Catalog
+ * @extends {Component}
  */
 export class Catalog extends Component {
+  state = {
+    searchTerm: '',
+    searchMode: false,
+  }
+
   /**
    * @returns {void}
    * @memberOf Catalog
@@ -26,6 +30,11 @@ export class Catalog extends Component {
     window.scrollTo(0, 0);
   }
 
+  /**
+   * onClick handler for add recipe button
+   * @returns {void}
+   * @memberOf Catalog
+   */
   addRecipeOnClick = () => {
     const { history } = this.props;
     if (!this.props.user.data.token) {
@@ -39,7 +48,59 @@ export class Catalog extends Component {
       modal: true,
       previousLocation: history.location.pathname,
     });
-  };
+  }
+
+  /**
+   * handles enter key press when search input element is focused
+   * @param {object} event - DOM event object
+   *
+   * @returns {void}
+   * @memberOf Catalog
+   */
+  enterKeyPress = (event) => {
+    if (event.keyCode === 13) {
+      event.stopPropagation();
+      const searchInput = document.querySelector('input');
+      const searchTerm = searchInput.value;
+      if (!searchTerm) {
+        return;
+      }
+      this.setState({ searchMode: true, searchTerm });
+      this.props.searchRecipes(searchTerm);
+    }
+  }
+
+  /**
+   * @param {event} event - DOM event object
+   *
+   * @returns {void}
+   * @memberOf Catalog
+   */
+  handleClearSearchClick = (event) => {
+    const searchInput = document.querySelector('input');
+    event.stopPropagation();
+    searchInput.value = '';
+    searchInput.focus();
+    event.target.style.display = 'none';
+    this.setState({ searchMode: false });
+  }
+
+  /**
+   * @param {event} event - DOM event object
+   *
+   * @returns {void}
+   * @memberOf Catalog
+   */
+  handleSearchInputChange = (event) => {
+    const { value } = event.target;
+    const clearSearchButton = document.getElementById('clear-search');
+    if (!value) {
+      this.setState({ searchMode: false });
+      clearSearchButton.style.display = 'none';
+      return;
+    }
+    clearSearchButton.style.display = 'inline-block';
+  }
 
   renderLoader = () => (
     <div className="infinite-scroll">
@@ -59,23 +120,40 @@ export class Catalog extends Component {
     </div>
   )
 
-  renderRecipes = () =>
-    this.props.recipes.recipes.map(recipe => (
+  /**
+   * @param {Array} recipes - list of recipes to render
+   *
+   * @returns {JSX.Element} - list of recipe cards
+   * @memberOf Catalog
+   */
+  renderRecipes = recipes =>
+    recipes.map(recipe => (
       <Link key={recipe.id} to={`/recipes/${recipe.id}`}>
         <Recipe gridStyle="l4 s12 m6" recipe={recipe} />
       </Link>
-    ));
+    ))
 
-  renderSearch = () => (
-    <div id="search-section" className="row">
-      <div className="col l3 m4 s12">
-        <button className="btn-large">Categories</button>
+  renderSearch = () =>
+    (
+      <div id="search-section" className="row">
+        <div className="col offset-l3 l9 m12 s12">
+          <input
+            placeholder="Search Recipe"
+            type="search"
+            onFocus={() => { document.addEventListener('keydown', this.enterKeyPress); }}
+            onBlur={() => { document.removeEventListener('keydown', this.enterKeyPress); }}
+            onChange={this.handleSearchInputChange}
+          />
+          <i
+            onClick={this.handleClearSearchClick}
+            id="clear-search"
+            className="material-icons"
+          >
+            cancel
+          </i>
+        </div>
       </div>
-      <div className="col l9 m8 s12">
-        <input placeholder="Search Recipe" type="text" />
-      </div>
-    </div>
-  )
+    )
 
   renderSuggestionSection = () => (
     <div className="col l3" id="suggestion-section">
@@ -103,7 +181,7 @@ export class Catalog extends Component {
 
   renderAddRecipeButton = () => (
     <div className="fixed-action-btn">
-      <a className="btn-floating btn-large" onClick={this.addRecipeOnClick}>
+      <a className="btn-floating btn-large pulse" onClick={this.addRecipeOnClick}>
         <i className="material-icons">add</i>
       </a>
     </div>
@@ -130,14 +208,44 @@ export class Catalog extends Component {
         component={
           <InfiniteScroll
             next={this.props.fetchRecipes}
-            hasMore={!this.props.recipes.fetchedAll}
+            hasMore={!recipes.fetchedAll}
             loader={this.renderLoader()}
             scrollThreshold={0.8}
             endMessage={endMessage()}
             style={{ position: 'relative' }}
           >
-            {this.renderRecipes()}
+            {this.renderRecipes(recipes.recipes)}
           </InfiniteScroll>}
+      />
+    );
+  }
+
+  renderSearchResults = () => {
+    const { searchTerm } = this.state;
+    const searchResults = this.props.recipes
+      .searchResults[searchTerm.toLowerCase()];
+    const endMessage = <h5 className="infinite-scroll">There are no more recipes matching the search term</h5>;
+
+    return (
+      <LoaderWithComponent
+        showLoader={!searchResults}
+        component={
+          searchResults && searchResults.results.length ?
+            <InfiniteScroll
+              next={() => this.props.searchRecipes(this.state.searchTerm)}
+              hasMore={!searchResults.matchedAll}
+              loader={this.renderLoader()}
+              scrollThreshold={0.8}
+              endMessage={endMessage}
+              style={{ position: 'relative' }}
+            >
+              {
+                this.renderRecipes(this.props.recipes.recipes.filter(recipe =>
+                  searchResults.results.includes(recipe.id)))
+              }
+            </InfiniteScroll> :
+            <h5>No results found for {this.state.searchTerm}</h5>
+        }
       />
     );
   }
@@ -151,13 +259,18 @@ export class Catalog extends Component {
       <div id="catalog-component">
         {this.renderSearch()}
         <div id="main-divider" className="divider" />
-
         <div className="row">
           {this.renderSuggestionSection()}
           <div className="col l9 s12">
-            <h5>Featured Recipes</h5>
+            <h5>{this.state.searchMode ?
+              `Search Results for ${this.state.searchTerm}` : 'Featured Recipes'}
+            </h5>
             <div className="divider" id="gallery-before" />
-            {this.renderCatalogWithInfiniteScroll()}
+            {
+              this.state.searchMode ?
+                this.renderSearchResults() :
+                this.renderCatalogWithInfiniteScroll()
+            }
           </div>
         </div>
         {this.renderAddRecipeButton()}
@@ -171,6 +284,7 @@ Catalog.propTypes = {
     recipes: PropTypes.array,
     fetchedAll: PropTypes.bool,
     requestInitiated: PropTypes.bool.isRequired,
+    searchResults: PropTypes.shape().isRequired,
   }).isRequired,
 
   history: PropTypes.shape({
@@ -186,6 +300,7 @@ Catalog.propTypes = {
   }).isRequired,
 
   fetchRecipes: PropTypes.func.isRequired,
+  searchRecipes: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -194,8 +309,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchRecipes: () =>
-    dispatch(fetchRecipes()),
+  fetchRecipes: () => dispatch(fetchRecipes()),
+  searchRecipes: searchTerm => dispatch(searchRecipes(searchTerm)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import RecipeList from '../RecipeList';
 import BannerBackground from './banner_background.jpg';
@@ -13,18 +14,18 @@ const LandingPage = props => (
     <div id="index-banner" className="parallax-container">
       <div className="section no-pad-bot">
         <div className="container">
-          <h1 className="header center grey-text text-darken-4" style={{ fontFamily: 'Crete Round' }}>More Recipes</h1>
+          <h1 className="header center grey-text text-darken-4">More Recipes</h1>
           <div className="center">
-            <h5 className="header col blue-grey-text text-darken-4 s12" style={{ fontFamily: 'Raleway', fontStyle: 'italic' }}>We Know You Love to Try New things.... Especially New Tastes</h5>
+            <h5 className="header col blue-grey-text text-darken-4 s12">We Know You Love to Try New things.... Especially New Tastes</h5>
           </div>
           <div className="center">
-            <a id="btn-browse-catalog" style={{ marginTop: '4em' }} className="btn-large waves-effect waves-light grey darken-4 lighten-1">
+            <a id="btn-browse-catalog" className="btn-large waves-effect waves-light grey darken-4 lighten-1">
               Browse Catalog
             </a>
           </div>
         </div>
       </div>
-      <div className="parallax"><img style={{ display: 'block' }} src={BannerBackground} alt="Unsplashed background img 1" /></div>
+      <div className="parallax"><img src={BannerBackground} alt="Unsplashed background img 1" /></div>
     </div>
     {/* Banner Section End */}
 
@@ -36,7 +37,7 @@ const LandingPage = props => (
           <div className="col s12 m4">
             <div className="icon-block">
               <h2 className="center brown-text">
-                <img src={DiscoverIcon} className="responsive-img" style={{ height: '50px', width: '50px' }} alt="" />
+                <img src={DiscoverIcon} className="responsive-img" alt="" />
               </h2>
               <h5 className="center">Discover Exciting Recipes</h5>
 
@@ -67,9 +68,9 @@ const LandingPage = props => (
     {/* About Section End */}
 
     {/* Recipe gallery start */}
-    <div id="recipe-gallery-section" className="divider" style={{ marginLeft: '3em', marginRight: '3em' }} />
+    <div id="recipe-gallery-section" className="divider" />
     <div className="section">
-      <h5 style={{ fontFamily: 'Raleway', fontStyle: 'italic', textAlign: 'center' }}>Featured Recipes</h5>
+      <h5>Featured Recipes</h5>
     </div>
     <RecipeList
       recipes={props.recipes.recipes.slice(0, 8)}
@@ -78,7 +79,7 @@ const LandingPage = props => (
       style={{ width: '90%' }}
       gridStyle="l3 s12 m6"
     />
-    <div className="center" style={{ marginTop: '6em' }}>
+    <div className="center">
       <Link to="/catalog" className="btn-large waves-effect waves-light grey darken-4 lighten-1">view entire catalog</Link>
     </div>
 
@@ -88,5 +89,9 @@ const LandingPage = props => (
 const mapStateToProps = state => ({
   recipes: state.recipes,
 });
+
+LandingPage.propTypes = {
+  recipes: PropTypes.shape().isRequired,
+};
 
 export default connect(mapStateToProps)(LandingPage);
