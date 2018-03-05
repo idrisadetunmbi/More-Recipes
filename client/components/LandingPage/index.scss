@@ -28,6 +28,10 @@
   
   .icon-block {
     padding: 0 15px;
+    img {
+      height: 50px;
+      width: 50px;
+    }
   }
   .icon-block .material-icons {
     font-size: inherit;
@@ -35,5 +39,39 @@
 
   p {
     line-height: 2rem;
+  }
+
+  h1.header {
+    font-family: 'Crete Round'
+  }
+
+  h5.header {
+    font-family: 'Raleway';
+    font-style: italic;
+  }
+
+  #btn-browse-catalog {
+    margin-top: 4em;
+  }
+
+  .parallax {
+    img {
+      display: block;
+    }
+  }
+
+  #recipe-gallery-section {
+    margin-left: 3em;
+    margin-right: 3em;
+    +.section {
+      h5 {
+        font-family: 'Raleway';
+        font-style: italic;
+        text-align: center;
+      }
+    }
+    .center {
+      margin-top: 6em;
+    }
   }
 }

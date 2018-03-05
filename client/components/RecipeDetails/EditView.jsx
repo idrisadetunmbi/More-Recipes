@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import validator from 'validator';
 import deepEqual from 'deep-equal';
+import PropTypes from 'prop-types';
 
 import IconAddRecipe from './photo-video-slr-camera-icon.png';
 import { generateImageUploadURLS, sendImagesToCloudinary } from '../../utils';
+import { TextArea } from '../reusables';
 
 /**
  *
@@ -27,7 +29,7 @@ class EditView extends Component {
    */
   componentWillMount() {
     const {
-      title, description, directions, ingredients, images
+      title, description, directions, ingredients, images,
     } = this.props.recipe;
     const existingData = {
       title, description, directions, ingredients, images,
@@ -55,11 +57,14 @@ class EditView extends Component {
   onChange = (event) => {
     const inputFieldName = event.target.name;
     if (inputFieldName === 'add more images') {
-      this.setState({ fieldErrors: { ...this.state.fieldErrors, images: null } });
+      this.setState({
+        fieldErrors: { ...this.state.fieldErrors, images: null },
+      });
       const fileArray = Array.from(event.target.files);
       const selectedImagesNames = this.state.newImages.map(image => image.name);
       // remove duplicate images
-      const newImages = fileArray.filter(file => !selectedImagesNames.includes(file.name));
+      const newImages = fileArray
+        .filter(file => !selectedImagesNames.includes(file.name));
       this.setState({ newImages: [...this.state.newImages, ...newImages] });
     }
   }
@@ -77,7 +82,8 @@ class EditView extends Component {
       this.setState({
         fieldErrors: {
           ...this.state.fieldErrors,
-          [inputFieldName]: `please include ${inputFieldName} with at least 5 characters`,
+          [inputFieldName]:
+            `please include ${inputFieldName} with at least 5 characters`,
         },
       });
     }
@@ -206,6 +212,59 @@ class EditView extends Component {
       });
   }
 
+  renderImageThumbnails = () => {
+    const { existingImages, newImages } = this.state;
+    return (
+      <div style={{ padding: 0 }} className="row">
+        {
+          [...existingImages, ...newImages].map((image, index) =>
+            (
+              <div className="col center s6" id="thumbnails-row">
+                <img
+                  src={typeof image === 'string' ? image : window.URL.createObjectURL(image)}
+                  alt={`thumbnail - ${index}`}
+                />
+                <i
+                  className="material-icons"
+                  style={{ cursor: 'pointer', opacity: '0.5' }}
+                  onClick={() => this.removeImage(image)}
+                >cancel
+                </i>
+              </div>
+            ))
+        }
+      </div>
+    );
+  }
+
+  renderAddMoreImages = () => (
+    <div id="add-more-images" className="col s12 file-field input-field center">
+      <img alt="add recipe" src={IconAddRecipe} />
+      <input disabled={this.state.isUploadingImages} type="file" accept=".jpg, .jpeg, .png" name="add more images" multiple onChange={this.onChange} />
+      <span>Add more</span>
+      <span>{this.state.fieldErrors.images}</span>
+    </div>
+  )
+
+  renderActionButtons = () => {
+    const { recipe, user } = this.props;
+    return user.id === recipe.authorId &&
+      (
+        <div>
+          <div className="fixed-action-btn" style={{ marginBottom: '3em' }} >
+            <a onClick={this.props.toggleViewMode} className="btn-floating btn-large">
+              <i className="large material-icons yellow darken-1">cancel</i>
+            </a>
+          </div>
+          <div className="fixed-action-btn" style={{ marginBottom: '7.5rem' }}>
+            <a onClick={this.onSubmit} className="btn-floating btn-large">
+              <i className="large material-icons">done</i>
+            </a>
+          </div>
+        </div>
+      );
+  }
+
   /**
    *
    *
@@ -213,8 +272,7 @@ class EditView extends Component {
    * @memberOf EditView
    */
   render() {
-    const { recipe, user } = this.props;
-    const { existingImages, newImages } = this.state;
+    const { recipe } = this.props;
     return (
       <div className="recipe-details-component">
         <div className="container-section container">
@@ -227,35 +285,10 @@ class EditView extends Component {
                 fieldError={this.state.fieldErrors.title}
                 name="title"
               />
-              <div style={{ padding: 0 }} className="row">
-                {
-                  [...existingImages, ...newImages].map((image, index) =>
-                   (
-                     <div className="col center s6" id="thumbnails-row">
-                       <img
-                         src={typeof image === 'string' ? image : window.URL.createObjectURL(image)}
-                         alt={`thumbnail - ${index}`}
-                       />
-                       <i
-                         className="material-icons"
-                         style={{ cursor: 'pointer', opacity: '0.5' }}
-                         onClick={() => this.removeImage(image)}
-                       >cancel
-                       </i>
-                     </div>
-                  ))
-                }
-              </div>
-              <div style={{ border: '.5px dashed gray', padding: '1rem', marginBottom: '1rem' }} className="col s12 file-field input-field center">
-                <img style={{ height: '2.5rem' }} alt="add recipe" src={IconAddRecipe} />
-                <input disabled={this.state.isUploadingImages} type="file" accept=".jpg, .jpeg, .png" name="add more images" multiple onChange={this.onChange} />
-                <span style={{ fontSize: '1.3rem', opacity: '0.7', verticalAlign: 'super', marginLeft: '1rem', fontFamily: 'Raleway' }}>Add more</span>
-                <span style={{ color: 'red', display: 'block', marginTop: '.5em' }}>{this.state.fieldErrors.images}</span>
-              </div>
+              {this.renderImageThumbnails()}
+              {this.renderAddMoreImages()}
             </div>
-            {/* recipe images and action buttons end */}
-
-            <div style={{ marginTop: '3rem' }} className="col s12 offset-l1 l6 description-section">
+            <div className="col s12 offset-l1 l6 description-section">
               <TextArea
                 defaultValue={recipe.description}
                 onBlur={this.onBlur}
@@ -280,51 +313,17 @@ class EditView extends Component {
             </div>
           </div>
         </div>
-        
-        {
-          user.id === recipe.authorId &&
-          (
-          <div>
-            <div className="fixed-action-btn" style={{ marginBottom: '3em' }} >
-              <a onClick={this.props.toggleViewMode} className="btn-floating btn-large">
-                <i className="large material-icons yellow darken-1">cancel</i>
-              </a>
-            </div>
-            <div className="fixed-action-btn" style={{ marginBottom: '7.5rem' }}>
-              <a onClick={this.onSubmit} className="btn-floating btn-large">
-                <i className="large material-icons">done</i>
-              </a>
-            </div>
-          </div>
-          )
-        }
+        {this.renderActionButtons()}
       </div>
     );
   }
 }
 
-const TextArea = ({ name, defaultValue, value, onBlur, onFocus, fieldError }) => (
-  <div style={{ marginBottom: '1rem' }}>
-    <i className="material-icons prefix">mode_edit</i>
-    <label
-      style={{ fontSize: '1rem', fontFamily: 'Lato', marginLeft: '.5rem', verticalAlign: 'super' }}
-      htmlFor={name}
-    >
-      {name}
-    </label>
-    <textarea
-      required
-      autoFocus
-      onBlur={onBlur}
-      onFocus={onFocus}
-      defaultValue={defaultValue}
-      name={name}
-      value={value}
-      style={{ marginBottom: '0' }}
-      className="materialize-textarea"
-    />
-    <span style={{ color: 'red' }}>{fieldError}</span>
-  </div>
-);
+EditView.propTypes = {
+  recipe: PropTypes.shape().isRequired,
+  toggleViewMode: PropTypes.func.isRequired,
+  recipeAction: PropTypes.func.isRequired,
+  user: PropTypes.shape().isRequired,
+};
 
 export default EditView;
