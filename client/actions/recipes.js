@@ -15,9 +15,12 @@ export const CREATE_RECIPE = 'CREATE_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 export const FETCH_RECIPE = 'FETCH_RECIPE';
+export const SEARCH_RECIPES = 'SEARCH_RECIPES';
 
 // synchronous actions
 export const FETCHED_ALL_RECIPES = 'FETCHED_ALL_RECIPES';
+export const MATCHED_ALL_RECIPES = 'MATCHED_ALL_RECIPES';
+export const RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
 
 export const initiateRecipeActionRequest = () => ({
   type: INITIATE_RECIPE_ACTION_REQUEST,
@@ -38,31 +41,75 @@ export const fetchedAllRecipes = () => ({
   type: FETCHED_ALL_RECIPES,
 });
 
+export const matchedAllRecipes = searchTerm => ({
+  type: MATCHED_ALL_RECIPES,
+  searchTerm,
+});
+
+export const receiveSearchResults = (searchTerm, recipeIds) => ({
+  type: RECEIVE_SEARCH_RESULTS,
+  searchTerm,
+  recipeIds,
+});
+
+export const searchRecipes = searchTerm => async (dispatch, getState) => {
+  searchTerm = searchTerm.toLowerCase(); // eslint-disable-line
+  const searchResults = getState().recipes.searchResults[searchTerm];
+  if (searchResults && searchResults.matchedAll) {
+    return;
+  }
+
+  const LIMIT = 6;
+  const offset = searchResults ? searchResults.results.length : 0;
+  const searchUrl = `/api/v1/recipes?limit=6&offset=${offset}&query=${searchTerm}`;
+
+  let response;
+  dispatch(initiateRecipeActionRequest());
+  try {
+    response = await axios.get(searchUrl);
+  } catch (error) {
+    dispatch(errorRecipeAction(error.response.data));
+    return;
+  }
+  dispatch(receiveRecipeActionResponse(
+    SEARCH_RECIPES,
+    response.data.data,
+  ));
+  dispatch(receiveSearchResults(
+    searchTerm,
+    response.data.data.map(recipe => recipe.id),
+  ));
+  if (response.data.data.length < LIMIT) {
+    dispatch(matchedAllRecipes(searchTerm));
+  }
+};
+
 
 /**
  * @param {number} [limit=6]
  *
  * @returns {Function} thunk function
  */
-export const fetchRecipes = (limit = 6) => async (dispatch, getState) => {
-  const allRecipesUrl = `/api/v1/recipes?sort=upvotes&limit=${limit}\
-&offset=${getState().recipes.recipes.length}`;
+export const fetchRecipes = (limit = 6) =>
+  async (dispatch, getState) => {
+    const offset = getState().recipes.recipes.length;
+    const allRecipesUrl = `/api/v1/recipes?sort=upvotes&limit=${limit}&offset=${offset}`;
 
-  let response;
-  dispatch(initiateRecipeActionRequest());
-  try {
-    response = await axios.get(allRecipesUrl);
-  } catch (error) {
-    return dispatch(errorRecipeAction(error.response.data));
-  }
-  if (response.data.data.length < limit) {
-    dispatch(fetchedAllRecipes());
-  }
-  return dispatch(receiveRecipeActionResponse(
-    FETCH_RECIPES,
-    response.data.data,
-  ));
-};
+    let response;
+    dispatch(initiateRecipeActionRequest());
+    try {
+      response = await axios.get(allRecipesUrl);
+    } catch (error) {
+      return dispatch(errorRecipeAction(error.response.data));
+    }
+    if (response.data.data.length < limit) {
+      dispatch(fetchedAllRecipes());
+    }
+    return dispatch(receiveRecipeActionResponse(
+      FETCH_RECIPES,
+      response.data.data,
+    ));
+  };
 
 export const fetchRecipe = recipeId => async (dispatch) => {
   dispatch(initiateRecipeActionRequest());

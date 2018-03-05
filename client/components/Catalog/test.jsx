@@ -7,7 +7,13 @@ import { Catalog } from '../Catalog';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('<Catalog />', () => {
+const setUp = () => {
+  const actions = {
+    addRecipeOnClick: jest.spyOn()
+  }
+};
+
+describe('Catalog component', () => {
   it('matches snapshot', () => {
     const component = renderer.create(<Catalog recipes={{ recipes: [] }} />);
     expect(component.toJSON()).toMatchSnapshot();

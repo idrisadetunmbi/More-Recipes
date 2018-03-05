@@ -7,55 +7,88 @@ import Logo from './logo.jpg';
 import { signOutUser } from '../../actions/user';
 import './index.scss';
 
-const NavBar = (props) => {
-  const signInRedirect = {
+/**
+ * @class NavBar
+ * @extends {React.Component}
+ */
+class NavBar extends React.Component {
+  /**
+   * @returns {void}
+   * @memberOf NavBar
+   */
+  componentDidMount() {
+    // for navbar dropdown menu
+    $('.dropdown-button').dropdown({
+      belowOrigin: true,
+      alignment: 'left',
+    });
+  }
+
+  /**
+   * @returns {void}
+   * @memberOf NavBar
+   */
+  componentDidUpdate() {
+    // re-initialize dropdown content when it  changes
+    $('.dropdown-button').dropdown({
+      belowOrigin: true,
+      alignment: 'left',
+    });
+  }
+
+  signInRedirect = {
     pathname: '/signin',
-    state: { modal: true, previousLocation: props.location.pathname },
+    state: { modal: true, previousLocation: this.props.location.pathname },
   };
 
-  // eslint-disable-next-line
-  const renderRightContent = () => props.user.data.token ?
+  renderUserImage = () => this.props.user.data.imageUrl ?
+    <img src={this.props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
+    <i style={{ fontSize: '3rem' }} className="large material-icons">account_circle</i>;
+
+  renderRightContent = () => this.props.user.data.token ?
     <li>
       <a className="dropdown-button" data-beloworigin="true" data-activates="dropdown">
-        {
-          props.user.data.imageUrl ?
-            <img src={props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
-            <i style={{ fontSize: '3rem' }} className="large material-icons">account_circle</i>
-        }
-        <span className="black-text">{props.user.data.username}</span>
+        {this.renderUserImage()}
+        <span className="black-text">{this.props.user.data.username}</span>
         <i className="material-icons">arrow_drop_down</i>
       </a>
     </li> :
     <li>
-      <Link to={signInRedirect}>Sign In</Link>
+      <Link to={this.signInRedirect}>Sign In</Link>
     </li>;
 
-  return (
-    <nav className="white" id="navbar-component">
-      <ul className="nav-wrapper container">
-        <div id="logo-container">
-          <Link to="/catalog" className="brand-logo">
-            <img src={Logo} alt="navbar logo" />
-            <h5>MoreRecipes</h5>
-          </Link>
-        </div>
-        <ul className="right">
-          {renderRightContent()}
-        </ul>
+  /**
+   * @returns {JSX.Element} Navbar component
+   *
+   * @memberOf NavBar
+   */
+  render() {
+    return (
+      <div id="navbar-component" className="navbar-fixed">
+        <nav className="white">
+          <div className="nav-wrapper container">
+            <Link to="/catalog" className="brand-logo">
+              <img src={Logo} alt="navbar logo" />
+              <h5>MoreRecipes</h5>
+            </Link>
+            <ul className="right">
+              {this.renderRightContent()}
+            </ul>
 
-        <ul id="dropdown" className="dropdown-content">
-          <li>
-            <Link to="/user"><i className="material-icons">person</i>My Profile</Link>
-            <a onClick={props.signOutUser}><i className="material-icons">exit_to_app</i>Sign Out</a>
-          </li>
-        </ul>
-      </ul>
-    </nav>
-  );
-};
+            <ul id="dropdown" className="dropdown-content">
+              <li>
+                <Link to="/user"><i className="material-icons">person</i>Profile</Link>
+                <a onClick={this.props.signOutUser}><i className="material-icons">exit_to_app</i>Sign Out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+}
 
 NavBar.propTypes = {
-  // eslint-disable-next-line
   user: PropTypes.shape().isRequired,
   location: PropTypes.shape().isRequired,
   signOutUser: PropTypes.func.isRequired,

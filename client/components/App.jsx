@@ -31,19 +31,6 @@ class App extends Component {
   }
 
   /**
-   *
-   * @returns {void}
-   * @memberOf App
-   */
-  componentDidMount() {
-    // for navbar dropdown menu
-    $('.dropdown-button').dropdown({
-      belowOrigin: true,
-      alignment: 'left',
-    });
-  }
-
-  /**
    * @param {any} nextProps
    *
    * @returns {void}

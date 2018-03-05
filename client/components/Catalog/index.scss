@@ -17,13 +17,15 @@
       font-family: 'Lato';
       border-radius: .25rem;
     };
-    a {
-      margin-left: .6em;
+    div {
+      position: relative;
+    }
+    i {
       position: absolute;
-      i {
-        vertical-align: middle;
-        padding-top: 0;
-      }
+      top: 0.7rem;
+      right: 1.5rem;
+      cursor: pointer;
+      display: none;
     }
   };
 
