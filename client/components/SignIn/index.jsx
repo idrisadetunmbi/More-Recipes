@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import validator from 'validator';
+import PropTypes from 'prop-types';
 
 import { userAuthRequest } from '../../actions/user';
 import { showToast } from '../../utils';
@@ -154,8 +155,11 @@ class SignIn extends React.Component {
         />
 
         {authError && <span style={{ color: 'red' }}>{authError}</span>}
-        <button id="form-submit" className="btn-large waves-effect waves-light">Sign In</button>
-        {this.props.user.userRequestInitiated && <div className="progress"><div className="indeterminate" /></div>}
+        <button id="form-submit" className="btn-large waves-effect waves-light">
+          Sign In
+        </button>
+        {this.props.user.userRequestInitiated &&
+          <div className="progress"><div className="indeterminate" /></div>}
         <p>Dont Have an Account?&nbsp;
           <Link to={{ pathname: '/signup', state: this.props.location.state }}>
             Sign Up
@@ -174,5 +178,12 @@ const mapDispatchToProps = dispatch => ({
   signInUser: authData =>
     dispatch(userAuthRequest(authData, 'signin')),
 });
+
+SignIn.propTypes = {
+  user: PropTypes.shape().isRequired,
+  signInUser: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+  location: PropTypes.shape().isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -99,6 +99,10 @@ describe('More-Recipes API', () => {
           .send(userSeeders.signUp.fullUserDetails)
           .end((err, res) => {
             assert.equal(res.statusCode, 201);
+            assert.equal(
+              res.body.data.username,
+              userSeeders.signUp.fullUserDetails.username,
+            );
             done();
           });
       });
@@ -189,6 +193,10 @@ describe('More-Recipes API', () => {
           .send(userSeeders.signIn.fullSigninDetails)
           .end((err, res) => {
             assert.equal(res.statusCode, 200);
+            assert.equal(
+              res.body.data.username,
+              userSeeders.signIn.fullSigninDetails.username,
+            );
             done();
           });
       });

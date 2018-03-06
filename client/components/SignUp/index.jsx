@@ -44,8 +44,16 @@ class SignUp extends Component {
       const { error } = userRequestError;
       // eslint-disable-next-line
       error.includes('username') ?
-        this.setState({ fieldError: { ...this.state.fieldError, username: 'username has been taken' } }) :
-        this.setState({ fieldError: { ...this.state.fieldError, email: 'this email is already registered' } });
+        this.setState({
+          fieldError: {
+            ...this.state.fieldError, username: 'username has been taken',
+          },
+        }) :
+        this.setState({
+          fieldError: {
+            ...this.state.fieldError, email: 'this email is already registered',
+          },
+        });
     } else {
       showToast('You have signed up successfully!!!');
       this.props.history.replace(this.props.location.state.previousLocation);

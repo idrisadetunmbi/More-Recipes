@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LoaderWithComponent = ({ showLoader, component: Component }) => {
-  return showLoader ? (
+const LoaderWithComponent = ({ showLoader, component: Component }) =>
+  showLoader ? (
     <div className="preloader">
       <div className="preloader-wrapper big active">
         <div className="spinner-layer">
@@ -19,7 +19,6 @@ const LoaderWithComponent = ({ showLoader, component: Component }) => {
       </div>
     </div>
   ) : Component;
-};
 
 LoaderWithComponent.propTypes = {
   showLoader: PropTypes.bool.isRequired,

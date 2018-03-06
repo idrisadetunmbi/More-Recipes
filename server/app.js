@@ -20,7 +20,8 @@ app.use('/api', api);
 
 // if process.env is development, use webpack-dev-middleware and configs
 // for serving client side contents
-if (!process.env.NODE_ENV) {
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line
   require('../webpack_configs/webpack_devserver_config')(app);
 }
 
@@ -37,7 +38,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   switch (err.status) {
     case 404:
       return res.status(404).send({

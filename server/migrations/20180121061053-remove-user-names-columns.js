@@ -1,12 +1,10 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('users', 'firstName')
-      .then(() => queryInterface.removeColumn('users', 'lastName'));
-  },
+  up: queryInterface => queryInterface.removeColumn('users', 'firstName')
+    .then(() => queryInterface.removeColumn('users', 'lastName')),
 
-  down: (queryInterface, Sequelize) => {
+  down: () => {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
