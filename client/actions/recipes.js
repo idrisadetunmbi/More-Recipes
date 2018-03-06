@@ -61,6 +61,7 @@ export const searchRecipes = searchTerm => async (dispatch, getState) => {
 
   const LIMIT = 6;
   const offset = searchResults ? searchResults.results.length : 0;
+  // eslint-disable-next-line
   const searchUrl = `/api/v1/recipes?limit=6&offset=${offset}&query=${searchTerm}`;
 
   let response;
@@ -93,6 +94,7 @@ export const searchRecipes = searchTerm => async (dispatch, getState) => {
 export const fetchRecipes = (limit = 6) =>
   async (dispatch, getState) => {
     const offset = getState().recipes.recipes.length;
+    // eslint-disable-next-line
     const allRecipesUrl = `/api/v1/recipes?sort=upvotes&limit=${limit}&offset=${offset}`;
 
     let response;

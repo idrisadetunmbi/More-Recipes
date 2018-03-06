@@ -21,12 +21,11 @@ export const addRecipeReview = (recipeId, data) => ({
 });
 
 /**
- *
- *
+ * fetches the reviews of a recipe from the server
  * @param {String} recipeId - id of recipe to fetch reviews for
  * @param {Boolean} forceFetch - whether to bypass check of recipe reviews
  * availability in the store
- * @returns {Promise} none
+ * @returns {Promise} thunk function
  */
 export const fetchRecipeReviews = (recipeId, forceFetch) =>
   async (dispatch, getState) => {
@@ -45,6 +44,13 @@ export const fetchRecipeReviews = (recipeId, forceFetch) =>
     dispatch(receiveReviews(response.data.data, recipeId));
   };
 
+/**
+ * Sends the reviews of a recipe to the server
+ * @param {any} recipeId - id of recipe to post review for
+ * @param {any} reviewData - content of review to be posted
+ *
+ * @returns {Promise} thunk function
+ */
 export const postRecipeReview = (recipeId, reviewData) =>
   async (dispatch, getState) => {
     const userToken = getState().user.data.token;

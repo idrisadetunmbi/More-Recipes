@@ -78,7 +78,13 @@ class NavBar extends React.Component {
             <ul id="dropdown" className="dropdown-content">
               <li>
                 <Link to="/user"><i className="material-icons">person</i>Profile</Link>
-                <a onClick={this.props.signOutUser}><i className="material-icons">exit_to_app</i>Sign Out</a>
+                <a onClick={() => {
+                  localStorage.removeItem('user');
+                  this.props.signOutUser();
+                }}
+                >
+                  <i className="material-icons">exit_to_app</i>Sign Out
+                </a>
               </li>
             </ul>
           </div>

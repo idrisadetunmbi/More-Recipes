@@ -33,7 +33,15 @@ export default class RecipeController {
    * @returns {void}
    */
   createRecipe = async (req, res) => {
-    let recipe;
+    // check recipe with title by user already exists
+    let recipe = await dbModels.recipe.findOne({
+      where: { title: req.body.title, authorId: req.user.id },
+    });
+    if (recipe) {
+      return res.status(400).send({
+        error: 'you already created a recipe with this title',
+      });
+    }
     try {
       recipe = await dbModels.recipe.create({
         ...req.body,
@@ -196,6 +204,7 @@ export default class RecipeController {
       });
     }
     return res.status(200).send({
+      // eslint-disable-next-line
       message: `recipe with ${req.params.recipeId} has been successfully deleted`,
     });
   }

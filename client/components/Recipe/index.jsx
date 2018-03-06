@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
-export default (props) => {
+const RecipeCard = (props) => {
   const { recipe, gridStyle } = props;
   return (
     <div id="recipe-card-component" className={`col ${gridStyle}`}>
@@ -22,3 +23,10 @@ export default (props) => {
     </div>
   );
 };
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape().isRequired,
+  gridStyle: PropTypes.string.isRequired,
+};
+
+export default RecipeCard;

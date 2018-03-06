@@ -61,15 +61,6 @@ const user = (state = {
         userRequestInitiated: false,
         ...receiveUserRequestResponse(state, action),
       };
-    case UserActions.RESET_USER_DATA:
-      return {
-        userRequestInitiated: false,
-        userRequestError: null,
-        data: {},
-        recipes: null,
-        favoriteRecipes: null,
-        recipesVoteStatuses: {},
-      };
     case UserActions.ADD_TO_USER_RECIPES:
       return {
         ...state,
@@ -77,6 +68,7 @@ const user = (state = {
           [action.recipeId] :
           [action.recipeId, ...state.recipes],
       };
+    case UserActions.RESET_USER_DATA:
     default:
       return state;
   }

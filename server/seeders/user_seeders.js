@@ -71,7 +71,7 @@ export default {
     // message === invalid credentials supplied
     nullValues: {
     },
-    
+
     // status code === 400
     // message === invalid credentials supplied
     nullUsername: {

@@ -29,12 +29,13 @@ export default (sequelize, DataTypes) => {
     },
   }, {
     classMethods: {
-      associate: (models) => {
+      associate: () => {
         // associations can be defined here
       },
     },
   });
-  User.beforeCreate((user, options) => {
+  User.beforeCreate((user) => {
+    // eslint-disable-next-line
     user.password = bcrypt.hashSync(user.password, 10);
   });
   User.associate = (models) => {
