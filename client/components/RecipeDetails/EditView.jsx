@@ -240,7 +240,14 @@ class EditView extends Component {
   renderAddMoreImages = () => (
     <div id="add-more-images" className="col s12 file-field input-field center">
       <img alt="add recipe" src={IconAddRecipe} />
-      <input disabled={this.state.isUploadingImages} type="file" accept=".jpg, .jpeg, .png" name="add more images" multiple onChange={this.onChange} />
+      <input
+        disabled={this.state.isUploadingImages}
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        name="add more images"
+        multiple
+        onChange={this.onChange}
+      />
       <span>Add more</span>
       <span>{this.state.fieldErrors.images}</span>
     </div>

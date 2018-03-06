@@ -25,8 +25,6 @@ class UserProfile extends Component {
   }
 
   /**
-   *
-   *
    * @returns {void}
    * @memberOf UserProfile
    */
@@ -35,8 +33,6 @@ class UserProfile extends Component {
   }
 
   /**
-   *
-   *
    * @returns {void}
    * @memberOf UserProfile
    */
@@ -129,7 +125,11 @@ class UserProfile extends Component {
         this.state.uploadingUserImage ?
           <div className="progress"><div className="indeterminate" /></div> :
           <div id="image-update-btn" className="input-field file-field">
-            <input type="file" accept=".jpg, .jpeg, .png" onChange={this.onChangeImageInput} />
+            <input
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              onChange={this.onChangeImageInput}
+            />
             Change Profile Photo
           </div>
       }
@@ -165,7 +165,6 @@ class UserProfile extends Component {
     </div>
   )
 
-  // eslint-disable-next-line
   renderRecipes = () =>
     this.state.myRecipeTabIsActive ?
       <RecipeList

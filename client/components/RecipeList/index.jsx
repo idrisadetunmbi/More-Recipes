@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Recipe from '../Recipe';
 import { LoaderWithComponent } from '../reusables';
@@ -31,5 +32,12 @@ export const RecipeList = (props) => {
   );
 };
 
+RecipeList.propTypes = {
+  recipes: PropTypes.arrayOf().isRequired,
+  isLoadingRecipes: PropTypes.bool.isRequired,
+  error: PropTypes.shape().isRequired,
+  style: PropTypes.shape().isRequired,
+  gridStyle: PropTypes.string.isRequired,
+};
 
 export default RecipeList;

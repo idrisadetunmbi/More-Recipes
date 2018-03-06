@@ -27,11 +27,11 @@ export class CreateRecipe extends Component {
     uploadedImagesUrls: [],
     isUploadingImages: false,
     fieldErrors: {
-      title: '',
-      description: '',
-      ingredients: '',
-      directions: '',
-      images: '',
+      title: null,
+      description: null,
+      ingredients: null,
+      directions: null,
+      images: null,
     },
   }
 
@@ -96,7 +96,7 @@ export class CreateRecipe extends Component {
             title: inputFieldValue,
             fieldErrors: {
               ...this.state.fieldErrors,
-              title: '',
+              title: null,
             },
           });
         }
@@ -118,7 +118,7 @@ export class CreateRecipe extends Component {
             [inputFieldName]: inputFieldValue,
             fieldErrors: {
               ...this.state.fieldErrors,
-              [inputFieldName]: '',
+              [inputFieldName]: null,
             },
           });
         }
@@ -229,14 +229,92 @@ export class CreateRecipe extends Component {
     this.setState({ imagesSelected: otherImages });
   }
 
+  renderImageSection = () => {
+    const imageButton = () => (
+      <div
+        id="add-image-section"
+        className="col s12 file-field input-field center"
+      >
+        <img alt="add recipe" src={IconAddRecipe} />
+        <input
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          name="images upload"
+          multiple
+          onChange={this.onChange}
+        />
+        <p>Add images</p>
+        {<span>{this.state.fieldErrors.images}</span>}
+      </div>
+    );
+
+    const imagePreviewSection = () => (
+      <div id="image-preview-section" className="col s12">
+        {
+          this.state.isUploadingImages && <UploadingOverlay />
+        }
+        {
+          this.state.imagesSelected.map((image, i) => {
+            const preview = window.URL.createObjectURL(image);
+            return (
+              <div id="image-preview" key={`${image.name}`}>
+                <img src={preview} alt="" />
+                <span onClick={() => this.removeImage(`${image.name}`)}>
+                  <i className="material-icons">cancel</i>
+                </span>
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+
+    const addMoreImagesBtn = () => (
+      <div
+        id="add-more-images"
+        className="col s12 file-field input-field center"
+      >
+        <img alt="add recipe" src={IconAddRecipe} />
+        <input
+          disabled={this.state.isUploadingImages}
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          name="add more images"
+          multiple
+          onChange={this.onChange}
+        />
+        <span>Add more</span>
+      </div>
+    );
+
+    return this.state.imagesSelected.length === 0 ?
+      imageButton() :
+      (
+        <div>
+          {imagePreviewSection()}
+          {addMoreImagesBtn()}
+        </div>
+      );
+  }
+
+  renderSubmitButton = () => (
+    <div>
+      <button
+        disabled={this.state.isUploadingImages}
+        className="btn-large waves-effect waves-light"
+      >SUBMIT
+      </button>
+      {this.props.recipeActionInitiated &&
+        <div className="progress"><div className="indeterminate" /></div>}
+    </div>
+  )
+
   /**
    * @returns {Object} create recipe form element
    * @memberOf CreateRecipe
    */
   render() {
-    const {
-      imagesSelected, fieldErrors,
-    } = this.state;
+    const { fieldErrors } = this.state;
 
     return (
       <form onSubmit={this.onSubmit} id="create-recipe-component">
@@ -253,10 +331,10 @@ export class CreateRecipe extends Component {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
           />
-          {fieldErrors.title.length > 0 && <span>{fieldErrors.title}</span>}
+          {<span>{fieldErrors.title}</span>}
         </div>
 
-        <div className="input-field" style={{ marginBottom: '20px' }}>
+        <div className="input-field">
           <label htmlFor="description">Description</label>
           <textarea
             className="materialize-textarea"
@@ -265,8 +343,7 @@ export class CreateRecipe extends Component {
             name="description"
             onBlur={this.onBlur}
           />
-          {fieldErrors.description.length > 0
-            && <span>{fieldErrors.description}</span>}
+          {<span>{fieldErrors.description}</span>}
         </div>
 
         <div className="input-field">
@@ -279,8 +356,7 @@ export class CreateRecipe extends Component {
             name="ingredients"
             onBlur={this.onBlur}
           />
-          {fieldErrors.ingredients.length > 0 &&
-            <span>{fieldErrors.ingredients}</span>}
+          {<span>{fieldErrors.ingredients}</span>}
         </div>
 
         <div className="input-field">
@@ -293,77 +369,10 @@ export class CreateRecipe extends Component {
             name="directions"
             onBlur={this.onBlur}
           />
-          {fieldErrors.directions.length > 0 &&
-            <span>{fieldErrors.directions}</span>}
+          {<span>{fieldErrors.directions}</span>}
         </div>
-
-        {
-          imagesSelected.length === 0 ?
-          (
-            <div
-              id="add-image-section"
-              className="col s12 file-field input-field center"
-            >
-              <img alt="add recipe" src={IconAddRecipe} />
-              <input
-                type="file"
-                accept=".jpg, .jpeg, .png"
-                name="images upload"
-                multiple
-                onChange={this.onChange}
-              />
-              <p>Add images</p>
-              {fieldErrors.images.length > 0 &&
-                <span>{fieldErrors.images}</span>}
-            </div>
-          ) :
-          (
-            <div>
-              <div id="image-preview-section" className="col s12">
-                {
-                  this.state.isUploadingImages && <UploadingOverlay />
-                }
-                {
-                  imagesSelected.map((image, i) => {
-                    const preview = window.URL.createObjectURL(image);
-                    return (
-                      <div id="image-preview" key={`${image.name}`}>
-                        <img src={preview} alt="" />
-                        <span onClick={() => this.removeImage(`${image.name}`)}>
-                          <i className="material-icons">cancel</i>
-                        </span>
-                      </div>
-                    );
-                  })
-                }
-              </div>
-              <div
-                id="add-more-images"
-                className="col s12 file-field input-field center"
-              >
-                <img alt="add recipe" src={IconAddRecipe} />
-                <input
-                  disabled={this.state.isUploadingImages}
-                  type="file"
-                  accept=".jpg, .jpeg, .png"
-                  name="add more images"
-                  multiple
-                  onChange={this.onChange}
-                />
-                <span>Add more</span>
-              </div>
-            </div>
-          )
-        }
-        <div>
-          <button
-            disabled={this.state.isUploadingImages}
-            className="btn-large waves-effect waves-light"
-          >SUBMIT
-          </button>
-          {this.props.recipeActionInitiated &&
-            <div className="progress"><div className="indeterminate" /></div>}
-        </div>
+        {this.renderImageSection()}
+        {this.renderSubmitButton()}
       </form>
     );
   }

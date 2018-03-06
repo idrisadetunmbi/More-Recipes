@@ -56,18 +56,23 @@ describe('Recipes routes and actions', () => {
     });
 
     it('should return statusCode:201 with request data', (done) => {
+      const mockData = {
+        title: 'Ewa agoyin with efo',
+        description: 'A great recipe',
+        ingredients: 'ewa and ata of course',
+        directions: 'just pour everything together',
+      };
       chai.request(server)
         .post('/api/recipes/')
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .type('form')
-        .send({
-          title: 'Ewa agoyin with efo',
-          description: 'A great recipe',
-          ingredients: 'ewa and ata of course',
-          directions: 'just pour everything together',
-        })
+        .send(mockData)
         .end((err, res) => {
           assert.equal(res.statusCode, 201);
+          assert.equal(res.body.data.title, mockData.title);
+          assert.equal(res.body.data.description, mockData.description);
+          assert.equal(res.body.data.ingredients, mockData.ingredients);
+          assert.equal(res.body.data.directions, mockData.directions);
           assert.exists(res.body.data.id);
           testData.postedRecipeID = res.body.data.id;
           done();
@@ -134,6 +139,7 @@ describe('Recipes routes and actions', () => {
         .end((err, res) => {
           assert.equal(res.status, 200);
           assert.isArray(res.body.data);
+          assert.lengthOf(res.body.data, 1);
           done();
         });
     });

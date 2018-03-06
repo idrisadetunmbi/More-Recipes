@@ -81,6 +81,7 @@ export class Catalog extends Component {
     event.stopPropagation();
     searchInput.value = '';
     searchInput.focus();
+    // eslint-disable-next-line
     event.target.style.display = 'none';
     this.setState({ searchMode: false });
   }

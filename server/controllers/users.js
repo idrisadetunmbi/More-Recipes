@@ -105,6 +105,7 @@ export default class UserController {
   signInUser = async (req, res) => {
     let user;
     try {
+      // eslint-disable-next-line
       user = await models.user.findOne({ where: { username: req.body.username } });
     } catch (error) {
       return res.status(400).send({

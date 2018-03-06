@@ -27,14 +27,10 @@ exports[`<CreateRecipe /> matches snapshot 1`] = `
       required={true}
       type="text"
     />
+    <span />
   </div>
   <div
     className="input-field"
-    style={
-      Object {
-        "marginBottom": "20px",
-      }
-    }
   >
     <label
       htmlFor="description"
@@ -48,6 +44,7 @@ exports[`<CreateRecipe /> matches snapshot 1`] = `
       onFocus={[Function]}
       required={true}
     />
+    <span />
   </div>
   <div
     className="input-field"
@@ -66,6 +63,7 @@ exports[`<CreateRecipe /> matches snapshot 1`] = `
       placeholder="Each ingredient should go on a new line"
       required={true}
     />
+    <span />
   </div>
   <div
     className="input-field"
@@ -84,6 +82,7 @@ exports[`<CreateRecipe /> matches snapshot 1`] = `
       placeholder="new direction should go on a new line"
       required={true}
     />
+    <span />
   </div>
   <div
     className="col s12 file-field input-field center"
@@ -103,6 +102,7 @@ exports[`<CreateRecipe /> matches snapshot 1`] = `
     <p>
       Add images
     </p>
+    <span />
   </div>
   <div>
     <button
