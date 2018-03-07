@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Recipe component matches snapshot 1`] = `
+<div
+  className="col undefined"
+  id="recipe-card-component"
+>
+  <div
+    className="card"
+  >
+    <div
+      className="card-image"
+    >
+      <img
+        alt={undefined}
+        src="undefined"
+      />
+    </div>
+    <div
+      className="card-content"
+    >
+      <span
+        className="card-title"
+      />
+      <p />
+    </div>
+    <div
+      className="card-action"
+    >
+      <span>
+        <i
+          className="material-icons"
+        >
+          thumb_up
+        </i>
+      </span>
+      <span>
+        <i
+          className="material-icons"
+        >
+          thumb_down
+        </i>
+      </span>
+      <span>
+        <i
+          className="material-icons"
+        >
+          favorite
+        </i>
+      </span>
+    </div>
+  </div>
+</div>
+`;

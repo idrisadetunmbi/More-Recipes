@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFoundPage component matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "marginTop": "15rem",
+      "p": Object {
+        "fontFamily": "Open Sans",
+      },
+      "textAlign": "center",
+    }
+  }
+>
+  <h1>
+    404
+  </h1>
+  <p
+    style={
+      Object {
+        "fontFamily": "Open Sans",
+      }
+    }
+  >
+    This page does not exist
+  </p>
+</div>
+`;

@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reusable components InputField matches snapshot 1`] = `
+<div
+  className="input-field"
+>
+  <label
+    htmlFor={undefined}
+  />
+  <input
+    id={undefined}
+    name={undefined}
+    onChange={undefined}
+    required={false}
+    type={undefined}
+    value={undefined}
+  />
+</div>
+`;
+
+exports[`Reusable components LoaderWithComponent matches snapshot 1`] = `
+<div
+  className="preloader"
+>
+  <div
+    className="preloader-wrapper big active"
+  >
+    <div
+      className="spinner-layer"
+    >
+      <div
+        className="circle-clipper left"
+      >
+        <div
+          className="circle"
+        />
+      </div>
+      <div
+        className="gap-patch"
+      >
+        <div
+          className="circle"
+        />
+      </div>
+      <div
+        className="circle-clipper right"
+      >
+        <div
+          className="circle"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Reusable components TextArea matches snapshot 1`] = `
+<div>
+  <i
+    className="material-icons prefix"
+  >
+    mode_edit
+  </i>
+  <label
+    htmlFor={undefined}
+  />
+  <textarea
+    className="materialize-textarea"
+    defaultValue=""
+    name={undefined}
+    onBlur={undefined}
+    onFocus={undefined}
+    required={true}
+    value={undefined}
+  />
+  <span
+    style={
+      Object {
+        "color": "red",
+      }
+    }
+  />
+</div>
+`;

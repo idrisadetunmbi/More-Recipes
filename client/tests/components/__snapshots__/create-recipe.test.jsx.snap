@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateRecipe /> matches snapshot 1`] = `
+exports[`CreateRecipe component matches snapshot 1`] = `
 <form
   id="create-recipe-component"
   onSubmit={[Function]}

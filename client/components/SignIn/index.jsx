@@ -12,7 +12,7 @@ import { InputField } from '../reusables';
  * @class SignIn
  * @extends {React.Component}
  */
-class SignIn extends React.Component {
+export class SignIn extends React.Component {
   state = {
     username: '',
     password: '',

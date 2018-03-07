@@ -11,7 +11,7 @@ import './index.scss';
  * @class NavBar
  * @extends {React.Component}
  */
-class NavBar extends React.Component {
+export class NavBar extends React.Component {
   /**
    * @returns {void}
    * @memberOf NavBar

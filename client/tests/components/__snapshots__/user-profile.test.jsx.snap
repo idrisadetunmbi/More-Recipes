@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserProfile component matches snapshot 1`] = `
+<div
+  className="container"
+  id="user-profile-component"
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col m4 s12 l4 center"
+      id="user-info"
+    >
+      <div
+        id="user-image"
+      >
+        <img
+          alt="userprofilepic"
+          className="responsive-img"
+          src="test-file-stub"
+        />
+        <div
+          className="input-field file-field"
+          id="image-update-btn"
+        >
+          <input
+            accept=".jpg, .jpeg, .png"
+            onChange={[Function]}
+            type="file"
+          />
+          Change Profile Photo
+        </div>
+      </div>
+      <div>
+        <h5
+          className="title"
+        >
+          @undefined
+        </h5>
+        <div
+          id="recipes-count"
+        >
+          <span>
+            <img
+              alt=""
+              src="test-file-stub"
+              title="Number of recipes"
+            />
+            <span
+              className="recipes-count"
+            />
+          </span>
+          <span
+            className="recipes-count"
+          >
+            <i
+              className="material-icons"
+            >
+              favorite
+            </i>
+            <span />
+          </span>
+        </div>
+        <div
+          className="divider"
+        />
+      </div>
+    </div>
+    <div
+      className="col l7 m7 offset-m1 offset-l1 s12"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col s12"
+        >
+          <ul
+            className="tabs"
+          >
+            <li
+              className="tab col s3"
+            >
+              <a
+                className="black-text"
+                href=""
+                onClick={[Function]}
+              >
+                My Recipes
+              </a>
+            </li>
+            <li
+              className="tab col s3 black-text"
+            >
+              <a
+                className="black-text"
+                href=""
+                onClick={[Function]}
+              >
+                Favorites
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="preloader"
+      >
+        <div
+          className="preloader-wrapper big active"
+        >
+          <div
+            className="spinner-layer"
+          >
+            <div
+              className="circle-clipper left"
+            >
+              <div
+                className="circle"
+              />
+            </div>
+            <div
+              className="gap-patch"
+            >
+              <div
+                className="circle"
+              />
+            </div>
+            <div
+              className="circle-clipper right"
+            >
+              <div
+                className="circle"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="fixed-action-btn"
+  >
+    <a
+      className="btn-floating btn-large"
+      onClick={[Function]}
+    >
+      <i
+        className="material-icons"
+      >
+        add
+      </i>
+    </a>
+  </div>
+</div>
+`;

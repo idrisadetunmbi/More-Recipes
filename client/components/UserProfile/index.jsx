@@ -18,7 +18,7 @@ import {
  * @class UserProfile
  * @extends {Component}
  */
-class UserProfile extends Component {
+export class UserProfile extends Component {
   state = {
     myRecipeTabIsActive: true,
     uploadingUserImage: false,

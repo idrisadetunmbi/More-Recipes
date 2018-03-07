@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignIn component matches snapshot 1`] = `
+<form
+  className="auth-component"
+  onSubmit={[Function]}
+>
+  <div>
+    <h5>
+      Sign In To Your Account
+    </h5>
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="username"
+    >
+      username
+    </label>
+    <input
+      id="username"
+      name="username"
+      onChange={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+    
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="password"
+    >
+      password
+    </label>
+    <input
+      id="password"
+      name="password"
+      onChange={[Function]}
+      required={true}
+      type="password"
+      value=""
+    />
+    
+  </div>
+  <button
+    className="btn-large waves-effect waves-light"
+    id="form-submit"
+  >
+    Sign In
+  </button>
+  <p>
+    Dont Have an Account? 
+    <a
+      href="/signup"
+      onClick={[Function]}
+    >
+      Sign Up
+    </a>
+  </p>
+</form>
+`;

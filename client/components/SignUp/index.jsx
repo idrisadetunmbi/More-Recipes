@@ -15,7 +15,7 @@ import './index.scss';
  * @class SignUp
  * @extends {Component}
  */
-class SignUp extends Component {
+export class SignUp extends Component {
   state = {
     username: '',
     email: '',
