@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
-import * as actions from '../recipes';
+import * as actions from '../../actions/recipes';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -80,7 +80,7 @@ describe('Recipe actions', () => {
     beforeEach(() => {
       moxios.install();
       store = mockStore({
-        recipes: { recipes: [] },
+        recipes: { recipes: [], searchResults: { recipe: { results: [] } } },
         user: { data: { token: '' }, recipesVoteStatuses: {} },
       });
     });
@@ -113,8 +113,45 @@ describe('Recipe actions', () => {
       });
     });
 
-    describe('recipeAction', () => {
+    describe('fetchRecipe', () => {
       it('dispatches the expected actions for a successful request', () => {
+        moxiosRespondWithSuccess();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.receiveRecipeActionResponse(actions.FETCH_RECIPE, {}),
+        ];
+        return store.dispatch(actions.fetchRecipe()).then(() => {
+          expect(store.getActions()).toContainEqual(...expectedActions);
+        });
+      });
+
+      it('dispatches the expected actions for a failed request', () => {
+        moxiosRespondWithError();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.errorRecipeAction({}),
+        ];
+        return store.dispatch(actions.fetchRecipe()).catch(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+      });
+    });
+
+    describe('searchRecipes', () => {
+      it('dispatches the expected actions for a successful request', () => {
+        moxiosRespondWithSuccess();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.receiveRecipeActionResponse(actions.SEARCH_RECIPES, {}),
+        ];
+        return store.dispatch(actions.searchRecipes('recipe')).then(() => {
+          expect(store.getActions()).toContainEqual(...expectedActions);
+        });
+      });
+    });
+
+    describe('recipeAction', () => {
+      it('dispatches the expected actions for a successful CREATE_RECIPE request', () => {
         moxiosRespondWithSuccess();
         const expectedActions = [
           actions.initiateRecipeActionRequest(),
@@ -126,13 +163,59 @@ describe('Recipe actions', () => {
         });
       });
 
-      it('calls the expected actions for a failed request', () => {
+      it('dispatches the expected actions for a successful UPDATE_RECIPE request', () => {
+        moxiosRespondWithSuccess();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.receiveRecipeActionResponse(actions.UPDATE_RECIPE, {}),
+        ];
+        return store.dispatch(actions.recipeAction('update', {})).then(() => {
+          expect(store.getActions())
+            .toContainEqual(...expectedActions);
+        });
+      });
+
+      it('dispatches the expected actions for a successful DELETE_RECIPE request', () => {
+        moxiosRespondWithSuccess();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.receiveRecipeActionResponse(actions.DELETE_RECIPE, {}),
+        ];
+        return store.dispatch(actions.recipeAction('delete', {})).then(() => {
+          expect(store.getActions())
+            .toContainEqual(...expectedActions);
+        });
+      });
+
+      it('calls the expected actions for a failed CREATE_RECIPE request', () => {
         moxiosRespondWithError();
         const expectedActions = [
           actions.initiateRecipeActionRequest(),
           actions.errorRecipeAction({}),
         ];
         return store.dispatch(actions.recipeAction('create', {})).catch(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+      });
+
+      it('calls the expected actions for a failed UPDATE_RECIPE request', () => {
+        moxiosRespondWithError();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.errorRecipeAction({}),
+        ];
+        return store.dispatch(actions.recipeAction('update', {})).catch(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+      });
+
+      it('calls the expected actions for a failed DELETE_RECIPE request', () => {
+        moxiosRespondWithError();
+        const expectedActions = [
+          actions.initiateRecipeActionRequest(),
+          actions.errorRecipeAction({}),
+        ];
+        return store.dispatch(actions.recipeAction('delete', {})).catch(() => {
           expect(store.getActions()).toEqual(expectedActions);
         });
       });

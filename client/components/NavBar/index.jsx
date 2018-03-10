@@ -78,9 +78,11 @@ export class NavBar extends React.Component {
             <ul id="dropdown" className="dropdown-content">
               <li>
                 <Link to="/user"><i className="material-icons">person</i>Profile</Link>
-                <a onClick={() => {
-                  localStorage.removeItem('user');
+                <a
+                  id="sign-out"
+                  onClick={() => {
                   this.props.signOutUser();
+                  localStorage.removeItem('user');
                 }}
                 >
                   <i className="material-icons">exit_to_app</i>Sign Out
@@ -101,9 +103,9 @@ NavBar.propTypes = {
 };
 
 
-const mapStateToProps = state => ({ user: state.user });
+export const mapStateToProps = state => ({ user: state.user });
 
-const mapDispatchToProps = dispatch =>
+export const mapDispatchToProps = dispatch =>
   ({
     signOutUser: () => dispatch(signOutUser()),
   });

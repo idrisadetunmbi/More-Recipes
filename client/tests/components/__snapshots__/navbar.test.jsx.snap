@@ -53,6 +53,7 @@ exports[`NavBar component matches snapshot 1`] = `
             Profile
           </a>
           <a
+            id="sign-out"
             onClick={[Function]}
           >
             <i

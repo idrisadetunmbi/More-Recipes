@@ -170,11 +170,11 @@ export class SignIn extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   signInUser: authData =>
     dispatch(userAuthRequest(authData, 'signin')),
 });

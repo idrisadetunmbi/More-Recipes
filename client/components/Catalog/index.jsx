@@ -225,7 +225,10 @@ export class Catalog extends Component {
     const { searchTerm } = this.state;
     const searchResults = this.props.recipes
       .searchResults[searchTerm.toLowerCase()];
-    const endMessage = <h5 className="infinite-scroll">There are no more recipes matching the search term</h5>;
+    const endMessage =
+      (<h5 className="infinite-scroll">
+        There are no more recipes matching the search term
+       </h5>);
 
     return (
       <LoaderWithComponent

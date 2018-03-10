@@ -1,4 +1,4 @@
-import reducer from '../recipes';
+import reducer from '../../reducers/recipes';
 import * as actions from '../../actions/recipes';
 
 const mocks = {

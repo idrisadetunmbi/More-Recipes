@@ -1,3 +1,5 @@
+require('babel-register');
+
 module.exports = ((settings) => {
   // eslint-disable-next-line
   settings.test_workers = false;

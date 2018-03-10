@@ -85,6 +85,7 @@ exports[`UserProfile component matches snapshot 1`] = `
               <a
                 className="black-text"
                 href=""
+                id="user-recipes"
                 onClick={[Function]}
               >
                 My Recipes
@@ -96,6 +97,7 @@ exports[`UserProfile component matches snapshot 1`] = `
               <a
                 className="black-text"
                 href=""
+                id="user-favorites"
                 onClick={[Function]}
               >
                 Favorites

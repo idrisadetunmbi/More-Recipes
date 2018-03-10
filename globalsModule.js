@@ -1,12 +1,17 @@
+const models = require('./server/models');
 const chromedriver = require('chromedriver');
 
 module.exports = {
   default: {
-    launchUrl: 'localhost:3000/catalog',
+    launch_url: 'localhost:3000',
   },
   before: (done) => {
-    chromedriver.start();
-    done();
+    models.sequelize.sync({ force: true }).then(() => {
+      chromedriver.start();
+      done();
+    }).catch((errors) => {
+      done(errors);
+    });
   },
 
   after: (done) => {
