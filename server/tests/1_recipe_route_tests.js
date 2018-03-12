@@ -7,6 +7,9 @@ import userSeeders from '../seeders/user_seeders';
 const { assert } = chai;
 chai.use(chaiHttp);
 
+const VALIDATION_ERROR_MESSAGE =
+  'one or more of the required request data is not included or is invalid';
+
 describe('Recipes routes and actions', () => {
   const testData = {};
 
@@ -50,7 +53,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -91,7 +94,7 @@ describe('Recipes routes and actions', () => {
         })
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -108,7 +111,7 @@ describe('Recipes routes and actions', () => {
         })
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -125,7 +128,7 @@ describe('Recipes routes and actions', () => {
         })
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -152,7 +155,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -163,7 +166,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.status, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -196,7 +199,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -207,7 +210,7 @@ describe('Recipes routes and actions', () => {
         .type('form')
         .end((err, res) => {
           assert.equal(res.status, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -221,7 +224,7 @@ describe('Recipes routes and actions', () => {
         })
         .end((err, res) => {
           assert.equal(res.status, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -283,7 +286,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.statusCode, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
@@ -294,7 +297,7 @@ describe('Recipes routes and actions', () => {
         .set('authorization', `Bearer ${testData.userAuthToken}`)
         .end((err, res) => {
           assert.equal(res.status, 400);
-          assert.equal(res.body.message, 'one or more of the required request data is not included or is invalid');
+          assert.equal(res.body.message, VALIDATION_ERROR_MESSAGE);
           done();
         });
     });
