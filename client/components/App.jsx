@@ -19,7 +19,7 @@ import { fetchRecipes } from '../actions/recipes';
  * @class App
  * @extends {Component}
  */
-class App extends Component {
+export class App extends Component {
   // eslint-disable-next-line
   previousLocation = this.props.location
 
@@ -92,11 +92,11 @@ App.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   userData: state.user.data,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   fetchRecipes: () => dispatch(fetchRecipes()),
 });
 

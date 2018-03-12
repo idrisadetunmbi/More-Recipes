@@ -28,15 +28,6 @@ describe('More-Recipes API', () => {
           });
       });
 
-      it('should return 404 for a non-existing path - unexisting', (done) => {
-        chai.request(server)
-          .get('/api/unexistingpath/')
-          .end((err, res) => {
-            assert.equal(res.status, 404);
-            done();
-          });
-      });
-
       it('should return 404 for an unsupported method - POST to /api', (done) => {
         chai.request(server)
           .post('/api')

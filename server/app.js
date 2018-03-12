@@ -18,17 +18,13 @@ app.use(cookieParser());
 
 app.use('/api', api);
 
-// if process.env is development, use webpack-dev-middleware and configs
-// for serving client side contents
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  require('../webpack_configs/webpack_devserver_config')(app);
-}
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '..', 'dist')));
   app.get('*', (req, res) =>
     res.sendFile(path.join(__dirname, '..', 'dist', 'index.html')));
+} else {
+  // eslint-disable-next-line
+  require('../webpack_configs/webpack_devserver_config')(app);
 }
 
 app.use((req, res, next) => {

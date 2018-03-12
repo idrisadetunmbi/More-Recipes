@@ -69,6 +69,14 @@ const user = (state = {
           [action.recipeId, ...state.recipes],
       };
     case UserActions.RESET_USER_DATA:
+      return {
+        userRequestInitiated: false,
+        userRequestError: null,
+        data: {},
+        recipes: null,
+        favoriteRecipes: null,
+        recipesVoteStatuses: {},
+      };
     default:
       return state;
   }

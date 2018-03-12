@@ -120,3 +120,4 @@ LandingPage.propTypes = {
 };
 
 export default connect(mapStateToProps)(LandingPage);
+export { LandingPage };

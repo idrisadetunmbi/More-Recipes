@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar component matches snapshot 1`] = `
+<div
+  className="navbar-fixed"
+  id="navbar-component"
+>
+  <nav
+    className="white"
+  >
+    <div
+      className="nav-wrapper container"
+    >
+      <a
+        className="brand-logo"
+        href="/catalog"
+        onClick={[Function]}
+      >
+        <img
+          alt="navbar logo"
+          src="test-file-stub"
+        />
+        <h5>
+          MoreRecipes
+        </h5>
+      </a>
+      <ul
+        className="right"
+      >
+        <li>
+          <a
+            href="/signin"
+            onClick={[Function]}
+          >
+            Sign In
+          </a>
+        </li>
+      </ul>
+      <ul
+        className="dropdown-content"
+        id="dropdown"
+      >
+        <li>
+          <a
+            href="/user"
+            onClick={[Function]}
+          >
+            <i
+              className="material-icons"
+            >
+              person
+            </i>
+            Profile
+          </a>
+          <a
+            id="sign-out"
+            onClick={[Function]}
+          >
+            <i
+              className="material-icons"
+            >
+              exit_to_app
+            </i>
+            Sign Out
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+`;

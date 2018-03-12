@@ -139,7 +139,7 @@ export class CreateRecipe extends Component {
     this.setState({
       fieldErrors: {
         ...this.state.fieldErrors,
-        images: '',
+        images: null,
       },
     });
     // refers to first image upload, i.e. clicking the 'add images' input field
@@ -179,9 +179,10 @@ export class CreateRecipe extends Component {
       return;
     }
 
-    // if any of the input field errors has not been corrected
+    // if any of the input field errors has not been corrected i.e. is not equal
+    // to null
     if (
-      !(Object.values(this.state.fieldErrors).every(val => val.length === 0))
+      !(Object.values(this.state.fieldErrors).every(val => !val))
     ) {
       return;
     }
@@ -197,16 +198,15 @@ export class CreateRecipe extends Component {
         uploadedImagesUrls = await sendImagesToCloudinary(imgsUploadUrls);
       } catch (error) {
         showToast('There was an error performing this request');
+        this.setState({ isUploadingImages: false });
         return;
       }
       this.setState({
         uploadedImagesUrls,
         isUploadingImages: false,
       });
-    } else {
-      // TODO: Check if new images have been added to this.state.imagesSelected
-      // compare already uploaded images to new images
     }
+
     const {
       title, description, ingredients, directions, uploadedImagesUrls,
     } = this.state;
@@ -396,12 +396,12 @@ const UploadingOverlay = () => (
   </div>
 );
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   recipeActionInitiated: state.recipes.requestInitiated,
   recipeActionErrored: state.recipes.requestError,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   createRecipe: recipeData => dispatch(recipeAction('create', recipeData)),
 });
 

@@ -19,7 +19,7 @@ import NoMatch from '../404';
  * @class RecipeDetails
  * @extends {React.Component}
  */
-class RecipeDetails extends React.Component {
+export class RecipeDetails extends React.Component {
   state = {
     isDetailsMode: true,
     reviewText: '',

@@ -15,7 +15,7 @@ import './index.scss';
  * @class SignUp
  * @extends {Component}
  */
-class SignUp extends Component {
+export class SignUp extends Component {
   state = {
     username: '',
     email: '',
@@ -238,11 +238,11 @@ class SignUp extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   signUpUser: userData =>
     dispatch(userAuthRequest(userData, 'signup')),
 });

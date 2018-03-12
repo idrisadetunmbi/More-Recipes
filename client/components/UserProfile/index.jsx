@@ -18,7 +18,7 @@ import {
  * @class UserProfile
  * @extends {Component}
  */
-class UserProfile extends Component {
+export class UserProfile extends Component {
   state = {
     myRecipeTabIsActive: true,
     uploadingUserImage: false,
@@ -142,6 +142,7 @@ class UserProfile extends Component {
         <ul className="tabs">
           <li className="tab col s3">
             <a
+              id="user-recipes"
               href=""
               onClick={() =>
                 this.setState({ myRecipeTabIsActive: true })}
@@ -151,6 +152,7 @@ class UserProfile extends Component {
           </li>
           <li className="tab col s3 black-text">
             <a
+              id="user-favorites"
               href=""
               onClick={() => {
                 this.setState({ myRecipeTabIsActive: false });
@@ -204,7 +206,7 @@ class UserProfile extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   userRecipes: state.user.recipes &&
     state.recipes.recipes.filter(recipe =>
       state.user.recipes.includes(recipe.id)),
@@ -216,7 +218,7 @@ const mapStateToProps = state => ({
   userData: state.user.data,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   fetchUserRecipes: () => dispatch(fetchUserRecipes()),
   fetchUserFavorites: () => dispatch(fetchUserFavorites()),
   updateUserProfilePhoto: uploadedImageUrl =>

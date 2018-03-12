@@ -1,4 +1,4 @@
-import reducer from '../reviews';
+import reducer from '../../reducers/reviews';
 import * as actions from '../../actions/reviews';
 
 const mocks = {

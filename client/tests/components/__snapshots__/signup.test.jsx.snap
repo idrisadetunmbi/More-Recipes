@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignUp component matches snapshot 1`] = `
+<form
+  className="auth-component"
+  onSubmit={[Function]}
+>
+  <div
+    style={
+      Object {
+        "marginBottom": "1rem",
+        "marginTop": "3rem",
+      }
+    }
+  >
+    <h5>
+      Create an account
+    </h5>
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="username"
+    >
+      username
+    </label>
+    <input
+      id="username"
+      name="username"
+      onChange={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="email"
+    >
+      email
+    </label>
+    <input
+      id="email"
+      name="email"
+      onChange={[Function]}
+      required={true}
+      type="email"
+      value=""
+    />
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="password"
+    >
+      password
+    </label>
+    <input
+      id="password"
+      name="password"
+      onChange={[Function]}
+      required={true}
+      type="password"
+      value=""
+    />
+  </div>
+  <div
+    className="input-field"
+  >
+    <label
+      htmlFor="passwordConfirm"
+    >
+      passwordConfirm
+    </label>
+    <input
+      id="passwordConfirm"
+      name="passwordConfirm"
+      onChange={[Function]}
+      required={true}
+      type="password"
+      value=""
+    />
+  </div>
+  <button
+    className="btn-large waves-effect waves-light"
+    id="form-submit"
+  >
+    Sign Up
+  </button>
+  <p>
+    Already Have an Account? 
+    <a
+      href="/signin"
+      onClick={[Function]}
+    >
+      Sign In
+    </a>
+     
+  </p>
+</form>
+`;
