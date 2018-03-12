@@ -39,7 +39,7 @@ export default class RecipeController {
     });
     if (recipe) {
       return res.status(400).send({
-        error: 'you already created a recipe with this title',
+        message: 'you already created a recipe with this title',
       });
     }
     try {
