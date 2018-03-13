@@ -12,8 +12,6 @@ module.exports = {
   collectCoverageFrom: ['**/*.{js,jsx}'],
   coveragePathIgnorePatterns:
     ['<rootDir>/tests',
-      '<rootDir>/components/RecipeDetails',
-      '<rootDir>/components/Root.jsx',
       '<rootDir>/index.jsx',
       '<rootDir>/store.js'],
   setupTestFrameworkScriptFile: '<rootDir>/../node_modules/jest-enzyme/lib/index.js',
