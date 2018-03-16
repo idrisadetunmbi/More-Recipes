@@ -267,7 +267,7 @@ export class Catalog extends Component {
           {this.renderSuggestionSection()}
           <div className="col l9 s12">
             <h5>{this.state.searchMode ?
-              `Search Results for ${this.state.searchTerm}` : 'Featured Recipes'}
+              `Search Results for "${this.state.searchTerm}"` : 'Featured Recipes'}
             </h5>
             <div className="divider" id="gallery-before" />
             {

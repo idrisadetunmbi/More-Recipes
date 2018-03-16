@@ -300,6 +300,8 @@ export class CreateRecipe extends Component {
   renderSubmitButton = () => (
     <div>
       <button
+        type="submit"
+        id="submit-recipe"
         disabled={this.state.isUploadingImages}
         className="btn-large waves-effect waves-light"
       >SUBMIT

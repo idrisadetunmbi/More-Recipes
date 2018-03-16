@@ -93,7 +93,7 @@ export class RecipeDetails extends React.Component {
   reviewSubmit = () => {
     const { reviewText } = this.state;
     const { user, history } = this.props;
-    if (reviewText.length === 0) {
+    if (reviewText.trim().length === 0) {
       return;
     }
     if (!user.token) {

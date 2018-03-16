@@ -34,7 +34,8 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res) => {
+// eslint-disable-next-line
+app.use((err, req, res, next) => {
   switch (err.status) {
     case 404:
       return res.status(404).send({

@@ -36,11 +36,6 @@ export class NavBar extends React.Component {
     });
   }
 
-  signInRedirect = {
-    pathname: '/signin',
-    state: { modal: true, previousLocation: this.props.location.pathname },
-  };
-
   renderUserImage = () => this.props.user.data.imageUrl ?
     <img src={this.props.user.data.imageUrl} alt="" width="38" height="38" className="circle" /> :
     <i style={{ fontSize: '3rem' }} className="large material-icons">account_circle</i>;
@@ -54,7 +49,12 @@ export class NavBar extends React.Component {
       </a>
     </li> :
     <li>
-      <Link to={this.signInRedirect}>Sign In</Link>
+      <Link to={{
+        pathname: '/signin',
+        state: { modal: true, previousLocation: this.props.location.pathname },
+      }}
+      >Sign In
+      </Link>
     </li>;
 
   /**
@@ -81,9 +81,9 @@ export class NavBar extends React.Component {
                 <a
                   id="sign-out"
                   onClick={() => {
-                  this.props.signOutUser();
-                  localStorage.removeItem('user');
-                }}
+                    this.props.signOutUser();
+                    localStorage.removeItem('user');
+                  }}
                 >
                   <i className="material-icons">exit_to_app</i>Sign Out
                 </a>

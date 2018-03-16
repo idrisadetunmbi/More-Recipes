@@ -108,6 +108,8 @@ exports[`CreateRecipe component matches snapshot 1`] = `
     <button
       className="btn-large waves-effect waves-light"
       disabled={false}
+      id="submit-recipe"
+      type="submit"
     >
       SUBMIT
     </button>
