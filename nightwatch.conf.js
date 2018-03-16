@@ -1,4 +1,5 @@
 require('babel-register');
+require('babel-polyfill');
 
 module.exports = ((settings) => {
   // eslint-disable-next-line

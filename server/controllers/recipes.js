@@ -35,7 +35,12 @@ export default class RecipeController {
   createRecipe = async (req, res) => {
     // check recipe with title by user already exists
     let recipe = await dbModels.recipe.findOne({
-      where: { title: req.body.title, authorId: req.user.id },
+      where: {
+        title: {
+          [Sequelize.Op.iLike]: req.body.title,
+        },
+        authorId: req.user.id,
+      },
     });
     if (recipe) {
       return res.status(400).send({
@@ -147,11 +152,31 @@ export default class RecipeController {
    * @memberOf RecipeController
    */
   modifyRecipe = async (req, res) => {
-    if (!(Object.keys(req.body).length)) {
+    if (Object.values(req.body).every(field => !field)) {
       return res.status(400).send({
         error: 'request body does not contain any data to modify recipe',
       });
     }
+
+    const recipeWithTitleExists = await dbModels.recipe.findOne({
+      where: {
+        authorId: req.user.id,
+        id: { [Sequelize.Op.ne]: req.params.recipeId },
+        title: { [Sequelize.Op.iLike]: req.body.title },
+      },
+    });
+    if (recipeWithTitleExists) {
+      return res.status(400).send({
+        message: 'you have another recipe with this title',
+      });
+    }
+    const newRecipeData = {
+      [req.body.title && 'title']: req.body.title,
+      [req.body.ingredients && 'ingredients']: req.body.ingredients,
+      [req.body.ingredients && 'description']: req.body.ingredients,
+      [req.body.directions && 'directions']: req.body.directions,
+    };
+
     let recipe;
     try {
       recipe = await this.getRecipeFromDb(req.params.recipeId);
@@ -162,7 +187,7 @@ export default class RecipeController {
         });
       }
       await recipe.update({
-        ...req.body,
+        ...newRecipeData,
         authorId: recipe.authorId,
         upvotes: recipe.upvotes,
         downvotes: recipe.downvotes,

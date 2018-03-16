@@ -76,7 +76,12 @@ export class App extends Component {
           />
           <Route path="/catalog" component={Catalog} />
           <Route path="/recipes/:recipeId" component={RecipeDetails} />
-          <Route path="/user" component={UserProfile} />
+          <Route
+            path="/user"
+            render={() => (
+            this.props.userData.token ? (<UserProfile />) : (<Redirect to="/catalog" />)
+          )}
+          />
           <Route component={NoMatch} />
         </Switch>
         {isModal ? <Route component={Modal} /> : null }

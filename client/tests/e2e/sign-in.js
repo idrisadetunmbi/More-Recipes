@@ -1,17 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import models from '../../../server/models';
+import { user as mocks } from '../__mocks__/e2e';
+
 
 const SUCCESS_SIGNIN_TEXT = 'You are now signed in!!!';
-const mocks = {
-  signUpData: {
-    username: 'newusername',
-    password: 'password',
-    email: 'xyz@mail.com',
-  },
-  invalidUserData: {
-
-  },
-};
 const loadSignUpPage = (browser) => {
   browser.url('localhost:3000')
     .click('a[href="/signin"]')

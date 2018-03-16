@@ -1,4 +1,6 @@
 import validate, { validationResult } from 'express-validator/check';
+import { sanitize } from 'express-validator/filter';
+
 import models from '../models';
 
 export default (req, res, next) => {
@@ -20,15 +22,17 @@ export const recipeRequestsValidations = {
     validate.body(
       'description',
       'you must add a description with at least 5 characters',
-    ).isLength({ min: 5 }).trim().escape(),
+    ).isLength({ min: 5 }).trim(),
     validate.body(
       'ingredients',
       'ingredients must be included with at least 5 characters',
-    ).isLength({ min: 5 }).trim().escape(),
+    ).isLength({ min: 5 }).trim(),
     validate.body(
       'directions',
       'directions are required for a recipe with at least 5 characters',
-    ).isLength({ min: 5 }).trim().escape(),
+    ).isLength({ min: 5 }).trim(),
+    sanitize(['title', 'description', 'ingredients', 'directions'])
+      .trim().escape(),
   ],
 
   getRecipe: [
@@ -42,23 +46,22 @@ export const recipeRequestsValidations = {
     validate.body('title', 'title must be between 5 to 50 characters')
       .isLength({ min: 5, max: 50 }).not().isInt()
       .optional()
-      .trim()
-      .escape(),
+      .trim(),
     validate.body('description', 'you must add a description')
-      .isLength({ min: 5 }).optional().trim()
-      .escape(),
+      .isLength({ min: 5 }).optional().trim(),
     validate.body('ingredients', 'ingredients must be included')
-      .isLength({ min: 5 }).optional().trim()
-      .escape(),
+      .isLength({ min: 5 }).optional().trim(),
     validate.body('directions', 'directions are required for a recipe')
-      .isLength({ min: 5 }).optional().trim()
-      .escape(),
+      .isLength({ min: 5 }).optional().trim(),
+    sanitize(['title', 'description', 'ingredients', 'directions'])
+      .trim().escape(),
   ],
 
   postReview: [
     validate.body('content').isLength({ min: 1 }).trim().escape(),
     validate.body('rating', 'recipe can only be rated between 1 to 5')
-      .isInt({ min: 1, max: 5 }).trim(),
+      .isInt({ min: 1, max: 5 }),
+    sanitize('content'),
   ],
 
   voteRecipe: [

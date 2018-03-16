@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import models from '../../../server/models';
+import { user as mocks } from '../__mocks__/e2e';
 
 const SUCCESS_SIGNUP_TEXT = 'You have signed up successfully!!!';
 const loadSignUpPage = (browser) => {
@@ -13,18 +14,6 @@ const clickSignOutLink = (browser) => {
   navBar.click('#navbar-component .right');
   browser.pause(1000);
   navBar.click('@signOutLink');
-};
-const mocks = {
-  signUpData: {
-    username: 'newusername',
-    password: 'password',
-    email: 'xyz@mail.com',
-  },
-  dataWithRegisteredEmail: {
-    username: 'anothername',
-    password: 'password',
-    email: 'xyz@mail.com',
-  },
 };
 
 module.exports = {
