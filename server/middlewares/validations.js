@@ -39,7 +39,17 @@ export const recipeRequestsValidations = {
     validate.param(
       'recipeId',
       'recipe id is invalid or stated recipe does not exist',
-    ).isUUID().custom(value => models.recipe.findById(value)),
+    ).isUUID().custom(async (value, { req }) => {
+      const recipe = await models.recipe.findById(value, {
+        include: [
+          {
+            model: models.user, as: 'author', attributes: ['username', 'imageUrl'],
+          },
+        ],
+      });
+      req.recipe = recipe;
+      return recipe;
+    }),
   ],
 
   modifyRecipe: [

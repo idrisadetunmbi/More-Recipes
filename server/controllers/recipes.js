@@ -130,15 +130,7 @@ export default class RecipeController {
    * @memberOf RecipeController
    */
   getRecipe = async (req, res) => {
-    let recipe;
-    try {
-      recipe = await this.getRecipeFromDb(req.params.recipeId);
-    } catch (error) {
-      return res.status(500).send({
-        message: 'unhandled server error',
-        error: error.message || error.errors[0].message,
-      });
-    }
+    const { recipe } = req;
     return res.status(200).send({
       data: recipe,
     });
@@ -170,22 +162,20 @@ export default class RecipeController {
         message: 'you have another recipe with this title',
       });
     }
+
+    const { recipe } = req;
+    if (recipe.authorId !== req.user.id) {
+      return res.status(403).send({
+        error: 'this recipe was added by another user',
+      });
+    }
     const newRecipeData = {
       [req.body.title && 'title']: req.body.title,
       [req.body.ingredients && 'ingredients']: req.body.ingredients,
       [req.body.ingredients && 'description']: req.body.ingredients,
       [req.body.directions && 'directions']: req.body.directions,
     };
-
-    let recipe;
     try {
-      recipe = await this.getRecipeFromDb(req.params.recipeId);
-      // disallow modification if recipe was not added by current user
-      if (recipe.authorId !== req.user.id) {
-        return res.status(403).send({
-          error: 'this recipe was added by another user',
-        });
-      }
       await recipe.update({
         ...newRecipeData,
         authorId: recipe.authorId,
@@ -213,15 +203,13 @@ export default class RecipeController {
    * @memberOf RecipeController
    */
   deleteRecipe = async (req, res) => {
-    let recipe;
+    const { recipe } = req;
+    if (recipe.authorId !== req.user.id) {
+      return res.status(403).send({
+        error: 'this recipe was added by another user',
+      });
+    }
     try {
-      recipe = await dbModels.recipe.findById(req.params.recipeId);
-      // disallow deletion if recipe was not added by current user
-      if (recipe.authorId !== req.user.id) {
-        return res.status(403).send({
-          error: 'this recipe was added by another user',
-        });
-      }
       await recipe.destroy();
     } catch (error) {
       return res.status(500).send({
@@ -306,8 +294,7 @@ export default class RecipeController {
    * @memberOf RecipeController
    */
   favoriteRecipe = async (req, res) => {
-    const { user } = req;
-    const recipe = await this.getRecipeFromDb(req.params.recipeId);
+    const { user, recipe } = req;
     if (user.id === recipe.authorId) {
       return res.status(403).send({
         error: 'you cannot favorite a recipe you created',
@@ -343,8 +330,7 @@ export default class RecipeController {
     // get vote type from url since same controller handles upvotes and
     // downvotes
     const action = req.path.includes('upvote') ? 'upvote' : 'downvote';
-    const { user } = req;
-    const recipe = await this.getRecipeFromDb(req.params.recipeId);
+    const { user, recipe } = req;
     if (user.id === recipe.authorId) {
       return res.status(403).send({
         error: `you cannot ${action} a recipe you created`,

@@ -81,7 +81,7 @@ export const fetchUserRecipes = () => async (dispatch, getState) => {
     dispatch(errorUserRequest(error.response.data));
     return;
   }
-  const recipeIds = response.data.data.recipes.map(recipe => recipe.id);
+  const recipeIds = response.data.data.map(recipe => recipe.id);
   dispatch(receiveUserRequestResponse(FETCH_RECIPES, recipeIds));
 };
 
@@ -105,7 +105,8 @@ export const fetchUserFavorites = forceFetch => async (dispatch, getState) => {
     dispatch(errorUserRequest(error.response.data));
     return;
   }
-  dispatch(receiveUserRequestResponse(FETCH_FAVORITES, response.data.data));
+  const recipeIds = response.data.data.map(recipe => recipe.id);
+  dispatch(receiveUserRequestResponse(FETCH_FAVORITES, recipeIds));
 };
 
 /**

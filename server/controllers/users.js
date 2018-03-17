@@ -148,10 +148,15 @@ export default class UserController {
     let user;
     try {
       user = await models.user.findById(req.params.userId, {
-        attributes: ['id', 'username', 'email'],
+        attributes: [],
         include: [{
           model: models.recipe,
           as: 'recipes',
+          include: [{
+            model: models.user,
+            as: 'author',
+            attributes: ['username', 'imageUrl'],
+          }],
         }],
       });
     } catch (error) {
@@ -160,8 +165,7 @@ export default class UserController {
       });
     }
     return res.status(200).send({
-      message: 'user\'s recipes',
-      data: user,
+      data: user.recipes,
     });
   }
 
@@ -174,24 +178,30 @@ export default class UserController {
    * @returns {Promise} return object from res.send
    */
   getUserFavorites = async (req, res) => {
-    let userFavorites;
+    let userFavs;
     try {
-      userFavorites = await models.favorite.findAll({
-        where: {
-          userId: req.params.userId,
-        },
-        attributes: ['recipeId'],
+      userFavs = await models.user.findById(req.params.userId, {
+        attributes: [],
+        include: [{
+          model: models.recipe,
+          as: 'favoriteRecipes',
+          through: {
+            attributes: [],
+          },
+          include: [{
+            model: models.user,
+            as: 'author',
+            attributes: ['username', 'imageUrl'],
+          }],
+        }],
       });
     } catch (error) {
       return res.status(500).send({
         error: error.message || error.errors[0].message,
       });
     }
-
-    const favorites = userFavorites.map(entry => entry.recipeId);
     return res.status(200).send({
-      message: 'user\'s favorites',
-      data: favorites,
+      data: userFavs.favoriteRecipes,
     });
   }
 

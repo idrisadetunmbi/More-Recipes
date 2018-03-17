@@ -136,7 +136,7 @@ describe('User actions', () => {
           const request = moxios.requests.mostRecent();
           request.respondWith({
             status: 200,
-            response: { data: { recipes: [] } },
+            response: { data: [] },
           });
         });
         const expectedActions = [
@@ -161,10 +161,16 @@ describe('User actions', () => {
 
     describe('fetchUserFavorites', () => {
       it('dispatches the expected actions for a successful request', async () => {
-        moxiosRespondWithSuccess();
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          request.respondWith({
+            status: 200,
+            response: { data: [] },
+          });
+        });
         const expectedActions = [
           actions.initiateUserRequest(),
-          actions.receiveUserRequestResponse(actions.FETCH_FAVORITES, {}),
+          actions.receiveUserRequestResponse(actions.FETCH_FAVORITES, []),
         ];
         await store.dispatch(actions.fetchUserFavorites());
         expect(store.getActions()).toEqual(expectedActions);
