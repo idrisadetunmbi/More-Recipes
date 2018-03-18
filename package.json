@@ -7,12 +7,14 @@
     "build:server": "mkdir ./production && babel ./server/ -d ./production --copy-files",
     "build:client": "NODE_ENV=production webpack --config ./webpack_configs/webpack.prod.js --progress",
     "build": "npm run clean && npm run build:server && npm run build:client",
-    "start": "npm run build && NODE_ENV=production node ./production/bin/www.js",
-    "devstart": "nodemon ./server/bin/www --exec babel-node",
+    "start:dev": "nodemon ./server/bin/www --exec babel-node",
     "start:client": "babel-node ./server/bin/www",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov mocha ./server/tests --exit --require babel-register --timeout=40000",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test:client": "jest --silent"
+    "start": "npm run build && NODE_ENV=production node ./production/bin/www.js",
+    "test:server": "NODE_ENV=test mocha ./server/tests --exit --require babel-register --timeout=40000",
+    "test:client": "jest --silent",
+    "test:both": "npm run test:server && npm run test:client",
+    "test": "nyc -r=html npm run test:both",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "engines": {
     "node": "8.6.0",

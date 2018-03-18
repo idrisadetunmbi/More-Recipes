@@ -1,6 +1,6 @@
 {
   "src_folders" : ["client/tests/e2e"],
-  "output_folder" : "coverage/client",
+  "output_folder" : "coverage/client/e2e",
   "globals_path" : "globalsModule.js",
   "page_objects_path": "client/tests/e2e/page-objects",
   "selenium": {
