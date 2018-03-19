@@ -264,7 +264,7 @@ class EditView extends Component {
             </a>
           </div>
           <div className="fixed-action-btn" style={{ marginBottom: '7.5rem' }}>
-            <a onClick={this.onSubmit} className="btn-floating btn-large">
+            <a id="submit-btn" onClick={this.onSubmit} className="btn-floating btn-large">
               <i className="large material-icons">done</i>
             </a>
           </div>

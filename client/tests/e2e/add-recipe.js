@@ -26,7 +26,6 @@ module.exports = {
     const createRecipePage = browser.page.addRecipe();
 
     catalogPage.navigate();
-    browser.maximizeWindow();
     catalogPage.click('@addRecipeBtn');
     browser.pause(2000);
     signInPage.expect.element('@signInForm').to.be.visible;
@@ -45,7 +44,6 @@ module.exports = {
     browser.pause(8000);
 
     browser.assert.urlEquals(catalogPage.url);
-    // browser.end();
   },
 
   'User cannot create a recipe with the same title': (browser) => {
@@ -60,7 +58,8 @@ module.exports = {
     browser.pause(2000);
     browser.click('button[type="submit"]');
     browser.expect.element('body').text.to
-      .contain(ADD_RECIPE_FAILURE_MSG).after(2000);
-    browser.pause(10000);
+      .contain(ADD_RECIPE_FAILURE_MSG).after(5000);
+    browser.pause(4000);
+    browser.end();
   },
 };

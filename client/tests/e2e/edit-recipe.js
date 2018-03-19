@@ -27,7 +27,6 @@ module.exports = {
     const editRecipePage = browser.page.editRecipe();
 
     catalogPage.navigate();
-    browser.maximizeWindow();
     browser.pause(2000);
     catalogPage.click('@recipe');
     browser.pause(2000);
@@ -53,5 +52,6 @@ module.exports = {
       .contain(EDIT_RECIPE_SUCCESS_MSG).after(2000);
     recipePage.expect.element('@recipeTitle').text.to.equal(newRecipeTitle);
     browser.pause(2000);
+    browser.end();
   },
 };

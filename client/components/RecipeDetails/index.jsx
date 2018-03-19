@@ -157,7 +157,7 @@ export class RecipeDetails extends React.Component {
 }
 
 
-const mapStateToProps = (state, ownProps) => ({
+export const mapStateToProps = (state, ownProps) => ({
   recipe: state.recipes.recipes
     .filter(recipe => recipe.id === ownProps.match.params.recipeId)[0],
 
@@ -171,7 +171,7 @@ const mapStateToProps = (state, ownProps) => ({
   recipeNotFound: state.recipes.requestError,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   recipeAction: (actionType, recipeData) =>
     dispatch(recipeAction(actionType, recipeData)),
 

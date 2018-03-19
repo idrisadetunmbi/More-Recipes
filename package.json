@@ -12,8 +12,8 @@
     "start": "npm run build && NODE_ENV=production node ./production/bin/www.js",
     "test:server": "NODE_ENV=test mocha ./server/tests --exit --require babel-register --timeout=40000",
     "test:client": "jest --silent",
-    "test:both": "npm run test:server && npm run test:client",
-    "test": "nyc -r=html npm run test:both",
+    "test:all": "npm run test:server && npm run test:client",
+    "test": "nyc -r=html npm run test:all",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "engines": {

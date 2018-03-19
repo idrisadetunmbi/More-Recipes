@@ -73,6 +73,7 @@ const DetailsView = (props) => {
               <div>
                 <div className="vote-actions">
                   <a
+                    id="upvote-btn"
                     style={{ marginLeft: '0' }}
                     className={`btn waves-ripple ${userUpvoted && 'checked'}`}
                     disabled={props.userOwnsRecipe()}
@@ -83,6 +84,7 @@ const DetailsView = (props) => {
                     <span>{recipe.upvotes}</span>
                   </a>
                   <a
+                    id="downvote-btn"
                     className={`btn waves-ripple ${userDownvoted && 'checked'}`}
                     disabled={props.userOwnsRecipe()}
                     onClick={() => userIsSignedIn() &&
@@ -92,6 +94,7 @@ const DetailsView = (props) => {
                     <span>{recipe.downvotes}</span>
                   </a>
                   <a
+                    id="favorite-btn"
                     className={`btn waves-ripple ${userFavorited && 'checked'}`}
                     disabled={props.userOwnsRecipe()}
                     onClick={() => userIsSignedIn() &&

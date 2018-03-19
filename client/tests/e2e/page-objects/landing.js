@@ -5,6 +5,10 @@ module.exports = {
       selector: "//*[contains(text(),'view entire catalog')]",
       locateStrategy: 'xpath',
     },
+    browseCatalog: {
+      selector: "//a[contains(text(),'Browse Catalog')]",
+      locateStrategy: 'xpath',
+    },
   },
   sections: {
     navBar: {

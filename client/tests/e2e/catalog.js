@@ -21,7 +21,6 @@ module.exports = {
   'Catalog page and search recipe': (browser) => {
     const catalogPage = browser.page.catalog();
     catalogPage.navigate();
-    browser.maximizeWindow();
     catalogPage.expect.element('@recipe').to.be.present;
     catalogPage.expect.element('@catalogTitle').to.be.present;
     catalogPage.expect.element('@container').to.be.present;

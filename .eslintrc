@@ -11,7 +11,8 @@
     "localStorage": true,
     "$": true,
     "window": true,
-    "document": true
+    "document": true,
+    "methodSpy": true
   },
   "rules": {
     "strict": 0,
