@@ -32,7 +32,7 @@ export const recipeRequestsValidations = {
       'directions are required for a recipe with at least 5 characters',
     ).isLength({ min: 5 }).trim(),
     sanitize(['title', 'description', 'ingredients', 'directions'])
-      .trim().escape(),
+      .trim(),
   ],
 
   getRecipe: [
@@ -64,14 +64,14 @@ export const recipeRequestsValidations = {
     validate.body('directions', 'directions are required for a recipe')
       .isLength({ min: 5 }).optional().trim(),
     sanitize(['title', 'description', 'ingredients', 'directions'])
-      .trim().escape(),
+      .trim(),
   ],
 
   postReview: [
     validate.body('content').isLength({ min: 1 }).trim().escape(),
     validate.body('rating', 'recipe can only be rated between 1 to 5')
       .isInt({ min: 1, max: 5 }),
-    sanitize('content'),
+    sanitize('content').trim(),
   ],
 
   voteRecipe: [

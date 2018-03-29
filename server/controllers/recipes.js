@@ -172,8 +172,9 @@ export default class RecipeController {
     const newRecipeData = {
       [req.body.title && 'title']: req.body.title,
       [req.body.ingredients && 'ingredients']: req.body.ingredients,
-      [req.body.ingredients && 'description']: req.body.ingredients,
+      [req.body.description && 'description']: req.body.description,
       [req.body.directions && 'directions']: req.body.directions,
+      [req.body.images && 'images']: req.body.images,
     };
     try {
       await recipe.update({
